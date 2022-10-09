@@ -23,15 +23,12 @@ const CreatePartida = () => {
     }
   ];
 
-  // const submitCreatePartida = async () => { };
+  //const submitCreatePartida = async () => { };
 
-  // const handleInputChange = (event) => {
-  //   //console.log(event.target.value)
-  //   setDatos({
-  //     ...datos, //hace una copia
-  //     [event.target.name] : event.target.value
-  //   })
-  // }
+  const handleOptionChange = (e) => {
+      const {Title, id } = e.target;
+      this.setState({[Title] : id});
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -41,82 +38,86 @@ const CreatePartida = () => {
   }
 
   return (
-    <div >
-      <h2> Crear Partida </h2>
-        <form class='form' className='box' method='post' onSubmit={handleSubmit}> 
-
-          <div>
-            <label class='form-element'>Nombre de la Partida</label>
+    <div className='form'>
+      <form onSubmit={handleSubmit}> 
+        <h1>Crear Partida</h1>
+          <div className="form-group">
+            <label>Nombre de la Partida</label>
             <div>
-              <input type='name'
-              placeholder='Nombre de partida'
-              class='form-element'
+            <input type='name'
+              className="form-control"
+              placeholder='Ingrese el Nombre de partida'
               required
             />
             </div>
           </div>
-          
-          <div>
-            <label class='form-element'>Cantidad de Jugadores</label>
-            <div>
-              <input type='number'
-              placeholder='Cantidad de Jugadores'
-              className='input'
-              class='form-element'
-              required
-            />
-            </div>
-          </div>
-
-          <div>
-            <label class='form-element'>Cantidad de Juegos</label>
+          <br/>
+          <div className="form-group">
+            <label>Cantidad de Jugadores</label>
             <div>
               <input type='number'
-              placeholder='Cantidad de Juegos'
-              className='input'
-              class='form-element'
+              placeholder='Ingrese la Cantidad de Jugadores'
+              min='2'
+              max='4'
+              className="form-control"
               required
             />
             </div>
           </div>
-
+          <br/>
           <div>
-            <label class='form-element'>Cantidad de Rondas</label>
+            <label>Cantidad de Juegos</label>
+            <div>
+              <input type='number'
+              placeholder='Ingrese la Cantidad de Juegos'
+              min='1'
+              max='200'
+              className="form-control"
+              required
+            />
+            </div>
+          </div>
+          <br/>
+          <div>
+            <label>Cantidad de Rondas</label>
             <div>
             <input type='number'
-              placeholder='Número de Rondas'
-              className='input'
-              class='form-element'
+              placeholder='Ingrese el Número de Rondas'
+              min='1'
+              max='10000'
+              className="form-control"
               required
             />
             </div>
           </div>
-
+          <br/>
           <div>
-            <label class='form-element'>Contraseña</label>
+            <label>Contraseña</label>
             <div>
               <input type='password'
-              placeholder='Contraseña (opcional)'
-              className='input'
-              class='form-element'
+              placeholder='Máximo 10 caracteres (opcional)'
+              className="form-control"
+              maxlength='10' 
               optional
             />
             </div>
           </div>
-        
+          <br/>
           <div>
-            <label class='form-element'>Seleccionar Robot</label>
-            <div className='form-element'>
-              <select name='list' className='foorm-control'>
-                {list.map(item => {return (
-                  <option value={item.Id}>{item.Title}</option>
+            <label className='my-1 mr-2'>Seleccionar Robot</label>
+              <div>
+              <select className="custom-select my-1 mr-sm-2" required onChange={handleOptionChange}>
+                <option disabled value=''> --Seleccione un robot--</option>
+                {list.map(item => {
+                return (
+                  <option key={item.Id} value={item.Id}>{item.Title}</option>
                 )})}
               </select>
-            </div>
+          </div>
           </div>
         <br/>
-          <button class='form-element' type='submit'> Crear </button>
-          <button class='form-element' type='submit'> Cancelar </button>
+        <button className="btn btn-block mb-4 btn-success" name='Crear' type='submit'> Crear </button>
+        <button className="btn btn-block mb-4 btn-dark" type='reset'> Cancelar </button>
         </form> 
     </div>
   )

@@ -3,25 +3,17 @@ h2 {
 }
 
 .form{
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  margin-top: 150px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
- }
- 
-label {
-  width: 40%;
-  text-align: center;
+  justify-content: center;
 }
 
 input {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 1rem auto;
 }
 
 .form-element {
