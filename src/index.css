@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Form_PyRobot {
+
+  background-color: rgb(230, 207, 164);
+  margin-top: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+
