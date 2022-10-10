@@ -1,121 +1,148 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const CreatePartida = () => {
-  const [namepartida, setNamepartida] = useState("");
-  const [password, setPassword] = useState(undefined);
-  const [numgames, setNumgames] = useState(1);
-  const [numrondas, setNumrondas] = useState(1);
-  const [numplayers, setNumplayers] = useState(2);
-  //const [isError, setIsError] = useState(null);
-
-  const list = [
-    {
+const list = [
+  {
       Title: "Robot1",
-      Id: "1" },
-    {
+    Id: "1"
+  },
+  {
       Title: "Robot2",
       Id: "2"
-    },
-    {
+  },
+  {
       Title: "Robot3",
       Id: "3"
-    }
-  ];
+  }
+]
+
+const CreatePartida = () => {
+  const [datos, setDatos] = useState({
+    namepartida: '',
+    password: '',
+    numgames: '',
+    numrondas: '',
+    numplayers: '',
+  });
+
+  const [idlist, setIdList] = useState(-1);
+
+  const handleChange = (event) => {
+    setDatos({
+      ...datos,
+      [event.target.name]: event.target.value
+    })
+  }
+
+  const handleSelectChange = (e) => {
+    const opcion = e.target.value;
+    console.log(opcion);
+    setIdList(opcion);
+  }
+
+  const handleSubmit = (event) => { 
+    //Send State
+    event.preventDefault();
+    console.log(datos.namepartida + ' ' + datos.password + ' ' + datos.numplayers
+       + ' ' + datos.numrondas + ' ' + datos.numgames + ' ' + idlist);
+  }
 
   //const submitCreatePartida = async () => { };
-
-  const handleOptionChange = (e) => {
-      const {Title, id } = e.target;
-      this.setState({[Title] : id});
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    //submitCreatePartida();
-    console.log(namepartida + ' ' + password + ' ' + numgames + ' ' + numrondas
-      + ' ' + numplayers);
-  }
 
   return (
     <div className='form'>
       <form onSubmit={handleSubmit}> 
         <h1>Crear Partida</h1>
-          <div className="form-group">
+          <div className="form-input">
             <label>Nombre de la Partida</label>
-            <div>
-            <input type='name'
-              className="form-control"
+            <input
               placeholder='Ingrese el Nombre de partida'
+              className="form-control"
+              type='text'
+              name='namepartida'
+              value={datos.namepartida}
+              onChange={handleChange}
               required
             />
-            </div>
           </div>
           <br/>
-          <div className="form-group">
+          <div className="form-input">
             <label>Cantidad de Jugadores</label>
-            <div>
-              <input type='number'
+            <input
               placeholder='Ingrese la Cantidad de Jugadores'
+              type='number'
+              name='numplayers'
               min='2'
               max='4'
+              value={datos.numplayers}
+              onChange={handleChange}
+              id='validationJugadores'
               className="form-control"
               required
             />
-            </div>
           </div>
           <br/>
-          <div>
+          <div className='form-input'>
             <label>Cantidad de Juegos</label>
-            <div>
-              <input type='number'
+            <input
+              type='number'
               placeholder='Ingrese la Cantidad de Juegos'
               min='1'
               max='200'
+              name={'numgames'}
+              value={datos.numgames}
+              onChange={handleChange}
               className="form-control"
               required
             />
-            </div>
           </div>
           <br/>
-          <div>
+          <div className='form-input'>
             <label>Cantidad de Rondas</label>
-            <div>
-            <input type='number'
+            <input
+              type='number'
               placeholder='Ingrese el Número de Rondas'
               min='1'
               max='10000'
+              name={'numrondas'}
+              value={datos.numrondas}
+              onChange={handleChange}
               className="form-control"
               required
             />
-            </div>
           </div>
           <br/>
           <div>
-            <label>Contraseña</label>
-            <div>
-              <input type='password'
-              placeholder='Máximo 10 caracteres (opcional)'
+            <label className='form-input' htmlFor="inputPassword5">Contraseña</label>
+            <input
+              type='password'
+              id="inputPassword5" 
+              placeholder='Ingrese contraseña (opcional)'
+              aria-describedby="passwordHelpBlock"
+              name={'password'}
+              value={datos.password}
+              onChange={handleChange}
               className="form-control"
-              maxlength='10' 
-              optional
+              maxLength='10'
             />
-            </div>
+            <small id="passwordHelpBlock" className="form-text text-muted">
+              Tu contraseña puede tener como máximo 10 caracteres.
+            </small>
           </div>
           <br/>
           <div>
-            <label className='my-1 mr-2'>Seleccionar Robot</label>
+            <label>Seleccionar Robot</label>
               <div>
-              <select className="custom-select my-1 mr-sm-2" required onChange={handleOptionChange}>
-                <option disabled value=''> --Seleccione un robot--</option>
-                {list.map(item => {
+              <select className="custom-select" name='list' required onClick={handleSelectChange}>
+                <option className="form-control" disabled value={-1}> --Seleccione un robot--</option>
+                {list.map((item,i) => {
                 return (
-                  <option key={item.Id} value={item.Id}>{item.Title}</option>
+                  <option key={'list' + i} value={i}>{item.Title}</option>
                 )})}
               </select>
           </div>
           </div>
-        <br/>
+        <br />
         <button className="btn btn-block mb-4 btn-success" name='Crear' type='submit'> Crear </button>
         <button className="btn btn-block mb-4 btn-dark" type='reset'> Cancelar </button>
         </form> 
