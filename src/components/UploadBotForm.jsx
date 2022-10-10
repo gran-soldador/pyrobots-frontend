@@ -1,33 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 
-class UploadBotForm extends React.Component {
+export function UploadBotForm() {
+    
+    const [nameRobot, setNameRobot] = useState('');
+    const [avatarRobot, setAvatarRobot] = useState('');
+    const [codeRobot, setCodeRobot] = useState('');
 
-    render() {
-        return (
-            <div className='Form_PyRobot'>		
-                <form action="algun_lado">	
-                    <h2> Subir Robot </h2>
-                    
-                    <label for='nombre-robot'> Nombre del Robot: </label>
-                    <br/>
-                    <input type="text" class='form-control'/>
-                
-                    <label for='avatar-robot'> Avatar: </label>
-                    <br/>
-                    <input type="file" id="files" class='form-control' />
+    const handleNameRobot = (event) => {
+        setNameRobot(event.target.value);    
+    }
 
-                    <label for> Codigo fuente: </label>
-                    <br/>
-                    <input type="file" ref={this.code_robot}  class='form-control'/>
-                
-                    <button type="submit" class="btn btn-block mb-4 btn-success">Subir Robot</button>
-                    <button type="reset" class="btn btn-block mb-4 btn-dark">Cancelar</button>
+    const handleAvatarRobot = (event) => {
+        setAvatarRobot(event.target.files[0]);    
+    }
 
-                </form>
-            </div>
-        )	
-    };
+    const handleACodeRobot = (event) => {
+        setCodeRobot(event.target.files[0]);    
+    }
+
+    const verDatos = () => {
+        alert("nameRobot: " + nameRobot);
+        alert("avatarRobot: " + avatarRobot.name);
+        alert("codeRobot: " + codeRobot.name);
+    }
+
+    return (
+        <div className="Form_PyRobot">
+            <form onSubmit={ verDatos }>
+                <h2> Subir Robot</h2>
+                <div className="form-outline mb-4">
+                    <label> Nombre del Robot </label> 
+                    <br/>
+                    <input 
+                        type="text" 
+                        placeholder='Ingrese el nombre del robot' 
+                        className="form-control" 
+                        onChange={ handleNameRobot }/> 
+                </div>
+
+                <div className="form-outline mb-4">
+                    <label> Avatar del Robot </label> 
+                    <br/>
+                    <input 
+                        type="file"
+                        className='form-control'
+                        onChange={ handleAvatarRobot }/>
+                </div>
+
+                <div className="form-outline mb-4">
+                    <label> Codigo del Robot </label> 
+                    <br/> 
+                    <input 
+                        type="file"
+                        className='form-control'
+                        onChange={ handleACodeRobot }/>
+                </div>
+
+                <div className="row mb-4">
+                    <div className="col d-flex justify-content-center">
+                        <button 
+                            className="btn btn-success"
+                            type='submit'> 
+                                Subir Robot
+                        </button>
+                    </div>
+
+                    <div className="col">
+                        <button 
+                            className="btn btn-secondary"
+                            type='reset'> 
+                                Cancelar 
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    );
 }
 
-export default UploadBotForm;
+
+

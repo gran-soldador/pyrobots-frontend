@@ -14,11 +14,8 @@ code {
 
 .Form_PyRobot {
 
-  background-color: rgb(230, 207, 164);
-  margin-top: 50px;
-
+  margin-top: 30px;
   display: flex;
-  align-items: center;
   justify-content: center;
 
 }
