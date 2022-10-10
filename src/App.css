@@ -2,11 +2,26 @@ h2 {
   text-align:center;
 }
 
-.form{
-  margin-top: 150px;
-  display: flex;
-  align-items: center;
+h1 {
+  text-align: center;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+.App {
+  text-align: center;
+}
+
+.form_create_pardida{
+  width: 50%;
+  margin: auto;
   justify-content: center;
+  align-items: center;
+  background-color: rgb(248, 249, 250);
+  padding: 20px;
 }
 
 input {
