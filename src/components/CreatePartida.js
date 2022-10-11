@@ -4,16 +4,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 const list = [
   {
-      Title: "Robot1",
+    Title: "Robot1",
     Id: "1"
   },
   {
-      Title: "Robot2",
-      Id: "2"
+    Title: "Robot2",
+    Id: "2"
   },
   {
-      Title: "Robot3",
-      Id: "3"
+    Title: "Robot3",
+    Id: "3"
   }
 ]
 
@@ -28,6 +28,13 @@ const CreatePartida = () => {
 
   const [idlist, setIdList] = useState(-1);
 
+  const handleSelectChange = (e) => {
+    const opcion = e.target.value;
+    console.log(opcion);
+    setIdList(opcion);
+  }
+  
+
   const handleChange = (event) => {
     setDatos({
       ...datos,
@@ -39,7 +46,7 @@ const CreatePartida = () => {
     //Send State
     event.preventDefault();
     console.log(datos.namepartida + ' ' + datos.password + ' ' +
-      datos.numplayers + ' ' + datos.numrondas + ' ' + datos.numgames 
+      datos.numplayers + ' ' + datos.numrondas + ' ' + datos.numgames
       + ' ' + idlist);
   }
   //const submitCreatePartida = async () => { };
@@ -47,10 +54,10 @@ const CreatePartida = () => {
   return (
     <form className='form_create_pardida' onSubmit={handleSubmit}> 
       <img src={logo} className="" alt="logo" />
-
       <h1>Pyrobots</h1>
       <h2>Crear Partida</h2>
       <hr></hr>
+      <div className="form-input">
         <label> Nombre de la Partida</label>
         <input
           placeholder='Ingrese el Nombre de partida'
@@ -63,6 +70,7 @@ const CreatePartida = () => {
           onChange={handleChange}
           required
         />
+      </div>
       <br/>
       <div className="form-input">
         <label>Cantidad de Jugadores</label>
@@ -128,18 +136,21 @@ const CreatePartida = () => {
         </small>
       </div>
       <br />
-      <div className='dropdown'>
-      <div className='input-group-prepend'>
-        <label htmlFor='inputGroupSelect01'>Seleccionar Robot</label>
-      </div>
-        <select className='custom-select' id='inputGroupSelect01'>
-          <option disabled value={-1}> --Seleccione un robot-- </option>
+      <div>
+        <label>Seleccionar Robot</label>
+      <div>
+        <select className="custom-select" name='list' required onClick={handleSelectChange}>
+          <option className="form-control" disabled value={-1}> --Seleccione un robot--</option>
             {
-              list.map((item, i) => (
-                  <option key={'list' + i} value={i}>{item.Title} </option>
-              ) )
+              list.map((item, i) => {
+                return (
+                  <option key={'list' + i} value={i}>{item.Title}</option>
+                  )
+                }
+              )
             }
-        </select>
+          </select>
+        </div>
       </div>
       <br />
       <button
@@ -149,7 +160,7 @@ const CreatePartida = () => {
       <button
         className="btn btn-block mb-4 btn-dark"
         type='reset'> Cancelar </button>
-    </form>
+      </form>
   )
 }
 
