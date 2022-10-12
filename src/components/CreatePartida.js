@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Form, Image, Button } from 'react-bootstrap';
-import logo from './logo.png'
+import logo from './logo.png';
 import axios from 'axios';
 
 const CreatePartida = () => {
@@ -15,17 +15,6 @@ const CreatePartida = () => {
   //Datos de API robot
   const [idrobot, setIdRobot] = useState(-1);
   const [datosRobot, setDatosRobot] = useState([]);
-
-  //Cargar la lista de robots
-  useEffect(() => {
-    const firstCall = setTimeout(handleDatosRobots, 0);
-    return () => clearTimeout(firstCall);
-  }, [])
-  //Actualizar la lista
-  useEffect(() => {
-    const autoRefresh = setInterval(handleDatosRobots, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Leer datos de robots
   async function handleDatosRobots() {
@@ -47,13 +36,23 @@ const CreatePartida = () => {
       console.log(error)
     }
   }
-
+  //Cargar la lista de robots
+  useEffect(() => {
+    const firstCall = setTimeout(handleDatosRobots, 0);
+    return () => clearTimeout(firstCall);
+  }, [])
+  //Actualizar la lista
+  useEffect(() => {
+    const autoRefresh = setInterval(handleDatosRobots, 10000);
+    return () => clearInterval(autoRefresh);
+  }, []);
+  
   //Enviar datos a la API
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const API = "http://127.0.0.1:8000/files"
-    // const API = 'https://63458450745bd0dbd36aae3e.mockapi.io/crear-partida'
+    // const API = "http://127.0.0.1:8000/crear-partida"
+    const API = 'https://63458450745bd0dbd36aae3e.mockapi.io/crear-partida'
     let formData = new FormData();
 
     formData.append('namepartida', namepartida);
@@ -67,27 +66,6 @@ const CreatePartida = () => {
     axios.post(API, formData)
     .then((res) => { console.log(res) })
     .catch((err) => { console.log(err) });
-  }
-
-  const handsetNamePartidas = (event) => {
-    setNamePartidas(event.target.value);
-  }
-  const handsetPassword = (event) => {
-    setPassword(event.target.value);
-  }
-  const handsetNumGames = (event) => {
-    setNumGames(event.target.value);
-  }
-  const handsetNumRondas = (event) => {
-    setNumRondas(event.target.value);
-  }
-  const handsetPlayers = (event) => {
-    setPlayers(event.target.value);
-  }
-  const handsetIdRobot = (event) => {
-    const opcion = event.target.value;
-    console.log(opcion);
-    setIdRobot(opcion);
   }
 
   return (
@@ -114,7 +92,7 @@ const CreatePartida = () => {
           required
           minLength={4}
           maxLength={16}
-          onChange={handsetNamePartidas} />
+          onChange={event => setNamePartidas(event.target.value)}/>
       </Form.Group>
 
       <Form.Group className='mb-3'>
@@ -128,9 +106,9 @@ const CreatePartida = () => {
           required
           min={2}
           max={4}
-          onChange={handsetPlayers}/>
+          onChange={event => setPlayers(event.target.value)}/>
       </Form.Group>
-      
+
       <Form.Group className='mb-3'>
         <Form.Label>
          Cantidad de juegos:
@@ -142,7 +120,7 @@ const CreatePartida = () => {
           required
           min={1}
           max={200}
-          onChange={handsetNumGames}
+          onChange={event => setNumGames(event.target.value)}
         />
       </Form.Group>
 
@@ -157,12 +135,12 @@ const CreatePartida = () => {
           required
           min={1}
           max={10000}
-          onChange={handsetNumRondas}/>
+          onChange={event => setNumRondas(event.target.value)}/>
       </Form.Group>
 
       <Form.Group className='mb-3'>
         <Form.Label>
-          Contraseña
+          Contraseña (Opcional)
         </Form.Label>
         <Form.Control
           type='password'
@@ -170,48 +148,25 @@ const CreatePartida = () => {
           className='form-control'
           min={1}
           maxLength={10}
-          onChange={handsetPassword}/>
+          onChange={event => setPassword(event.target.value)}/>
       </Form.Group>
 
-      {/* <Form.Group className='mb-3'>
-      <Form.Label>
-          Robot
-      </Form.Label>
-      <FormControl className="form-control" variant="standard">
-        <InputLabel disabled value={-1}>Seleccione un robot</InputLabel>
-        <Select className='custom-select' required onClick={handsetIdRobot}>
-          {datosRobot.map((item, i) => (
-            <MenuItem key={'list' + i} value={i}>{item.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      </Form.Group> */}
-
-      {/* <div className='form-group'>
-        <label htmlFor='idrobot'>Selecione un robot:</label>
-        <select onChange={handsetIdRobot} id='idrobot' name='idrobot' className='form-control'>
-          <option value=''>Seleccione una opción</option>
+      <Form.Group className='form-group'>
+        <Form.Label>
+          Seleccione un robot :
+        </Form.Label>
+        <Form.Control
+          type='select'
+          as="select"
+          onChange={event => {setIdRobot(event.target.value)}}>
           {
-            datosRobot.map((item, index) => (
-              <option value={index} key={item.id} onClick={() => {settingid(id)}}>{item.name}</option>
+            datosRobot.map((robot) => (
+              <option value={robot.id} key={robot.id}>{robot.name}</option>
               )
             )
           }
-        </select>
-      </div> */}
-      <Form.Group className='mb-3'>
-        <div className='form-group'>
-          <label>Selecione un robot:</label>
-          <select required value={idrobot} name='robot'onChange={handsetIdRobot} className='form-control'>
-            <option disabled value={-1}>Seleccione una opción</option>
-            {
-              datosRobot.map((item, i) => (
-                <option key={'robot' + i} value={i}>{item.name} </option>
-                )
-              )
-            }
-          </select>
-        </div>
+        </Form.Control>
+
       </Form.Group>
       <br/>
       <Form.Group className='mb-3'>
