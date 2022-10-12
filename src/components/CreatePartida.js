@@ -1,24 +1,13 @@
-import React, { useState } from 'react';
-import logo from './logo.png'
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-
-const list = [
-  {
-    Title: "Robot1",
-    Id: "1"
-  },
-  {
-    Title: "Robot2",
-    Id: "2"
-  },
-  {
-    Title: "Robot3",
-    Id: "3"
-  }
-]
+import Form from 'react-bootstrap/Form';
+import Image from 'react-bootstrap/Image';
+import Button from 'react-bootstrap/Button';
+import logo from './logo.png'
+import axios from 'axios';
 
 const CreatePartida = () => {
-  const [datos, setDatos] = useState({
+  const [infoPartida, setInfoPartida] = useState({
     namepartida: '',
     password: '',
     numgames: '',
@@ -26,141 +15,194 @@ const CreatePartida = () => {
     numplayers: '',
   });
 
-  const [idlist, setIdList] = useState(-1);
+  //Datos de API robot
+  const [id, setId] = useState(-1);
+  const [nameRobot, setNameRobot] = useState('');
+  const [avatarRobot, setAvatarRobot] = useState(null);
+  const [codeRobot, setCodeRobot] = useState(null);
+  const [datosRobot, setDatosRobot] = useState([]);
 
-  const handleSelectChange = (e) => {
-    const opcion = e.target.value;
-    console.log(opcion);
-    setIdList(opcion);
+  const settingid = (i) => {
+    setId(datosRobot[i]['id']);
+    setNameRobot(datosRobot[i]['name'])
+    setAvatarRobot(datosRobot[i]['vatar'])
+    setCodeRobot(datosRobot[i]['code'])
   }
-  
+
+  //cargar la lista de robots
+  useEffect(() => {
+    const firstCall = setTimeout(handleDatosRobots, 0);  
+    return () => clearTimeout(firstCall);
+  }, [])
+  //actualizar la lista 
+  useEffect(() => {
+    const autoRefresh = setInterval(handleDatosRobots, 10000);
+    return () => clearInterval(autoRefresh);
+  }, []);
+
+  //leer datos de robots
+  async function handleDatosRobots() {
+    console.log('Leyendo API ROBOTS');
+    try {
+      const response = await fetch('https://63458450745bd0dbd36aae3e.mockapi.io/listrobots', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+      if (response.status === 200) {
+        setDatosRobot(await response.json())
+      } else {
+        setDatosRobot([])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleChange = (event) => {
-    setDatos({
-      ...datos,
+    setInfoPartida({
+      ...infoPartida,
       [event.target.name]: event.target.value
     })
   }
 
+  //enviar datos a la API
   const handleSubmit = (event) => {
-    //Send State
-    event.preventDefault();
-    console.log(datos.namepartida + ' ' + datos.password + ' ' +
-      datos.numplayers + ' ' + datos.numrondas + ' ' + datos.numgames
-      + ' ' + idlist);
+    event.preventDefault()
+    let formData = new FormData();
+    formData.append('infoPartida', infoPartida);
+
+    console.log('Enviando')
+    axios({
+      url: 'https://63458450745bd0dbd36aae3e.mockapi.io/crear-partida',
+      method: 'post',
+      data: formData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    })
+    .then((res) => { console.log(res) })
+    .catch((err) => { console.log(err) });
   }
-  //const submitCreatePartida = async () => { };
 
   return (
-    <form className='form_create_pardida' onSubmit={handleSubmit}> 
-      <img src={logo} className="" alt="logo" />
-      <h1>Pyrobots</h1>
-      <h2>Crear Partida</h2>
+    <Form className='form_create_pardida' onSubmit={handleSubmit}> 
+      <Image src={logo}></Image>
+
+      <Form.Text>
+        <h1>PyRobots</h1>
+      </Form.Text>
+      <Form.Text>
+        <h1>Crear Partida</h1>
+      </Form.Text>
+
       <hr></hr>
-      <div className="form-input">
-        <label> Nombre de la Partida</label>
-        <input
-          placeholder='Ingrese el Nombre de partida'
-          className="form-control"
-          type='text'
-          minLength={4}
-          maxLength={10}
+      <Form.Group className='mb-3'>
+        <Form.Label> 
+          Nombre de la partida:
+        </Form.Label>
+        <Form.Control 
+          control
+          type='text' 
+          placeholder='Ingrese el nombre de la partida' 
+          className='form-control' 
+          required
           name='namepartida'
-          value={datos.namepartida}
-          onChange={handleChange}
+          value={infoPartida.namepartida}
+          minLength={4}
+          maxLength={16}
+          onChange={handleChange} />
+      </Form.Group>
+
+      <Form.Group className='mb-3'>
+        <Form.Label> 
+         Cantidad de jugadores:
+        </Form.Label>
+        <Form.Control 
+          type='number' 
+          placeholder='Ingrese la cantidad de jugadores' 
+          className='form-control' 
           required
-        />
-      </div>
-      <br/>
-      <div className="form-input">
-        <label>Cantidad de Jugadores</label>
-        <input
-          placeholder='Ingrese la Cantidad de Jugadores'
-          type='number'
           name='numplayers'
-          min='2'
-          max='4'
-          value={datos.numplayers}
-          onChange={handleChange}
-          id='validationJugadores'
-          className="form-control"
-          required
-        />
-      </div>
-      <br/>
-      <div className='form-input'>
-        <label>Cantidad de Juegos</label>
-        <input
+          min={2}
+          max={4}
+          value={infoPartida.numplayers}
+          onChange={handleChange}/> 
+      </Form.Group>
+      
+      <Form.Group className='mb-3'>
+        <Form.Label> 
+         Cantidad de juegos:
+        </Form.Label>
+        <Form.Control
           type='number'
-          placeholder='Ingrese la Cantidad de Juegos'
-          min='1'
-          max='200'
-          name={'numgames'}
-          value={datos.numgames}
-          onChange={handleChange}
-          className="form-control"
+          placeholder='Ingrese la cantidad de jugadores'
+          className='form-control'
           required
-        />
-      </div>
-      <br/>
-      <div className='form-input'>
-        <label>Cantidad de Rondas</label>
-        <input
+          name='numgames'
+          min={1}
+          max={200}
+          value={infoPartida.numgames}
+          onChange={handleChange}/>
+      </Form.Group>
+
+      <Form.Group className='mb-3'>
+        <Form.Label>
+         Cantidad de Rondas:
+        </Form.Label>
+        <Form.Control
           type='number'
-          placeholder='Ingrese el Número de Rondas'
-          min='1'
-          max='10000'
-          name={'numrondas'}
-          value={datos.numrondas}
-          onChange={handleChange}
-          className="form-control"
+          placeholder='Ingrese la cantidad de rondas'
+          className='form-control'
           required
-        />
-      </div>
-      <br/>
-      <div>
-        <label className='form-input' htmlFor="inputPassword5">Contraseña</label>
-        <input
+          name='numrondas'
+          min={1}
+          max={10000}
+          value={infoPartida.numrondas}
+          onChange={handleChange}/>
+      </Form.Group>
+
+      <Form.Group className='mb-3'>
+        <Form.Label>
+          Contraseña
+        </Form.Label>
+        <Form.Control
           type='password'
-          id="inputPassword5" 
-          placeholder='Ingrese contraseña (opcional)'
-          aria-describedby="passwordHelpBlock"
-          name={'password'}
-          value={datos.password}
-          onChange={handleChange}
-          className="form-control"
-          maxLength='10'
-        />
-        <small id="passwordHelpBlock" className="form-text text-muted">
-          Tu contraseña puede tener como máximo 10 caracteres.
-        </small>
-      </div>
-      <br />
-      <div>
-        <label>Seleccionar Robot</label>
-      <div>
-        <select className="custom-select" name='list' required onClick={handleSelectChange}>
-          <option className="form-control" disabled value={-1}> --Seleccione un robot--</option>
-            {
-              list.map((item, i) => {
-                return (
-                  <option key={'list' + i} value={i}>{item.Title}</option>
-                  )
-                }
+          placeholder='Ingrese contraseña (opcional)' 
+          className='form-control'
+          min={1}
+          name='password'
+          maxLength={10}
+          value={infoPartida.password}
+          onChange={handleChange}/>
+      </Form.Group>
+
+      <div className='form-group'>
+        <label htmlFor='idrobot'>Selecione un robot:</label>
+        <select id='idrobot' name='idrobot' className='form-control'>
+          <option value='-1'>Seleccione una opción</option>
+          {
+            datosRobot.map((item, index) => (
+              <option value={index} key={item.id} onClick={() => {settingid(id)}}>{item.name}</option>
               )
-            }
-          </select>
-        </div>
+            )
+          }
+        </select>
       </div>
-      <br />
-      <button
-        className="btn btn-block mb-4 btn-success"
-        name='Crear'
-        type='submit'> Crear </button> &nbsp;
-      <button
-        className="btn btn-block mb-4 btn-dark"
-        type='reset'> Cancelar </button>
-      </form>
+      <br/>
+      <Form.Group className='mb-3'>
+        <Button variant='success'
+          type='submit'
+          size='lg'>
+            Crear
+        </Button>{' '}
+        <Button variant='secondary'
+          type='reset'
+          size='lg'>
+            Cancelar
+        </Button>
+      </Form.Group>
+      </Form>
   )
 }
 
