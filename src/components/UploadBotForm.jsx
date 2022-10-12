@@ -28,6 +28,7 @@ export function UploadBotForm() {
         setCodeRobot(event.target.files[0]);    
     }
 
+
     const handleSubmit = (event) => {
         event.preventDefault()
 
@@ -37,16 +38,10 @@ export function UploadBotForm() {
         formData.append('avatarRobot', avatarRobot);
         formData.append('codeRobot', codeRobot);
 
+        const API = ''
+        const URL = "http://127.0.0.1:8000/" + API
 
-        console.log("Sending...")
-        axios({
-            url: "https://63458763745bd0dbd36afdfb.mockapi.io/robots-upload",
-            method: "POST",
-            headers:{
-                authorization: 'your token'
-            },
-            data: formData
-        })
+        axios.post(URL, formData)
         .then((res) => { console.log(res) }) 
         .catch((err) => { console.log(err) });
     }
@@ -101,7 +96,7 @@ export function UploadBotForm() {
                     className='form-control'
                     required
                     onChange={ handleACodeRobot }/>
-            </Form.Group>
+    	     </Form.Group>
 
             <Form.Group className="mb-3">
                 <Button variant="success" 
