@@ -7,6 +7,12 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 
+import axios from "axios";
+  const baseURL = "http://127.0.0.1:8000/files"
+// const client = axios.create({
+//   // baseURL :"https://6345a4f339ca915a6904b2c8.mockapi.io/"
+// });
+
 // Función Formulario de Login.
 const FormLogin = () => {
   const [username, setUsername] = useState('');
@@ -15,26 +21,38 @@ const FormLogin = () => {
 
   // Valido el logueo del usuario, para que entre al juego de PyRobots.
   const validated_login = (username, password) => {
-    if (username === 'vero2022@desarrolladora.com' &&  password === 'test') 
+    if (username === 'vero2022@desarrolladora.com' &&  password === 'test')  {
       alert('Login correcto');
-    else 
+    } else 
       alert('Login incorrecto');
   };
 
+//Envío datos a la API.
 const handleSubmit = (event) => {
+  event.preventDefault()
   const form = event.currentTarget;
   if (form.checkValidity() === false) {
     event.preventDefault();
     event.stopPropagation();
   }
+
+  let formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);  
+  
   console.log(username, password)
   setValidated(true);
+
+  axios.post(baseURL, formData)
+        .then((res) => { console.log(res) }) 
+        .catch((err) => { console.log(err) });
+
   validated_login(username, password);
 }
 
   return (
     <>
-      <Form className='form_pyrobots_login' noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form className='form_pyrobots_login' validated={validated} onSubmit={handleSubmit}>
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>
         <Image src={logo}></Image>
@@ -66,7 +84,7 @@ const handleSubmit = (event) => {
           </Form.Control.Feedback>
           <Form.Control.Feedback>completado!</Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group>        
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
           <Button variant="link" type="submit">Iniciar sesion</Button>
           <Button variant="link"> ¿ Olvidaste tu contraseña ?</Button>
