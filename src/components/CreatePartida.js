@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Form, Image, Button } from 'react-bootstrap';
 import logo from './logo.png';
-import axios from 'axios';
+import axios from 'axios'
 
 const CreatePartida = () => {
   //Datos partida
@@ -13,7 +13,7 @@ const CreatePartida = () => {
   const [numplayers, setPlayers] = useState('');
 
   //Datos de API robot
-  const [idrobot, setIdRobot] = useState(-1);
+  const [idrobot, setIdRobot] = useState(0);
   const [datosRobot, setDatosRobot] = useState([]);
 
   //Leer datos de robots
@@ -51,8 +51,8 @@ const CreatePartida = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    // const API = "http://127.0.0.1:8000/crear-partida"
-    const API = 'https://63458450745bd0dbd36aae3e.mockapi.io/crear-partida'
+    const ENDPOINT = '/files'
+    const API = 'http://127.0.0.1:8000' + ENDPOINT
     let formData = new FormData();
 
     formData.append('namepartida', namepartida);
