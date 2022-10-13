@@ -108,22 +108,6 @@ const ListPartidas = () => {
               }
             </tr>
             }>
-            {close => (
-              <div>
-                <button className='close' onClick={close}>&times;</button>
-                  <div>Unirme a partida</div>
-                  <div className='content'>
-                    <form>
-                      <label>
-                        <p/>
-                        <input className='nameinput' type='text' name='name'
-                          onChange={e => setName(e.target.value)} required autoComplete='off'/>
-                      </label>
-                      <input className='sendbutton' type='submit' value='Unirme a la partida' onClick={handleSubmit}/>
-                    </form>
-                  </div>
-                </div>
-              )}
           </Popup>
           ))}
       </tbody>
