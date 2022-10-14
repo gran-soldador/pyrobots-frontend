@@ -11,11 +11,53 @@ import axios from "axios";
 
 export function UploadBotForm() {
 
+	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');
     const [avatarRobot, setAvatarRobot] = useState(null);
     const [codeRobot, setCodeRobot] = useState(null);
 
+	// Mensajes de entradas no validas.
+	const [robotNameErr, setRobotNameErr] = useState("");
+    const [avatarErr, setAvatarErr] = useState("");
+    const [codeErr, setCodeErr] = useState("");
+
+    const handleValidation = () => {
+        let formIsValid = true;
     
+        if (!nameRobot.match(/^[a-zA-Z0-9-]+$/)) {
+          	formIsValid = false;
+          	setRobotNameErr("Solo mayúsculas, minúsculas, números y guiones.");
+        }
+    
+        if (avatarRobot != null) {
+          let ext = avatarRobot.name.split('.').pop();
+          if (ext !== "jpg" && ext !== "jpeg" &&
+              	ext !== "jpe" && ext !== "jfif" &&
+              	ext !== "gif" && ext !== "png") {
+            formIsValid = false;
+            setAvatarErr("Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
+            setAvatarRobot(null);
+          }
+        }
+
+        if (codeRobot != null) {
+            let ext = codeRobot.name.split('.').pop();
+            if (ext !== 'py') {
+                formIsValid = false;
+              	setCodeErr("Solo se permiten archivos con extension '.py'");
+              	setCodeRobot(null);
+            }
+          }
+    
+        if (formIsValid) {
+            setRobotNameErr("");
+            setAvatarErr("");
+            setCodeErr("");
+        }
+    
+        return formIsValid;
+    };
+
     const handleNameRobot = (event) => {
         setNameRobot(event.target.value); 
     }
@@ -24,26 +66,52 @@ export function UploadBotForm() {
         setAvatarRobot(event.target.files[0]);    
     }
 
-    const handleACodeRobot = (event) => {
+    const handleCodeRobot = (event) => {
         setCodeRobot(event.target.files[0]);    
     }
 
+    const handleCancel = () => {
+        setNameRobot(''); 
+        setAvatarRobot(null);    
+        setCodeRobot(null);   
+		
+		setRobotNameErr("");
+		setAvatarErr("");
+		setCodeErr("");
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        let formData = new FormData();
+        if (handleValidation()) {
+            let formData = new FormData();
 
-        formData.append('nameRobot', nameRobot);
-        formData.append('avatarRobot', avatarRobot);
-        formData.append('codeRobot', codeRobot);
+            formData.append('nameRobot', nameRobot);
 
-        const API = ''
-        const URL = "http://127.0.0.1:8000/" + API
+            if(avatarRobot){
+                formData.append('avatarRobot', avatarRobot);
+            }
 
-        axios.post(URL, formData)
-        .then((res) => { console.log(res) }) 
-        .catch((err) => { console.log(err) });
+            formData.append('codeRobot', codeRobot);
+
+            const API = ''
+            const URL = "http://127.0.0.1:8000/" + API
+
+            axios.post(URL, formData)
+            .then((res) => {
+                alert("Tu robot se cargó correctamente! 🤖 ")
+                console.log(res)
+                }
+            ) 
+            .catch((err) => {
+                alert("No se pudo cargar tu robot! 😓 ")
+                console.log(err) 
+            });
+        }
+        else {
+            alert("El formulario contiene errores");
+		}
+
     }
         
     return (
@@ -75,6 +143,8 @@ export function UploadBotForm() {
                     minLength={1} 
                     maxLength={32}
                     onChange={ handleNameRobot }/> 
+				<span style={{ color: "red" }}>{robotNameErr}</span>
+
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -85,6 +155,8 @@ export function UploadBotForm() {
                         type="file"
                         className='form-control'
                         onChange={ handleAvatarRobot }/>
+				<span style={{ color: "red" }}>{avatarErr}</span>
+
             </Form.Group>
 
             <Form.Group className="mb-3">
@@ -95,8 +167,10 @@ export function UploadBotForm() {
                     type="file"
                     className='form-control'
                     required
-                    onChange={ handleACodeRobot }/>
-    	     </Form.Group>
+                    onChange={ handleCodeRobot }/>
+				<span style={{ color: "red" }}>{codeErr}</span>
+
+            </Form.Group>
 
             <Form.Group className="mb-3">
                 <Button variant="success" 
@@ -107,7 +181,8 @@ export function UploadBotForm() {
 
                 <Button variant="secondary" 
                     type="reset"
-                    size="lg">
+                    size="lg"
+                    onClick={ handleCancel }>
                         Cancelar
                 </Button>
             </Form.Group>
