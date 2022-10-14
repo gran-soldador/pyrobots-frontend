@@ -11,6 +11,7 @@ const CreatePartida = () => {
   const [numgames, setNumGames] = useState('');
   const [numrondas, setNumRondas] = useState('');
   const [numplayers, setPlayers] = useState('');
+  const [loading, setLoading] = useState(false);
 
   //Datos de API robot
   const [idrobot, setIdRobot] = useState(0);
@@ -48,11 +49,12 @@ const CreatePartida = () => {
   }, []);
   
   //Enviar datos a la API
-  const handleSubmit = (event) => {
-    event.preventDefault()
+  async function handleSubmit() {
+    console.log('Enviando datos al servidor');
+    setLoading(true);
 
-    const ENDPOINT = '/files'
-    const API = 'http://127.0.0.1:8000' + ENDPOINT
+    const ENDPOINT = '/files';
+    const API = 'http://127.0.0.1:8000' + ENDPOINT;
     let formData = new FormData();
 
     formData.append('namepartida', namepartida);
@@ -62,10 +64,13 @@ const CreatePartida = () => {
     formData.append('numplayers', numplayers);
     formData.append('idrobot', idrobot);
 
-    console.log('Enviando',)
-    axios.post(API, formData)
-    .then((res) => { console.log(res) })
-    .catch((err) => { console.log(err) });
+    try {
+      const response = await axios.post(API, formData);
+      return response;
+    } catch (e) {
+      console.log('error')
+    }
+    setLoading(false)
   }
 
   return (
@@ -153,12 +158,12 @@ const CreatePartida = () => {
 
       <Form.Group className='form-group'>
         <Form.Label>
-          Seleccione un robot :
+          Seleccione un robot:
         </Form.Label>
         <Form.Control
           type='select'
           as="select"
-          onChange={event => {setIdRobot(event.target.value)}}>
+          onChange={event => { setIdRobot(event.target.value) }}>
           {
             datosRobot.map((robot) => (
               <option value={robot.id} key={robot.id}>{robot.name}</option>
@@ -170,12 +175,15 @@ const CreatePartida = () => {
       </Form.Group>
       <br/>
       <Form.Group className='mb-3'>
-        <Button variant='success'
+        <Button
+          variant='success'
           type='submit'
+          disabled={!namepartida || !numgames || !numrondas || !numplayers || !idrobot}
           size='lg'>
-            Crear
-        </Button>{' '}
-        <Button variant='secondary'
+          {loading? 'Espere por favor': 'Crear'}
+        </Button>
+        <Button
+          variant='secondary'
           type='reset'
           size='lg'>
             Cancelar
