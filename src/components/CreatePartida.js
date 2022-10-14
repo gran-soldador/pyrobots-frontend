@@ -53,8 +53,7 @@ const CreatePartida = () => {
     console.log('Enviando datos al servidor');
     setLoading(true);
 
-    const ENDPOINT = '/files';
-    const API = 'http://127.0.0.1:8000' + ENDPOINT;
+    const API = 'http://127.0.0.1:8000/files';
     let formData = new FormData();
 
     formData.append('namepartida', namepartida);
@@ -161,6 +160,8 @@ const CreatePartida = () => {
           Seleccione un robot:
         </Form.Label>
         <Form.Control
+          native
+          multiple
           type='select'
           as="select"
           onChange={event => { setIdRobot(event.target.value) }}>
