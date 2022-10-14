@@ -48,7 +48,7 @@ table th.sort-desc::before {
   border-top: 5px solid #22543d;
 }
 .Rows-List:hover {
-  background-color: #778286;
+  background-color: #ccd2d4;
   color: #1b1f2b;
 }
 
@@ -57,8 +57,8 @@ table {
   border-spacing: 0;
   text-align: center;
   margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #ededed;
+  margin-right: auto;
+  border: 1px solid #ededed;
 }
 
 .table::-webkit-scrollbar {
