@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Popup from 'reactjs-popup';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const ListPartidas = () => {
   //Estado de la lista
   const [isEmptyList, setIsEmptyList] = useState(false);
-  const [listGame, setListGame] = useState([]);
-
   //Datos de la partida
-  const [partida_id, setId] = useState(-1);
-  const [namepartida, setName] = useState('');
-  const [status, setStatus] = useState('');
-  const [numplayers, setCantJugadores] = useState(0);
-  const [numgames, setCantJuegos] = useState(0);
-  const [numrondas, setCantRondas] = useState(0);
-  const [numcurrentplayers, setParticipantes] = useState(0);
-  const [creador, setCreador] = useState('');
-  const [password, setPassword] = useState(false);
+  const [listGame, setListGame] = useState([]);
+  //estados para buscar
+  const [search, setSearch] = useState("")
 
+  const searcher = (e) => {
+    setSearch(e.target.value)   
+  }
+
+  const results = !search ? listGame : listGame.filter((dato) =>
+    dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
+  
   //Actualizar lista
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);  
@@ -51,32 +49,21 @@ const ListPartidas = () => {
     }
   }
 
-  //Enviar datos API
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    alert('aaaaaaaaaaaaaaaa');
-  }
-
-  const settingid = (i) => {
-    setName(listGame[i]['namepartida'])
-    setId(listGame[i]['partida_id'])
-    setStatus(listGame[i]['status'])
-    setCantJugadores(listGame[i]['numplayers'])
-    setCantJuegos(listGame[i]['numgames'])
-    setCantRondas(listGame[i]['numrondas'])
-    setParticipantes(listGame[i]['numcurrentplayers'])
-    setCreador(listGame[i]['creador'])
-    setPassword(listGame[i]['password'])
-  }
-
   function DispleyListGames() {
     return (
       <div>
       <div className='partidas-header'>
-        <h2 className='partida-title'> Lista de partidas</h2>
+        <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>Cantidad de partidas activas = {listGame.length}</p>
       </div>
-      <table className='table table-sm' id='key-list' cellSpacing='0' cellPadding='0'>
+      <input
+        value={search}
+        onChange={searcher}
+        type='text'
+        placeholder='Buscar una partida'
+        className='form-control'
+      />
+      <table className='table table-striped table-hover mt-5 shadow-lg' id='key-list' cellSpacing='0' cellPadding='0'>
         <thead className='table-dark'>
           <tr>
             <th scope='col'>#</th>
@@ -91,24 +78,21 @@ const ListPartidas = () => {
           </tr>
         </thead>
       <tbody className='partidas-list'>
-        {listGame.map((partida, i) => (
-          <Popup trigger= {
+        {results.map((partida, i) => (
             <tr key={partida.id} className="Rows-List">
-              <td onClick={() => { settingid(i) }}>{partida.partida_id} </td>
-              <td onClick={() => { settingid(i) }}>{partida.namepartida} </td>
-              <td onClick={() => { settingid(i) }}>{partida.status} </td>
-              <td onClick={() => { settingid(i) }}>{partida.numplayers} </td>
-              <td onClick={() => { settingid(i) }}>{partida.numgames} </td>
-              <td onClick={() => { settingid(i) }}>{partida.numrondas} </td>
-              <td onClick={() => { settingid(i) }}>{partida.numcurrentplayers}/4 </td>
-              <td onClick={() => { settingid(i) }}>{partida.creador} </td>
+              <td >{partida.partida_id} </td>
+              <td >{partida.namepartida} </td>
+              <td >{partida.status} </td>
+              <td >{partida.numplayers} </td>
+              <td >{partida.numgames} </td>
+              <td >{partida.numrondas} </td>
+              <td >{partida.numcurrentplayers}/4 </td>
+              <td >{partida.creador} </td>
               {
-                (!partida.password) ? <td onClick={() => {settingid(i)}}>Desbloqueada</td>
-                : <td onClick={() => {settingid(i)}} >Ingrese Contraseña</td>
+                (!partida.password) ? <td>Desbloqueada</td>
+                : <td>Bloqueada</td>
               }
             </tr>
-            }>
-          </Popup>
           ))}
       </tbody>
       </table>
