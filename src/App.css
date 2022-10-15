@@ -81,3 +81,8 @@ input {
   border: 1px solid #ddd;
   box-shadow: none;
 }
+
+.emptylist {
+  color: rgb(185, 39, 14);
+  text-align: center;
+}

@@ -9,16 +9,17 @@ const ListPartidas = () => {
   //estados para buscar
   const [search, setSearch] = useState("")
 
+  //buscar en table
+  const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
+  dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
+
   const searcher = (e) => {
     setSearch(e.target.value)
   }
 
-  const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
-    dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
-
   //Actualizar lista
   useEffect(() => {
-    const firstCall = setTimeout(handleGames, 0);  
+    const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
   
@@ -49,8 +50,31 @@ const ListPartidas = () => {
     }
   }
 
-   return (
-       <div>
+  function DisplayData() {
+    return (
+      <tbody className='partidas-list'>
+        {results.map((partida, i) => (
+            <tr key={ partida.id } className="Rows-List">
+              <td> { partida.partida_id } </td>
+              <td> { partida.namepartida } </td>
+              <td> { partida.status } </td>
+              <td> { partida.numplayers } </td>
+              <td> { partida.numgames } </td>
+              <td> { partida.numrondas } </td>
+              <td> { partida.numcurrentplayers }/4 </td>
+              <td> { partida.creador } </td>
+              {
+                (!partida.password) ? <td>Desbloqueada</td>
+                : <td>Bloqueada</td>
+              }
+            </tr>
+          ))}
+      </tbody>
+    )
+  }
+
+  return (
+    <div>
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>
@@ -82,24 +106,13 @@ const ListPartidas = () => {
             <th scope='col'>Contraseña</th>
           </tr>
         </thead>
-      <tbody className='partidas-list'>
-        {results.map((partida, i) => (
-            <tr key={ partida.id } className="Rows-List">
-              <td> { partida.partida_id } </td>
-              <td> { partida.namepartida } </td>
-              <td> { partida.status } </td>
-              <td> { partida.numplayers } </td>
-              <td> { partida.numgames } </td>
-              <td> { partida.numrondas } </td>
-              <td> { partida.numcurrentplayers }/4 </td>
-              <td> { partida.creador } </td>
-              {
-                (!partida.password) ? <td>Desbloqueada</td>
-                : <td>Bloqueada</td>
-              }
-            </tr>
-          ))}
-      </tbody>
+        {
+          (isEmptyList || (!listGame || listGame.length === 0)) ?
+            <div className='emptylist'> No hay partidas disponibles </div> : <p/>
+        }
+        {
+          DisplayData()
+        }
       </table>
     </div>
  );
