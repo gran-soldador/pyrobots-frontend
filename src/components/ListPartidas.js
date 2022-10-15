@@ -78,8 +78,7 @@ const ListPartidas = () => {
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>
-           # Partidas = {(listGame.length === 0) ?
-             'No hay partidas disponibles' : listGame.length}
+           # Partidas = {listGame.length}
         </p>
       </div>
       <input

@@ -21,3 +21,8 @@ test('Render', () => {
   render(<ListPartidas />)
   expect(screen.getByText("# Partidas = No hay partidas disponibles")).toBeInTheDocument()
 })
+
+test('Render emptylist', () => { 
+  render(<ListPartidas />)
+  expect(screen.getByText("No hay partidas disponibles")).toBeInTheDocument()
+})
