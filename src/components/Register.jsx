@@ -190,7 +190,7 @@ export function RegisterForm() {
         <br/>
         <Col sm={12}>
         <input
-          placeholder='Ingresar Email'
+          placeholder='Confirmar Email'
           className="form-control"
           type='email'
           name='useremailconf'
