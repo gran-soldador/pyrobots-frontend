@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import CreatePartida from '../components/CreatePartida'
 
 //Verifico que se encuentren los campos predeterminados
@@ -114,3 +114,29 @@ test('Renderizar componentes async?', async () => {
   expect(screen.getByPlaceholderText(/Ingrese la cantidad de rondas/i)).toHaveValue(25);
   expect(screen.getByPlaceholderText(/Ingrese contraseña/i)).toHaveValue('123');
 })
+
+test('La carga se procesa bien?', async () => {
+  render(<CreatePartida />);
+  const buttonEl = screen.getByText('Crear');
+  const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
+  const numjugadores = screen.getByPlaceholderText(/Ingrese la cantidad de jugadores/i);
+  const numjuegos = screen.getByPlaceholderText(/Ingrese la cantidad de juegos/i);
+  const numrondas = screen.getByPlaceholderText(/Ingrese la cantidad de rondas/i);
+  const password = screen.getByPlaceholderText(/Ingrese contraseña/i);
+
+  const testPartida = 'p1';
+  const testJuges = 2;
+  const testJug = 5;
+  const testRound = 100;
+  const testPass = 'prueba1';
+
+  fireEvent.change(namepartida, { target: { value: testPartida } });
+  fireEvent.change(numjugadores, { target: { value: testJuges } });
+  fireEvent.change(numjuegos, { target: { value: testJug } });
+  fireEvent.change(numrondas, { target: { value: testRound } });
+  fireEvent.change(password, { target: { value: testPass } });
+
+  fireEvent.click(buttonEl);
+
+  await waitFor(() => expect(buttonEl).not.toHaveTextContent(/Espere por favor/i));
+});
