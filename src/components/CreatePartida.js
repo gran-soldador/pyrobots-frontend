@@ -183,6 +183,7 @@ const CreatePartida = () => {
           size='lg'>
           {loading? 'Espere por favor': 'Crear'}
         </Button>
+        &nbsp;
         <Button
           variant='secondary'
           type='reset'
