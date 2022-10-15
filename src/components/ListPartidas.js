@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import './css/ListPartidas.css';
 
 const ListPartidas = () => {
   //Estado de la lista
