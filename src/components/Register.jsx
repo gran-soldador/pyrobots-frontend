@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css'
+import './css/Register.css';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
@@ -42,32 +43,32 @@ export function RegisterForm() {
     }
 
     //Confirmar email
-    if (datos.useremail != datos.useremailconf) {
+    if (datos.useremail !==datos.useremailconf) {
       formIsValid = false;
       setUseremailconfErr("Confirmación de email es distinto al email seleccionado");
     }
 
     //Contraseña
     if (!datos.password
-    .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*-_])/)) {
+    .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)) {
       formIsValid = false;
       setPasswordErr(
       "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial");
     }
 
     //Confirmar contraseña
-    if (datos.password != datos.passwordconf) {
+    if (datos.password !== datos.passwordconf) {
       formIsValid = false;
       setPasswordconfErr(
       "Confirmación de contraseña es distinta a la contraseña seleccionada");
     }
     
     //Avatar
-    if (userAvatar != null) {
+    if (userAvatar !== null) {
       let ext = userAvatar.name.split('.').pop();
-      if (ext != "jpg" && ext != "jpeg" &&
-          ext != "jpe" && ext != "jfif" &&
-          ext != "gif" && ext != "png") {
+      if (ext !== "jpg" && ext !== "jpeg" &&
+          ext !== "jpe" && ext !== "jfif" &&
+          ext !== "gif" && ext !== "png") {
         formIsValid = false;
         setAvatarErr(
           "Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
@@ -110,7 +111,7 @@ export function RegisterForm() {
       formData.append('username', datos.username);
       formData.append('useremail', datos.useremail);
       formData.append('password', datos.password);
-      if (userAvatar != null) {
+      if (userAvatar !== null) {
         formData.append('userAvatar', userAvatar);
       }
 
@@ -123,10 +124,10 @@ export function RegisterForm() {
           }) 
       .catch((err) => {
             console.log(err.response);
-            if (err.response.data.detail == "User name already exist.") {
+            if (err.response.data.detail === "User name already exist.") {
               alert("El formulario contiene errores")
               setUsernameErr("Username ya registrado");
-            } else if (err.response.data.detail == "Email already registered.") {
+            } else if (err.response.data.detail === "Email already registered.") {
               alert("El formulario contiene errores")
               setUseremailErr("Email ya registrado");
             } else {
