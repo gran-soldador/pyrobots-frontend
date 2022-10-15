@@ -10,12 +10,12 @@ const ListPartidas = () => {
   const [search, setSearch] = useState("")
 
   const searcher = (e) => {
-    setSearch(e.target.value)   
+    setSearch(e.target.value)
   }
 
-  const results = !search ? listGame : listGame.filter((dato) =>
+  const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
     dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
-  
+
   //Actualizar lista
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);  
@@ -49,12 +49,14 @@ const ListPartidas = () => {
     }
   }
 
-  function DispleyListGames() {
-    return (
-      <div>
+   return (
+       <div>
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
-        <p className='-count'>Cantidad de partidas activas = {listGame.length}</p>
+        <p className='-count'>
+           # Partidas = {(listGame.length === 0) ?
+             'No hay partidas disponibles' : listGame.length}
+        </p>
       </div>
       <input
         value={search}
@@ -63,7 +65,10 @@ const ListPartidas = () => {
         placeholder='Buscar una partida'
         className='form-control'
       />
-      <table className='table table-striped table-hover mt-5 shadow-lg' id='key-list' cellSpacing='0' cellPadding='0'>
+      <table className='table table-striped table-hover mt-5 shadow-lg'
+        id='key-list'
+        cellSpacing='0'
+        cellPadding='0'>
         <thead className='table-dark'>
           <tr>
             <th scope='col'>#</th>
@@ -72,22 +77,22 @@ const ListPartidas = () => {
             <th scope='col'>Cantidad de jugadores</th>
             <th scope='col'>Cantidad de juegos</th>
             <th scope='col'>Cantidad de rondas</th>
-            <th scope='col'>participantes</th>
+            <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
             <th scope='col'>Contraseña</th>
           </tr>
         </thead>
       <tbody className='partidas-list'>
         {results.map((partida, i) => (
-            <tr key={partida.id} className="Rows-List">
-              <td >{partida.partida_id} </td>
-              <td >{partida.namepartida} </td>
-              <td >{partida.status} </td>
-              <td >{partida.numplayers} </td>
-              <td >{partida.numgames} </td>
-              <td >{partida.numrondas} </td>
-              <td >{partida.numcurrentplayers}/4 </td>
-              <td >{partida.creador} </td>
+            <tr key={ partida.id } className="Rows-List">
+              <td> { partida.partida_id } </td>
+              <td> { partida.namepartida } </td>
+              <td> { partida.status } </td>
+              <td> { partida.numplayers } </td>
+              <td> { partida.numgames } </td>
+              <td> { partida.numrondas } </td>
+              <td> { partida.numcurrentplayers }/4 </td>
+              <td> { partida.creador } </td>
               {
                 (!partida.password) ? <td>Desbloqueada</td>
                 : <td>Bloqueada</td>
@@ -96,17 +101,6 @@ const ListPartidas = () => {
           ))}
       </tbody>
       </table>
-    </div>
-    )
-  }
-
-   return (
-    <div className="Background-List">
-      <div>
-        <h1>Seleccionar partida</h1>
-        {(isEmptyList) ? <div>No hay partidas disponibles</div> : <p/>}
-        {DispleyListGames()}
-      </div>
     </div>
  );
 }
