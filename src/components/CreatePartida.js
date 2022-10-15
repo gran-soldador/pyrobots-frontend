@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
 import { Form, Image, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
 import logo from './logo.png';
-import axios from 'axios'
+import axios from 'axios';
+import './css/CreatePartida.css';
 
 const CreatePartida = () => {
   //Datos partida
