@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
 import 'bootstrap/dist/css/bootstrap.css';
+import axios from "axios";
 
 import yellowRobotImage from '../media/amarillo.svg';
 import redRobotImage from '../media/rojo.svg';
@@ -9,14 +11,31 @@ import greenRobotImage from '../media/verde.svg';
 export function GameBoard() {
     
     const canvasRef = useRef();
-    const robotList = ["HK-47", "R2-D2", "MESSI", "C-3PO"]; // Obtener del backend.
-
-    useEffect(function () {
-
+    const robotList = ["HK-47", "R2-D2", "MESSI", "C-3PO"];
+    
+    const [dataSimulation, setDataSimulation] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+    
+    const drawingIncanvas = (dataSimulation) => {
+        
+        const yellowRobot = new Image();
+        yellowRobot.src = yellowRobotImage;
+        
+        const redRobot = new Image();
+        redRobot.src = redRobotImage;
+        
+        const blueRobot = new Image();
+        blueRobot.src = blueRobotImage;
+        
+        const greenRobot = new Image();
+        greenRobot.src = greenRobotImage;
+        
+        greenRobot.onload = () => {
+            render()
+        };
+        
+        var index = 0;
         const render = () => {
-
-            console.log("Drawing...")
-            
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
             
@@ -24,54 +43,60 @@ export function GameBoard() {
             const height = canvas.height;
             const robotSize = 50;
             
-            // Load robots images:
-            const yellowRobot = new Image();
-            yellowRobot.src = yellowRobotImage;
+            ctx.clearRect(0, 0, width, height);
             
-            const redRobot = new Image();
-            redRobot.src = redRobotImage;
-            
-            const blueRobot = new Image();
-            blueRobot.src = blueRobotImage;
-            
-            const greenRobot = new Image();
-            greenRobot.src = greenRobotImage;
-            
-            /*            
-            // Ver un onload cuando se carguen todas las imagenes.
-            let images = [yellowRobot, redRobot, blueRobot, greenRobot];
-            var imageCount = images.length;
-            var imagesLoaded = 0;
+            ctx.drawImage(yellowRobot, index, 50, robotSize, robotSize);
 
-            for(var i=0; i < imageCount; i++){
-                images[i].onload = function(){
-                    imagesLoaded++;
-                    if(imagesLoaded === imageCount){
-                        allLoaded();
-                    }
-                }
+            ctx.drawImage(redRobot, dataSimulation["B2"].positions[index].x, 
+                        dataSimulation["B2"].positions[index].y, robotSize, robotSize);
+
+            ctx.drawImage(blueRobot, dataSimulation["A1"].positions[index].x, 
+                        dataSimulation["A1"].positions[index].y, robotSize, robotSize);
+            
+
+            ctx.drawImage(greenRobot, 0, 700, robotSize, robotSize);
+            
+            if(index < dataSimulation["A1"].positions.length-1){
+                index++;
             }
-
-            function allLoaded(){
-                drawImages();
+            else{
+                console.log("Termine con index: ", index);
+                return;
             }
-            */
-
-            greenRobot.onload = () => {
-                ctx.clearRect(0, 0, width, height);
-                ctx.drawImage(yellowRobot, 200, 50, robotSize, robotSize);
-                ctx.drawImage(redRobot, 450, 450, robotSize, robotSize);
-                ctx.drawImage(blueRobot, 750, 800, robotSize, robotSize);
-                ctx.drawImage(greenRobot, 100, 700, robotSize, robotSize);
-            };
-        
+            
+            requestAnimationFrame(render)
         }
-
-        render();
+    }
     
+    useEffect(function () {
+        const getDataSimulation = () => {
+            const API = "simulacion" 
+            const URL = "http://127.0.0.1:8000/" + API;
+            
+            axios.get(URL)
+            .then((response) => {
+                setDataSimulation(response.data.robots);
+                setLoading(false);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+        }
+        
+        getDataSimulation();
+        
     }, []);
+    
 
-
+    function runAnimation (){
+        if(!isLoading){
+            drawingIncanvas(dataSimulation);
+        }
+        else{
+            alert("Espera unos segundos e intente de nuevo.")
+        }
+    }
+        
     return (
         <div className='gameboard-pyrobots'>
 
@@ -107,9 +132,11 @@ export function GameBoard() {
                 </div>
 
                 <canvas id='canvas' width={1000} height={1000} ref={canvasRef}/>
+                <br></br>
+                <input id="clickMe" type="button" value="clickme" onClick={runAnimation} />
 
         </div>
     );
 };
 
-export default GameBoard;
+// export default GameBoard;
