@@ -25,18 +25,16 @@ const handleSubmit = (e) => {
     .post(baseURL, formData)
     .then((response) => {
       if (response.data.accessToken) {
-        console.log("Login Correcto!")
+        alert("Login Correcto!")
         localStorage.setItem("user", JSON.stringify(response.data));
-      } else {
-        alert('Login Incorrecto');
       }
       return response.data;
     })
     .catch((error) => {
       if (error.response.status === 400)
-        console.log("El usuario no existe");
+        alert("El usuario no existe");
       if (error.response.status === 401)
-        console.log('Contraseña Incorrecta');
+        alert('Contraseña Incorrecta');
     })
 };
 
