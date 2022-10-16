@@ -8,62 +8,35 @@ import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 
 import axios from "axios";
-  // const baseURL = "http://127.0.0.1:8000/files";
   const baseURL = "http://127.0.0.1:8000/login";
-
 
 // Función Formulario de Login.
 const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  // const [validated, setValidated] = useState(false);
-
-  // Valido el logueo del usuario, para que entre al juego de PyRobots.
-  // const validated_login = (username, password) => {
-  //   if (username === 'vero2022@desarrolladora.com' &&  password === 'test')  {
-  //     alert('Login correcto');
-  //   } else 
-  //     alert('Login incorrecto');
-  // };
-
-//Envío datos a la API.
-// const handleSubmit = (event) => {
-//   event.preventDefault()
-//   const form = event.currentTarget;
-//   if (form.checkValidity() === false) {
-//     event.preventDefault();
-//     event.stopPropagation();
-//   }
-
-//   let formData = new FormData();
-//   formData.append('username', username);
-//   formData.append('password', password);  
-  
-//   console.log(username, password)
-//   setValidated(true);
-
-//   axios.post(baseURL, formData)
-//         .then((res) => { console.log(res) }) 
-//         .catch((err) => { console.log(err) });
-
-//   validated_login(username, password);
-// }
 
 const handleSubmit = (e) => {
-  e.preventDefault()
+  e.preventDefault();
+  let formData = new FormData();
+  formData.append('username', username);
+  formData.append('password', password);  
+
   return axios
-    .post(baseURL, {
-      username,
-      password,
-    })
+    .post(baseURL, formData)
     .then((response) => {
       if (response.data.accessToken) {
+        console.log("Login Correcto!")
         localStorage.setItem("user", JSON.stringify(response.data));
+      } else {
+        alert('Login Incorrecto');
       }
       return response.data;
     })
     .catch((error) => {
-      console.log('error', error);
+      if (error.response.status === 400)
+        console.log("El usuario no existe");
+      if (error.response.status === 401)
+        console.log('Contraseña Incorrecta');
     })
 };
 
@@ -85,10 +58,6 @@ const handleSubmit = (e) => {
           <Col sm={10}>
             <Form.Control type="text" placeholder="Ingrese nombre de usuario" value={username} minLength={1} maxLength={32}
               required onChange={ev => setUsername(ev.target.value)}/>
-          <Form.Control.Feedback type="invalid">
-            Por favor, ingrese un nombre de usuario válido.
-          </Form.Control.Feedback>
-          <Form.Control.Feedback aria-disabled>completado!</Form.Control.Feedback>
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
@@ -96,10 +65,6 @@ const handleSubmit = (e) => {
           <Col sm={10}>
           <Form.Control type="password" placeholder="Ingrese una contraseña" value={password} minLength={1} maxLength={8}
             required onChange={ev => setPassword(ev.target.value)}/>
-          <Form.Control.Feedback type="invalid">
-                Por favor, ingrese una contraseña válida.
-          </Form.Control.Feedback>
-          <Form.Control.Feedback>completado!</Form.Control.Feedback>
           </Col>
         </Form.Group>        
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
@@ -113,6 +78,3 @@ const handleSubmit = (e) => {
 }
 
 export default FormLogin;
-
-
-
