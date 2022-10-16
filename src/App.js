@@ -1,8 +1,5 @@
-import ListPartidas from './components/ListPartidas';
-import RegisterForm from './components/Register';
-import CreatePartida from './components/CreatePartida';
-import MainPage from './components/MainPage';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import FormLogin from './components/FormLogin';
+import logo2 from './components/logo2.svg'
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
@@ -25,16 +22,10 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <div className='App'>
-        <Routes>
-          <Route path='/' element={<MainPage/>} />
-          <Route exact path='/register' element={<RegisterForm/>}></Route>
-          <Route exact path='/listar-partidas' element={<ListPartidas/>}></Route>
-          <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <img src={logo2} className="App-logo" alt="logo" />
+      <FormLogin></FormLogin>
+    </div>
   );
 }
 export default App;
