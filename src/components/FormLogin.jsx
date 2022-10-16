@@ -15,27 +15,27 @@ const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-const handleSubmit = (e) => {
+async function handleSubmit(e){
   e.preventDefault();
   let formData = new FormData();
   formData.append('username', username);
   formData.append('password', password);  
 
-  return axios
-    .post(baseURL, formData)
-    .then((response) => {
-      if (response.data.accessToken) {
-        alert("Login Correcto!")
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-      return response.data;
-    })
-    .catch((error) => {
-      if (error.response.status === 400)
-        alert("El usuario no existe");
-      if (error.response.status === 401)
-        alert('Contraseña Incorrecta');
-    })
+  try {
+    const response = await axios.post(baseURL, formData)
+    if (response?.data?.accessToken) {
+      alert("Login Correcto!")
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log(response.data);
+    }
+    return response;
+  } catch(error) {
+    if (error?.response?.status === 400)
+      alert("El usuario no existe");
+    if (error?.response?.status === 401)
+      alert('Contraseña Incorrecta');
+      console.log(error);
+    }
 };
 
   return (

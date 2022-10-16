@@ -55,5 +55,5 @@ test("Formulario de login debe ser renderizado", () => {
 
   fireEvent.change(username, { target: { value: testValueUsername } });
   fireEvent.change(password, { target: { value: testValuePassword } });
-  // fireEvent.click(buttonSubmit);
+  fireEvent.click(buttonSubmit);
 });
