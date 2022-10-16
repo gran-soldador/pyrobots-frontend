@@ -8,51 +8,68 @@ import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 
 import axios from "axios";
-  const baseURL = "http://127.0.0.1:8000/files"
-// const client = axios.create({
-//   // baseURL :"https://6345a4f339ca915a6904b2c8.mockapi.io/"
-// });
+  // const baseURL = "http://127.0.0.1:8000/files";
+  const baseURL = "http://127.0.0.1:8000/login";
+
 
 // Función Formulario de Login.
 const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [validated, setValidated] = useState(false);
+  // const [validated, setValidated] = useState(false);
 
   // Valido el logueo del usuario, para que entre al juego de PyRobots.
-  const validated_login = (username, password) => {
-    if (username === 'vero2022@desarrolladora.com' &&  password === 'test')  {
-      alert('Login correcto');
-    } else 
-      alert('Login incorrecto');
-  };
+  // const validated_login = (username, password) => {
+  //   if (username === 'vero2022@desarrolladora.com' &&  password === 'test')  {
+  //     alert('Login correcto');
+  //   } else 
+  //     alert('Login incorrecto');
+  // };
 
 //Envío datos a la API.
-const handleSubmit = (event) => {
-  event.preventDefault()
-  const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+// const handleSubmit = (event) => {
+//   event.preventDefault()
+//   const form = event.currentTarget;
+//   if (form.checkValidity() === false) {
+//     event.preventDefault();
+//     event.stopPropagation();
+//   }
 
-  let formData = new FormData();
-  formData.append('username', username);
-  formData.append('password', password);  
+//   let formData = new FormData();
+//   formData.append('username', username);
+//   formData.append('password', password);  
   
-  console.log(username, password)
-  setValidated(true);
+//   console.log(username, password)
+//   setValidated(true);
 
-  axios.post(baseURL, formData)
-        .then((res) => { console.log(res) }) 
-        .catch((err) => { console.log(err) });
+//   axios.post(baseURL, formData)
+//         .then((res) => { console.log(res) }) 
+//         .catch((err) => { console.log(err) });
 
-  validated_login(username, password);
-}
+//   validated_login(username, password);
+// }
+
+const handleSubmit = (e) => {
+  e.preventDefault()
+  return axios
+    .post(baseURL, {
+      username,
+      password,
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        localStorage.setItem("user", JSON.stringify(response.data));
+      }
+      return response.data;
+    })
+    .catch((error) => {
+      console.log('error', error);
+    })
+};
 
   return (
     <>
-      <Form className='form_pyrobots_login' validated={validated} onSubmit={handleSubmit}>
+      <Form className='form_pyrobots_login' onSubmit={handleSubmit}>
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>
         <Image src={logo}></Image>
