@@ -41,29 +41,14 @@ export function GameBoard() {
             const width = canvas.width;
             const height = canvas.height;
             const robotSize = 50;
+            const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
             
             ctx.clearRect(0, 0, width, height);
-            
-            if (dataSimulation.robots[0].damage[index] < 100) {
-                ctx.drawImage(yellowRobot, dataSimulation.robots[0].positions[index].x, 
-                    dataSimulation.robots[0].positions[index].y, robotSize, robotSize);
-            }
-            if (dataSimulation.robotcount > 0) {
-                if (dataSimulation.robots[1].damage[index] < 100) {
-                    ctx.drawImage(redRobot, dataSimulation.robots[1].positions[index].x, 
-                        dataSimulation.robots[1].positions[index].y, robotSize, robotSize);
-                }
-            }
-            if (dataSimulation.robotcount > 1) {
-                if (dataSimulation.robots[2].damage[index] < 100) {
-                    ctx.drawImage(blueRobot, dataSimulation.robots[2].positions[index].x, 
-                        dataSimulation.robots[2].positions[index].y, robotSize, robotSize);
-                }
-            }
-            if (dataSimulation.robotcount > 2) {
-                if (dataSimulation.robots[3].damage[index] < 100) {
-                    ctx.drawImage(greenRobot, dataSimulation.robots[3].positions[index].x, 
-                        dataSimulation.robots[3].positions[index].y, robotSize, robotSize);
+
+            for (let i = 0; i < dataSimulation.robotcount; i++) {
+                if (dataSimulation.robots[i].damage[index] < 100) {
+                    ctx.drawImage(robotList[i], dataSimulation.robots[i].positions[index].x-robotSize/2, 
+                        dataSimulation.robots[i].positions[index].y-robotSize/2, robotSize, robotSize);
                 }
             }
 
