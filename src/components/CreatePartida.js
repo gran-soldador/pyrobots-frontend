@@ -54,7 +54,7 @@ const CreatePartida = () => {
     console.log('Enviando datos al servidor');
     setLoading(true);
 
-    const API = 'http://127.0.0.1:8000/files';
+    const API = 'http://127.0.0.1:8000/crear-partida';
     let formData = new FormData();
 
     formData.append('namepartida', namepartida);

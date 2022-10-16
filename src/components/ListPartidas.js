@@ -32,7 +32,7 @@ const ListPartidas = () => {
   //Solicitar datos API
   async function handleGames() {
     try {
-      const response = await fetch('https://63458450745bd0dbd36aae3e.mockapi.io/listar-partidas', {
+      const response = await fetch('http://127.0.0.1:8000/lista-partidas', {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const ListPartidas = () => {
         onChange={searcher}
         type='text'
         placeholder='Buscar una partida'
-        className='form-control'
+        className='input-table'
       />
       <table className='table table-striped table-hover mt-5 shadow-lg'
         id='key-list'
