@@ -1,0 +1,9 @@
+.form_upload_bot_pyrobot {
+    width: 50%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(248, 249, 250, 0.801);
+    padding: 20px;
+    text-align: left;
+}

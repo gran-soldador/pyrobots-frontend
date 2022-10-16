@@ -1,15 +1,25 @@
-import React, { useState  } from 'react'
+import React, { useState, useRef} from 'react'
+// import { useLocation, useNavigate } from "react-router-dom"
+
+import axios from "axios";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 
+import './css/UploadBotForm.css';
 import logo from './logo.png';
 
-import axios from "axios";
-
 export function UploadBotForm() {
+
+    // let navigate = useNavigate();
+
+    // Obtenemos username desde el inicio de sesión.
+    // const {state} = useLocation();
+    // const {username} = state;
+
+    const username = "Khenter";
 
 	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');
@@ -21,6 +31,12 @@ export function UploadBotForm() {
     const [avatarErr, setAvatarErr] = useState("");
     const [codeErr, setCodeErr] = useState("");
 
+    // Referencias a los inputField.
+    const nameRobotInput = useRef();
+    const avatarRobotInput = useRef();
+    const codeRobotInput = useRef();
+
+
     const handleValidation = () => {
         let formIsValid = true;
     
@@ -28,27 +44,27 @@ export function UploadBotForm() {
           	formIsValid = false;
           	setRobotNameErr("Solo mayúsculas, minúsculas, números y guiones.");
         }
-    
+        
         if (avatarRobot != null) {
-          let ext = avatarRobot.name.split('.').pop();
-          if (ext !== "jpg" && ext !== "jpeg" &&
-              	ext !== "jpe" && ext !== "jfif" &&
+            let ext = avatarRobot.name.split('.').pop();
+            if (ext !== "jpg" && ext !== "jpeg" &&
+                ext !== "jpe" && ext !== "jfif" &&
               	ext !== "gif" && ext !== "png") {
-            formIsValid = false;
-            setAvatarErr("Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
-            setAvatarRobot(null);
-          }
+                formIsValid = false;
+                setAvatarErr("Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
+                setAvatarRobot(null);
+                avatarRobotInput.current.value = null;
+            }
         }
 
-        if (codeRobot != null) {
-            let ext = codeRobot.name.split('.').pop();
-            if (ext !== 'py') {
-                formIsValid = false;
-              	setCodeErr("Solo se permiten archivos con extension '.py'");
-              	setCodeRobot(null);
-            }
-          }
-    
+        let ext = codeRobot.name.split('.').pop();
+        if (ext !== 'py') {
+            formIsValid = false;
+            setCodeErr("Solo se permiten archivos con extension '.py'");
+            setCodeRobot(null);
+            codeRobotInput.current.value = null;
+        }
+        
         if (formIsValid) {
             setRobotNameErr("");
             setAvatarErr("");
@@ -86,32 +102,50 @@ export function UploadBotForm() {
         if (handleValidation()) {
             let formData = new FormData();
 
-            formData.append('nameRobot', nameRobot);
+            formData.append('username', username);
+            formData.append('robotName', nameRobot);
 
             if(avatarRobot){
-                formData.append('avatarRobot', avatarRobot);
+                formData.append('robotAvatar', avatarRobot);
             }
 
-            formData.append('codeRobot', codeRobot);
+            formData.append('robotCode', codeRobot);
 
-            const API = ''
-            const URL = "http://127.0.0.1:8000/" + API
+            const API = '/user/creacion_de_robot/'
+            const URL = "http://127.0.0.1:8000" + API
 
             axios.post(URL, formData)
             .then((res) => {
-                alert("Tu robot se cargó correctamente! 🤖 ")
-                console.log(res)
+                alert("Tu robot se subió correctamente! 🤖 ")
+                // Redirigir a otra pagina.
+                console.log(res.data)
                 }
             ) 
             .catch((err) => {
-                alert("No se pudo cargar tu robot! 😓 ")
-                console.log(err) 
+                if(err.response.data.detail === "User doesn't exist."){
+                    alert("Username error. Try again.")
+                    // Redirgo a otra pagina.
+                }
+                else if(err.response.data.detail === "File must be a .py"){
+                    codeRobotInput.current.value = null;
+                    setCodeRobot(null);
+            		setCodeErr("El archivo del robot no es valido. Por favor ingrese un archivo valido.");
+                }
+                else if(err.response.data.detail === "You already have a robot with that name."){
+                    nameRobotInput.current.value = "";
+                    setNameRobot(''); 
+                    setRobotNameErr("Nombre de robot en uso. Por favor ingrese un nombre valido.");
+                }
+                else if(err.response.data.detail === "File is not an image."){
+                    avatarRobotInput.current.value = null;
+                    setAvatarRobot(null);
+            		setAvatarErr("El avatar no es valido. Por favor ingrese una imagen valida.");
+                }
             });
         }
         else {
-            alert("El formulario contiene errores");
+            alert("El formulario contiene errores. Revisa los datos e intente nuevamente.");
 		}
-
     }
         
     return (
@@ -121,20 +155,14 @@ export function UploadBotForm() {
             <Image src={logo}></Image>
             <Image src={logo}></Image>
             
-            <Form.Text>
-                <h1>PyRobots</h1>
-            </Form.Text>
+            <Form.Text> <h1>PyRobots</h1> </Form.Text>
 
-            <Form.Text>
-                <h4> Formulario para subir robots </h4>
-            </Form.Text>
+            <Form.Text> <h4> Formulario para subir robots </h4> </Form.Text>
 
             <hr></hr>
 
             <Form.Group className="mb-3">
-                <Form.Label> 
-                    Nombre del robot:
-                </Form.Label>
+                <Form.Label> Nombre del robot: </Form.Label>
                 <Form.Control 
                     type="text" 
                     placeholder='Ingrese el nombre del robot' 
@@ -142,34 +170,30 @@ export function UploadBotForm() {
                     required
                     minLength={1} 
                     maxLength={32}
-                    onChange={ handleNameRobot }/> 
-				<span style={{ color: "red" }}>{robotNameErr}</span>
-
+                    onChange={ handleNameRobot }
+                    ref={nameRobotInput} /> 
+                <span style={{ color: "red" }}> {robotNameErr} </span>
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label> 
-                    Avatar del Robot (Opcional):    
-                </Form.Label>
+                <Form.Label> Avatar del Robot (Opcional): </Form.Label>
                     <Form.Control
                         type="file"
                         className='form-control'
-                        onChange={ handleAvatarRobot }/>
-				<span style={{ color: "red" }}>{avatarErr}</span>
-
+                        onChange={ handleAvatarRobot }
+                        ref={avatarRobotInput} />
+                <span style={{ color: "red" }}> {avatarErr} </span>
             </Form.Group>
 
             <Form.Group className="mb-3">
-                <Form.Label> 
-                    Codigo del Robot:
-                </Form.Label>
+                <Form.Label> Codigo del Robot: </Form.Label>
                 <Form.Control
                     type="file"
                     className='form-control'
                     required
-                    onChange={ handleCodeRobot }/>
-				<span style={{ color: "red" }}>{codeErr}</span>
-
+                    onChange={ handleCodeRobot }
+                    ref={codeRobotInput} />
+                <span style={{ color: "red" }}> {codeErr} </span>
             </Form.Group>
 
             <Form.Group className="mb-3">
