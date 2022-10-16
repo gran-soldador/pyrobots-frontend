@@ -1,0 +1,35 @@
+h2 {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+img-create-partida {
+  display: block;
+  margin: auto;
+}
+
+.form_create_pardida {
+  width: 50%;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(248, 249, 250);
+  padding: 20px;
+}
+
+input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+.form-element {
+  display: block;
+  width: 40%;
+  margin: 1rem auto;
+  align-items: center;
+}
