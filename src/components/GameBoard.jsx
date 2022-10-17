@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import './css/GameBoard.css';
 
+
 import 'bootstrap/dist/css/bootstrap.css';
 import axios from "axios";
 
@@ -12,6 +13,9 @@ import greenRobotImage from '../media/verde.svg';
 
 export function GameBoard() {
     
+    // Descomentar para probar juego de 10.000 rondas.
+    // const jsonData= require('./out.json'); 
+
     const canvasRef = useRef();
 
     const [dataSimulation, setDataSimulation] = useState([]);
@@ -77,6 +81,11 @@ export function GameBoard() {
             
             axios.get(URL)
             .then((response) => {
+
+                // Descomentar para probar juego con 10.000 rondas.
+                // setDataSimulation(jsonData);
+                
+                // Comentar esta linea para probar el juego con 10.000 rondas.
                 setDataSimulation(response.data);
                 setLoading(false);
             })
