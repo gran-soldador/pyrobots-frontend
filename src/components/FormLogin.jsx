@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 import './css/FormLogin.css';
+import { useNavigate } from 'react-router-dom';
 
 import axios from "axios";
   const baseURL = "http://127.0.0.1:8000/login";
@@ -16,28 +17,30 @@ const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-async function handleSubmit(e){
-  e.preventDefault();
-  let formData = new FormData();
-  formData.append('username', username);
-  formData.append('password', password);  
+  const navigate = useNavigate();
 
-  try {
-    const response = await axios.post(baseURL, formData)
-    if (response?.data?.accessToken) {
-      alert("Login Correcto!")
-      localStorage.setItem("user", JSON.stringify(response.data));
-      console.log(response.data);
-    }
-    return response;
-  } catch(error) {
-    if (error?.response?.status === 400)
-      alert("El usuario no existe");
-    if (error?.response?.status === 401)
-      alert('Contraseña Incorrecta');
-      console.log(error);
-    }
-};
+  async function handleSubmit(e){
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);  
+
+    try {
+      const response = await axios.post(baseURL, formData)
+      if (response?.data?.accessToken) {
+        alert("Login Correcto!")
+        localStorage.setItem("user", JSON.stringify(response.data));
+        console.log(response.data);
+      }
+      return response;
+    } catch(error) {
+      if (error?.response?.status === 400)
+        alert("El usuario no existe");
+      if (error?.response?.status === 401)
+        alert('Contraseña Incorrecta');
+        console.log(error);
+      }
+  };
 
   return (
     <>
@@ -65,11 +68,11 @@ async function handleSubmit(e){
           <Form.Control type="password" placeholder="Ingrese una contraseña" value={password} minLength={1} maxLength={8}
             required onChange={ev => setPassword(ev.target.value)}/>
           </Col>
-        </Form.Group>        
+        </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
-          <Button variant="link" type="submit">Iniciar sesion</Button>
-          <Button variant="link"> ¿ Olvidaste tu contraseña ?</Button>
-          <Button variant="link">Crear cuenta nueva</Button>
+          <Button disabled={!password ||!username } onClick={()=>navigate("/post-login")} type="submit">Iniciar sesion</Button>
+          {/* <Button > ¿ Olvidaste tu contraseña ?</Button> */}
+          <Button onClick={()=>navigate("/registrarse")} variant="link">Crear cuenta nueva</Button>
         </Form.Group>
       </Form>
       </>

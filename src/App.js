@@ -5,9 +5,9 @@ import RegisterForm from './components/Register';
 import CreatePartida from './components/CreatePartida';
 import FormLogin from './components/FormLogin';
 import MainPage from './components/MainPage';
-import  UploadBotForm from './components/UploadBotForm'
-import  GameBoard  from "./components/GameBoard"
-
+import UploadBotForm from './components/UploadBotForm'
+import GameBoard  from "./components/GameBoard"
+import PostLogin from './components/PostLogin';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -19,6 +19,7 @@ function App() {
       <div className='App'>
         <Routes>
           <Route path='/' element={<MainPage />} />
+          <Route exact path='/post-login' element={<PostLogin/>} />
           <Route exact path='/login' element={<FormLogin/>}></Route>
           <Route exact path='/registrarse' element={<RegisterForm/>}></Route>
           <Route exact path='/listar-partidas' element={<ListPartidas/>}></Route>
