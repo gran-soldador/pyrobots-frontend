@@ -11,7 +11,8 @@ const CreatePartida = () => {
   const [password, setPassword] = useState('');
   const [numgames, setNumGames] = useState('');
   const [numrondas, setNumRondas] = useState('');
-  const [numplayers, setPlayers] = useState('');
+  const [minplayers, setMinPlayers] = useState('');
+  const [maxplayers, setMaxPlayers] = useState('');
   const [loading, setLoading] = useState(false);
 
   //Datos de API robot
@@ -20,7 +21,6 @@ const CreatePartida = () => {
 
   const [username, setUsername] = useState('');
   const [tokenReady, setTokenReady] = useState(false);
-
 
   useEffect(function () {
         
@@ -48,9 +48,6 @@ const CreatePartida = () => {
 
   } , []);
 
-
-
-
   //Leer datos de robots
   useEffect(function () {
       if(tokenReady){
@@ -71,14 +68,11 @@ const CreatePartida = () => {
       }
     }, [tokenReady]);
 
-
-    
   //Enviar datos a la API
   async function handleSubmit(event) {
-    event.preventDefault()
-
-    console.log('Enviando datos al servidor');
     setLoading(true);
+    event.preventDefault()
+    console.log('Enviando datos al servidor');
 
     const API = 'http://127.0.0.1:8000/crear-partida';
     let formData = new FormData();
@@ -87,7 +81,8 @@ const CreatePartida = () => {
     formData.append('password', password);
     formData.append('numgames', numgames);
     formData.append('numrondas', numrondas);
-    formData.append('numplayers', numplayers);
+    formData.append('minplayers', minplayers);
+    formData.append('maxplayers', maxplayers);
     formData.append('idrobot', idrobot);
 
     try {
@@ -132,12 +127,20 @@ const CreatePartida = () => {
         </Form.Label>
         <Form.Control
           type='number'
-          placeholder='Ingrese la cantidad de jugadores'
+          placeholder='Cantidad mínima de jugadores'
           className='form-control'
           required
           min={2}
           max={4}
-          onChange={event => setPlayers(event.target.value)}/>
+          onChange={event => setMinPlayers(event.target.value)} />
+         <Form.Control
+          type='number'
+          placeholder='Cantidad máxima de jugadores'
+          className='form-control'
+          required
+          min={2}
+          max={4}
+          onChange={event => setMaxPlayers(event.target.value)}/>
       </Form.Group>
 
       <Form.Group className='mb-3'>
@@ -206,7 +209,7 @@ const CreatePartida = () => {
         <Button
           variant='success'
           type='submit'
-          disabled={!namepartida || !numgames || !numrondas || !numplayers || !idrobot}
+          disabled={!namepartida || !numgames || !numrondas || !minplayers || !maxplayers || !idrobot}
           size='lg'>
           {loading? 'Espere por favor': 'Crear'}
         </Button>
