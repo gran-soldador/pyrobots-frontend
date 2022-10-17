@@ -1,16 +1,33 @@
-import React  from 'react';
+import React from 'react'
 
+import ListPartidas from './components/ListPartidas';
+import RegisterForm from './components/Register';
+import CreatePartida from './components/CreatePartida';
+import FormLogin from './components/FormLogin';
+import MainPage from './components/MainPage';
+import  UploadBotForm from './components/UploadBotForm'
+import  GameBoard  from "./components/GameBoard"
+
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import { UploadBotForm } from './components/UploadBotForm'
+
 
 function App() {
   return (
-
-    <div className="App">
-      < UploadBotForm/ >
-    </div>
-
+    <Router>
+      <div className='App'>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route exact path='/login' element={<FormLogin/>}></Route>
+          <Route exact path='/registrarse' element={<RegisterForm/>}></Route>
+          <Route exact path='/listar-partidas' element={<ListPartidas/>}></Route>
+          <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
+          <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
+          <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
-
 export default App;

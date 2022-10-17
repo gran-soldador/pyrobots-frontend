@@ -1,0 +1,9 @@
+.registerform {
+    width: 40%;
+    text-align: left;
+    margin: auto;
+    justify-content: left;
+    align-items: left;
+    background-color: rgb(248, 249, 250);
+    padding: 20px;
+  }
