@@ -1,3 +1,5 @@
+import React from 'react'
+
 import ListPartidas from './components/ListPartidas';
 import RegisterForm from './components/Register';
 import CreatePartida from './components/CreatePartida';
@@ -5,6 +7,8 @@ import FormLogin from './components/FormLogin';
 import MainPage from './components/MainPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+
+import { GameBoard } from "./components/GameBoard"
 
 function App() {
   return (
