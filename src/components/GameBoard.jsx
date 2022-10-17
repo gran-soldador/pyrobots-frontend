@@ -160,3 +160,5 @@ export function GameBoard() {
     );
 };
 
+export default GameBoard;
+
