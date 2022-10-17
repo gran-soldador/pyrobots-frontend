@@ -18,39 +18,65 @@ const CreatePartida = () => {
   const [idrobot, setIdRobot] = useState(0);
   const [datosRobot, setDatosRobot] = useState([]);
 
-  //Leer datos de robots
-  async function handleDatosRobots() {
-    console.log('Leyendo API ROBOTS');
-    try {
-      const response = await fetch('https://63458450745bd0dbd36aae3e.mockapi.io/listrobots', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-      if (response.status === 200) {
-        setDatosRobot(await response.json())
-      } else {
-        setDatosRobot([])
-      }
-    } catch (error) {
-      console.log(error)
+  const [username, setUsername] = useState('');
+  const [tokenReady, setTokenReady] = useState(false);
+
+
+  useEffect(function () {
+        
+    const API_ID = '/login/verify_token'
+    const URL_ID = "http://127.0.0.1:8000" + API_ID
+    
+    const tokenDict = localStorage.getItem('user');
+    if(tokenDict !== null){
+        const tokenValue = (JSON.parse(tokenDict)).accessToken;
+        console.log(tokenValue);
+
+        let TokenData = new FormData();
+        TokenData.append('Authorization', tokenValue);
+        
+        axios.post(URL_ID, TokenData)
+        .then((res) => {
+            console.log("Token Partida: ", res.data.nombre_usuario)
+            setUsername(res.data.nombre_usuario)
+            setTokenReady(true)
+        }) 
+        .catch((err) => {
+            console.log(err)
+        });
     }
-  }
-  //Cargar la lista de robots
-  useEffect(() => {
-    const firstCall = setTimeout(handleDatosRobots, 0);
-    return () => clearTimeout(firstCall);
-  }, [])
-  //Actualizar la lista
-  useEffect(() => {
-    const autoRefresh = setInterval(handleDatosRobots, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
-  
+
+  } , []);
+
+
+
+
+  //Leer datos de robots
+  useEffect(function () {
+      if(tokenReady){
+
+        let robot_list = new FormData();
+        robot_list.append('username', username);
+        
+        axios.post('http://127.0.0.1:8000/lista-robots', robot_list)
+        .then((res) => {
+          console.log(res)
+          setDatosRobot(res.data)
+        }) 
+        .catch((err) => {
+          console.log(err)
+        });
+        
+        console.log(username);
+      }
+    }, [tokenReady]);
+
+
+    
   //Enviar datos a la API
-  async function handleSubmit() {
+  async function handleSubmit(event) {
+    event.preventDefault()
+
     console.log('Enviando datos al servidor');
     setLoading(true);
 
@@ -168,7 +194,7 @@ const CreatePartida = () => {
           onChange={event => { setIdRobot(event.target.value) }}>
           {
             datosRobot.map((robot) => (
-              <option value={robot.id} key={robot.id}>{robot.name}</option>
+              <option value={robot.id} key={robot.id}>{robot.nombre}</option>
               )
             )
           }

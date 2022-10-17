@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 import './css/FormLogin.css';
-import { useNavigate } from 'react-router-dom';
 
 
 import axios from "axios";
@@ -66,7 +65,7 @@ const FormLogin = () => {
         <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
           <Form.Label column sm={2}>Contraseña </Form.Label>
           <Col sm={10}>
-          <Form.Control type="password" placeholder="Ingrese una contraseña" value={password} minLength={1} maxLength={8}
+          <Form.Control type="password" placeholder="Ingrese una contraseña" minLength={8} maxLength={32}
             required onChange={ev => setPassword(ev.target.value)}/>
           </Col>
         </Form.Group>

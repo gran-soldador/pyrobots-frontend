@@ -1,5 +1,4 @@
-import React, { useState, useRef} from 'react'
-import { useLocation } from "react-router-dom"
+import React, { useState, useRef, useEffect} from 'react'
 
 import axios from "axios";
 
@@ -12,9 +11,33 @@ import './css/UploadBotForm.css';
 import logo from './logo.png';
 
 export function UploadBotForm() {
+    
+    const [username, setUsername] = useState('');
+ 
+    useEffect(function () {
+        
+        const API_ID = '/login/verify_token'
+        const URL_ID = "http://127.0.0.1:8000" + API_ID
+        
+        const tokenDict = localStorage.getItem('user');
+        if(tokenDict !== null){
+            const tokenValue = (JSON.parse(tokenDict)).accessToken;
+            console.log(tokenValue);
+    
+            let TokenData = new FormData();
+            TokenData.append('Authorization', tokenValue);
+            
+            axios.post(URL_ID, TokenData)
+            .then((res) => {
+                console.log(res.data.nombre_usuario)
+                setUsername(res.data.nombre_usuario)
+            }) 
+            .catch((err) => {
+                console.log(err)
+            });
+        }
 
-    // Obtenemos username desde el inicio de sesión.
-    const username = 'admin';
+    }, []);
 
 	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');
@@ -99,6 +122,7 @@ export function UploadBotForm() {
         if (handleValidation()) {
             
             let formData = new FormData();
+            console.log("FromData-Username: ", username);
             formData.append('username', username);
             formData.append('robotName', nameRobot);
 
