@@ -6,12 +6,12 @@ const MainPage = () => {
     <div>
       <div className='Box-main'>
         <h1 className='title'>Bienvenido a PY-Robots</h1>
-          <a href='/crear-partida'>
-            <button className='btn btn-primary btn-lg'>Crear Partida</button>
+          <a href='/login'>
+            <button className='btn btn-primary btn-lg'>Login</button>
           </a>
           &nbsp;
-          <a href='/listar-partidas'>
-          <button className='btn btn-primary btn-lg'>Unirse a Partida</button>
+          <a href='/registrarse'>
+          <button className='btn btn-primary btn-lg'>Registro</button>
           </a>
       </div>
     </div>

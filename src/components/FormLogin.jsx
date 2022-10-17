@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
+import './css/FormLogin.css';
 
 import axios from "axios";
   const baseURL = "http://127.0.0.1:8000/login";

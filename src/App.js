@@ -1,31 +1,24 @@
+import ListPartidas from './components/ListPartidas';
+import RegisterForm from './components/Register';
+import CreatePartida from './components/CreatePartida';
 import FormLogin from './components/FormLogin';
-import logo2 from './components/logo2.svg'
+import MainPage from './components/MainPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import React, { useEffect, useState } from 'react';
-import axios from "axios";
 
 function App() {
-  const [result, setResult] = useState(null);
-
-  const message = async () => {
-    try {
-      let res = await axios.get('http://127.0.0.1:8000/');
-      let result = res.data;
-      setResult(result);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    message();
-  }, [])
-
   return (
-    <div className="App">
-      <img src={logo2} className="App-logo" alt="logo" />
-      <FormLogin></FormLogin>
-    </div>
+    <Router>
+      <div className='App'>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route exact path='/login' element={<FormLogin/>}></Route>
+          <Route exact path='/registrarse' element={<RegisterForm/>}></Route>
+          <Route exact path='/listar-partidas' element={<ListPartidas/>}></Route>
+          <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 export default App;
