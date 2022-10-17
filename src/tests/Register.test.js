@@ -60,7 +60,7 @@ test('Crear envia datos?', () => {
   expect(passwordconf).toBeInTheDocument(testpasswordconf);
 })
 
-test('Renderizar componentes async?', async () => { 
+test('Renderizar componentes async?', async () => {
   render(<Register/>)
   const username = screen.getByPlaceholderText(/Ingresar usuario/i);
   const useremail = screen.getByPlaceholderText(/Ingresar Email/i);

@@ -19,11 +19,11 @@ const FormLogin = () => {
 
   // const navigate = useNavigate();
 
-  async function handleSubmit(e){
+  async  function handleSubmit(e){
     e.preventDefault();
     let formData = new FormData();
     formData.append('username', username);
-    formData.append('password', password);  
+    formData.append('password', password);
 
     try {
       const response = await axios.post(baseURL, formData)

@@ -36,7 +36,7 @@ export function RegisterForm() {
       setUsernameErr("Solo Mayúsculas, Minúsculas, Números y Guiones");
     }
 
-    //Email 
+    //Email
     if (!datos.useremail.match(/^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$/)) {
       formIsValid = false;
       setUseremailErr("Email no valido");
@@ -62,7 +62,7 @@ export function RegisterForm() {
       setPasswordconfErr(
       "Confirmación de contraseña es distinta a la contraseña seleccionada");
     }
-    
+
     //Avatar
     if (userAvatar !== null) {
       let ext = userAvatar.name.split('.').pop();
@@ -89,21 +89,21 @@ export function RegisterForm() {
   };
 
   const handleUserAvatar = (event) => {
-    setUserAvatar(event.target.files[0]);    
+    setUserAvatar(event.target.files[0]);
   }
-  
+
   const handleChange = (event) => {
     setDatos({
       ...datos,
       [event.target.name]: event.target.value
     })
   }
-  
+
   const resetForm = () => {
     setUserAvatar(null);
   }
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
     if (handleValidation()) {
 
@@ -117,30 +117,31 @@ export function RegisterForm() {
 
       const API = 'user/registro_de_usuario/'
       const URL = "http://127.0.0.1:8000/" + API
-      axios.post(URL, formData)
-      .then((res) => { 
-          console.log(res);
-          alert("Usuario registrado")
-          }) 
-      .catch((err) => {
-            console.log(err.response);
-            if (err.response.data.detail === "User name already exist.") {
-              alert("El formulario contiene errores")
+
+      try {
+        const response = await axios.post(URL, formData)
+        console.log(response);
+        alert("Usuario registrado");
+      } catch(err) {
+        console.log(err?.response);
+            if (err?.response?.data?.detail === "User name already exist.") {
+              alert("El formulario contiene errores");
               setUsernameErr("Username ya registrado");
-            } else if (err.response.data.detail === "Email already registered.") {
-              alert("El formulario contiene errores")
+            } else if (err?.response?.data?.detail === "Email already registered.") {
+              alert("El formulario contiene errores");
               setUseremailErr("Email ya registrado");
             } else {
-              alert("Algo salió mal")
+              alert("Algo salió mal");
             }
-          });
+        }
+
     } else {
       alert("El formulario contiene errores");
     }
   }
-  
+
   return (
-    <form className='registerform' onSubmit={handleSubmit}> 
+    <form className='registerform' onSubmit={handleSubmit}>
       <img src={logo} className="" alt="logo" />
       <Image src={logo}></Image>
       <Image src={logo}></Image>
@@ -197,7 +198,7 @@ export function RegisterForm() {
         />
         <span style={{ color: "red" }}>{useremailconfErr}</span>
         </Col>
-      </Form.Group> 
+      </Form.Group>
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
         <Form.Label column sm={12}>Contraseña</Form.Label>
@@ -244,8 +245,8 @@ export function RegisterForm() {
         </Col>
       </Form.Group>
 
-      <button 
-        type="reset" 
+      <button
+        type="reset"
         className="btn btn-block mb-4 btn-dark"
         onClick={resetForm}
       >
