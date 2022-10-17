@@ -14,8 +14,7 @@ import logo from './logo.png';
 export function UploadBotForm() {
 
     // Obtenemos username desde el inicio de sesión.
-    const {state} = useLocation();
-    const {username} = state;
+    const username = 'admin';
 
 	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');

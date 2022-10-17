@@ -42,27 +42,3 @@ test('solo puedo enviar archivos de imagenes', async () => {
       screen.getByText("Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png")
     );
   })
-
-
-test('Crear envia datos?', () => {
-  render(<UploadBotForm/>);
-  const buttonis = screen.getByTestId("test-button");
-
-  const namerobot = screen.getByPlaceholderText(/Ingrese el nombre del robot/i);
-  const codeInput = screen.getByTestId('test-file-py');
-  const avatarInput = screen.getByTestId('test-file-image');
-
-  let fileavatar = new File(['(⌐□_□)'], 'picture.png', { type: 'image/png' });
-  let nombre_input = "Messi"
-  let filecode = new File(['(⌐□_□)'], 'code.py', { type: 'aplication/py' });
-
-  fireEvent.change(namerobot, { target: { value: nombre_input } });
-  fireEvent.change(codeInput, { target: { files: [filecode] } });
-  fireEvent.change(avatarInput, { target: { files: [fileavatar] } });
-
-  fireEvent.click(buttonis);
-  
-  expect(namerobot).toBeInTheDocument(nombre_input);
-  expect(codeInput).toBeInTheDocument(filecode);
-  expect(avatarInput).toBeInTheDocument(fileavatar);
-})

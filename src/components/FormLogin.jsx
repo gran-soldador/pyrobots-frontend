@@ -18,7 +18,7 @@ const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -71,9 +71,9 @@ const FormLogin = () => {
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
-          <Button disabled={!password ||!username } onClick={()=>navigate("/post-login", { state: {username: username} })} type="submit">Iniciar sesion</Button>
+          <Button disabled={!password ||!username } type="submit">Iniciar sesion</Button>
           {/* <Button > ¿ Olvidaste tu contraseña ?</Button> */}
-          <Button onClick={()=>navigate("/registrarse")} variant="link">Crear cuenta nueva</Button>
+          <Button variant="link">Crear cuenta nueva</Button>
         </Form.Group>
       </Form>
       </>

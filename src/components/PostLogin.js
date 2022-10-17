@@ -4,15 +4,6 @@ import './css/PostLogin.css';
 import { useLocation, useNavigate } from "react-router-dom"
 
 const PostLogin = () => {
-
-  let navigate = useNavigate();
-  
-  const { state } = useLocation();
-  const { username } = state;
-
-  function handleUpload(){
-    navigate("/subir-bot", { state: {username: username} })
-  }
   
   return (
     <div>
@@ -26,7 +17,7 @@ const PostLogin = () => {
             <button className='btn btn-primary btn-lg'>Listar Partida</button>
           </a>
           <br/> <br/>
-            <button className='btn btn-primary btn-lg' onClick={handleUpload}>Subir bot</button>
+            <button className='btn btn-primary btn-lg'>Subir bot</button>
           &nbsp;
           <a href='/ver-tablero'>
             <button className='btn btn-primary btn-lg'>Ver tablero</button>
