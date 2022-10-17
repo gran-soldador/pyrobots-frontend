@@ -1,7 +1,19 @@
 import React from "react";
 import './css/PostLogin.css';
 
+import { useLocation, useNavigate } from "react-router-dom"
+
 const PostLogin = () => {
+
+  let navigate = useNavigate();
+  
+  const { state } = useLocation();
+  const { username } = state;
+
+  function handleUpload(){
+    navigate("/subir-bot", { state: {username: username} })
+  }
+  
   return (
     <div>
       <div className='Box-main-post'>
@@ -13,10 +25,8 @@ const PostLogin = () => {
           <a href='/listar-partidas'>
             <button className='btn btn-primary btn-lg'>Listar Partida</button>
           </a>
-          &nbsp;
-          <a href='/subir-bot'>
-            <button className='btn btn-primary btn-lg'>Subir bot</button>
-          </a>
+          <br/> <br/>
+            <button className='btn btn-primary btn-lg' onClick={handleUpload}>Subir bot</button>
           &nbsp;
           <a href='/ver-tablero'>
             <button className='btn btn-primary btn-lg'>Ver tablero</button>

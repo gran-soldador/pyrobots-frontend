@@ -1,5 +1,5 @@
 import React, { useState, useRef} from 'react'
-// import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 
 import axios from "axios";
 
@@ -13,13 +13,9 @@ import logo from './logo.png';
 
 export function UploadBotForm() {
 
-    // let navigate = useNavigate();
-
     // Obtenemos username desde el inicio de sesión.
-    // const {state} = useLocation();
-    // const {username} = state;
-
-    const username = "Khenter";
+    const {state} = useLocation();
+    const {username} = state;
 
 	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');
@@ -100,9 +96,10 @@ export function UploadBotForm() {
     const handleSubmit = (event) => {
         event.preventDefault()
 
+        console.log("EL usuario ", username, " quiere subir un robot.")
         if (handleValidation()) {
+            
             let formData = new FormData();
-
             formData.append('username', username);
             formData.append('robotName', nameRobot);
 

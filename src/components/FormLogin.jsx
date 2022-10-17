@@ -9,6 +9,7 @@ import logo from './logo.png';
 import './css/FormLogin.css';
 import { useNavigate } from 'react-router-dom';
 
+
 import axios from "axios";
   const baseURL = "http://127.0.0.1:8000/login";
 
@@ -70,7 +71,7 @@ const FormLogin = () => {
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
-          <Button disabled={!password ||!username } onClick={()=>navigate("/post-login")} type="submit">Iniciar sesion</Button>
+          <Button disabled={!password ||!username } onClick={()=>navigate("/post-login", { state: {username: username} })} type="submit">Iniciar sesion</Button>
           {/* <Button > ¿ Olvidaste tu contraseña ?</Button> */}
           <Button onClick={()=>navigate("/registrarse")} variant="link">Crear cuenta nueva</Button>
         </Form.Group>
