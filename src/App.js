@@ -1,11 +1,15 @@
 import React  from 'react';
 
 import './App.css';
-import { UploadBotForm} from './components/UploadBotForm'
+import { UploadBotForm } from './components/UploadBotForm'
 
 function App() {
   return (
-    < UploadBotForm/ >
+
+    <div className="App">
+      < UploadBotForm/ >
+    </div>
+
   );
 }
 

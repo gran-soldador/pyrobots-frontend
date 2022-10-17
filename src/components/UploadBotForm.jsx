@@ -36,7 +36,6 @@ export function UploadBotForm() {
     const avatarRobotInput = useRef();
     const codeRobotInput = useRef();
 
-
     const handleValidation = () => {
         let formIsValid = true;
     
@@ -57,12 +56,14 @@ export function UploadBotForm() {
             }
         }
 
-        let ext = codeRobot.name.split('.').pop();
-        if (ext !== 'py') {
-            formIsValid = false;
-            setCodeErr("Solo se permiten archivos con extension '.py'");
-            setCodeRobot(null);
-            codeRobotInput.current.value = null;
+        if (codeRobot != null){
+            let ext = codeRobot.name.split('.').pop();
+            if (ext !== 'py') {
+                formIsValid = false;
+                setCodeErr("Solo se permiten archivos con extension '.py'");
+                setCodeRobot(null);
+                codeRobotInput.current.value = null;
+            }
         }
         
         if (formIsValid) {
@@ -116,14 +117,14 @@ export function UploadBotForm() {
 
             axios.post(URL, formData)
             .then((res) => {
-                alert("Tu robot se subió correctamente! 🤖 ")
+                console.log("Tu robot se subió correctamente! 🤖 ")
                 // Redirigir a otra pagina.
                 console.log(res.data)
                 }
             ) 
             .catch((err) => {
                 if(err.response.data.detail === "User doesn't exist."){
-                    alert("Username error. Try again.")
+                    console.log("Username error. Try again.")
                     // Redirgo a otra pagina.
                 }
                 else if(err.response.data.detail === "File must be a .py"){
@@ -144,7 +145,7 @@ export function UploadBotForm() {
             });
         }
         else {
-            alert("El formulario contiene errores. Revisa los datos e intente nuevamente.");
+            console.log("El formulario contiene errores. Revisa los datos e intente nuevamente.");
 		}
     }
         
@@ -181,6 +182,7 @@ export function UploadBotForm() {
                         type="file"
                         className='form-control'
                         onChange={ handleAvatarRobot }
+                        data-testid="test-file-image"
                         ref={avatarRobotInput} />
                 <span style={{ color: "red" }}> {avatarErr} </span>
             </Form.Group>
@@ -192,13 +194,15 @@ export function UploadBotForm() {
                     className='form-control'
                     required
                     onChange={ handleCodeRobot }
-                    ref={codeRobotInput} />
+                    ref={codeRobotInput} 
+                    data-testid="test-file-py" />
                 <span style={{ color: "red" }}> {codeErr} </span>
             </Form.Group>
 
             <Form.Group className="mb-3">
                 <Button variant="success" 
                     type="submit"
+                    data-testid="test-button"
                     size="lg">
                         Subir Robot
                 </Button>{' '}
@@ -214,5 +218,4 @@ export function UploadBotForm() {
     );
 }
 
-
-
+export default UploadBotForm;
