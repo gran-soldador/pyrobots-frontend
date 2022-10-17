@@ -50,7 +50,7 @@ export function RegisterForm() {
 
     //Contraseña
     if (!datos.password
-    .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/)) {
+    .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])/)) {
       formIsValid = false;
       setPasswordErr(
       "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial");
@@ -154,7 +154,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
         <Form.Label column sm={12}>Usuario</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           placeholder='Ingresar usuario'
@@ -172,7 +171,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
         <Form.Label column sm={12}>Email</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           placeholder='Ingresar Email'
@@ -188,7 +186,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicEmailConf">
         <Form.Label column sm={12}>Confirmar Email</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           placeholder='Confirmar Email'
@@ -204,7 +201,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
         <Form.Label column sm={12}>Contraseña</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           placeholder='Ingresar contraseña'
@@ -221,7 +217,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicPasswordConf">
         <Form.Label column sm={12}>Confirmar Contraseña</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           placeholder='Confirmar contraseña'
@@ -238,7 +233,6 @@ export function RegisterForm() {
 
       <Form.Group as={Row} className="mb-3" controlId="formBasicAvatar">
         <Form.Label column sm={12}>Avatar (Opcional)</Form.Label>
-        <br/>
         <Col sm={12}>
         <input
           className="form-control"
