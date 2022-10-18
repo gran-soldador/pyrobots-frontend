@@ -54,15 +54,15 @@ const ListPartidas = () => {
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
-        {results.map((partida, i) => (
+        {results.map((partida, id) => (
             <tr key={ partida.id } className="Rows-List">
-              <td> { partida.partida_id } </td>
+              <td >  { partida.partida_id } </td>
               <td> { partida.namepartida } </td>
               <td> { partida.status } </td>
-              <td> { partida.numplayers } </td>
+              <td> { partida.minplayers} a { partida.maxplayers } </td>
               <td> { partida.numgames } </td>
               <td> { partida.numrondas } </td>
-              <td> { partida.numcurrentplayers }/4 </td>
+              <td> { partida.numcurrentplayers } </td>
               <td> { partida.creador } </td>
               {
                 (!partida.password) ? <td>Desbloqueada</td>
@@ -107,13 +107,13 @@ const ListPartidas = () => {
           </tr>
         </thead>
         {
-          (isEmptyList || (!listGame || listGame.length === 0)) ?
-            <div className='emptylist'> No hay partidas disponibles </div> : <p/>
-        }
-        {
           DisplayData()
         }
       </table>
+      {
+        (isEmptyList || (!listGame || listGame.length === 0)) ?
+          <div className='emptylist'> No hay partidas disponibles </div> : <p/>
+      }
     </div>
  );
 }
