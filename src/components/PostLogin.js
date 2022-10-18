@@ -1,8 +1,6 @@
 import React from "react";
 import './css/PostLogin.css';
 
-import { useLocation, useNavigate } from "react-router-dom"
-
 const PostLogin = () => {
   
   return (
@@ -17,7 +15,10 @@ const PostLogin = () => {
             <button className='btn btn-primary btn-lg'>Listar Partida</button>
           </a>
           <br/> <br/>
+          &nbsp;
+          <a href='/subir-bot'>
             <button className='btn btn-primary btn-lg'>Subir bot</button>
+          </a>
           &nbsp;
           <a href='/ver-tablero'>
             <button className='btn btn-primary btn-lg'>Ver tablero</button>
