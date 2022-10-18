@@ -1,0 +1,63 @@
+.gameboard-pyrobots{
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(229, 240, 244);
+    padding: 20px;
+  }
+  
+  #canvas{
+    box-shadow: inset 0 0 0 2px #5E99CF; /* Borde interno */
+    border-radius: 3%;
+    background-color: #04101F;
+    width: 520px;
+    height: 520px;
+  }
+  
+  .container-progressbar{
+    width: 550px;
+    margin: auto;
+  }
+  
+
+
+  .container-progressbar p{
+    margin: 0;
+    margin-top: 0px;
+    font-weight: bold !important;
+    color: #04101F;
+  }
+  
+  header{
+    height: 40px;
+  }
+  
+  header h1{
+    text-align: center;
+    font-size: 25px !important;
+  }
+  
+  .progress-bar {
+    font-weight: bold !important;
+    
+  }
+  
+  .progress {
+    background-color: #b9bfc6 !important;  
+  }
+  
+  .verde-pbar{
+    background-color: #02C717 !important;
+  }
+  
+  .rojo-pbar{
+    background-color: #FB4E4E !important;
+  }
+  
+  .azul-pbar{
+    background-color: #5E99CF !important;
+  }
+  
+  .amarillo-pbar{
+    background-color: #c3c60e !important;
+  }
