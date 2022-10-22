@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 import './css/UploadBotForm.css';
 import logo from './logo.png';
@@ -13,7 +14,7 @@ import logo from './logo.png';
 export function UploadBotForm() {
     
     const [username, setUsername] = useState('');
- 
+
     useEffect(function () {
         
         const API_ID = '/login/verify_token'
@@ -22,18 +23,16 @@ export function UploadBotForm() {
         const tokenDict = localStorage.getItem('user');
         if(tokenDict !== null){
             const tokenValue = (JSON.parse(tokenDict)).accessToken;
-            console.log(tokenValue);
     
             let TokenData = new FormData();
             TokenData.append('Authorization', tokenValue);
             
             axios.post(URL_ID, TokenData)
             .then((res) => {
-                console.log(res.data.nombre_usuario)
                 setUsername(res.data.nombre_usuario)
             }) 
             .catch((err) => {
-                console.log(err)
+                console.log(err)               
             });
         }
 
@@ -49,24 +48,38 @@ export function UploadBotForm() {
     const [avatarErr, setAvatarErr] = useState("");
     const [codeErr, setCodeErr] = useState("");
 
+    // Mostar Modal de error si hay errores en los imputs.
+    const [validForm, setValidForm] = useState(false);
+    const hideErrorForm = () => setValidForm(false);
+
     // Referencias a los inputField.
     const nameRobotInput = useRef();
     const avatarRobotInput = useRef();
     const codeRobotInput = useRef();
 
+    // Modal:
+    const [successUpload, setSuccessUpload] = useState(false);
+
+    const handleCloseModal = () => {
+        setSuccessUpload(false);
+        nameRobotInput.current.value = "";
+        avatarRobotInput.current.value = null;
+        codeRobotInput.current.value = null;
+    }
+
     const handleValidation = () => {
         let formIsValid = true;
     
         if (!nameRobot.match(/^[a-zA-Z0-9-]+$/)) {
-          	formIsValid = false;
-          	setRobotNameErr("Solo mayúsculas, minúsculas, números y guiones.");
+            formIsValid = false;
+            setRobotNameErr("Solo mayúsculas, minúsculas, números y guiones.");
         }
         
         if (avatarRobot != null) {
             let ext = avatarRobot.name.split('.').pop();
             if (ext !== "jpg" && ext !== "jpeg" &&
                 ext !== "jpe" && ext !== "jfif" &&
-              	ext !== "gif" && ext !== "png") {
+                ext !== "gif" && ext !== "png") {
                 formIsValid = false;
                 setAvatarErr("Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
                 setAvatarRobot(null);
@@ -118,11 +131,8 @@ export function UploadBotForm() {
     const handleSubmit = (event) => {
         event.preventDefault()
 
-        console.log("EL usuario ", username, " quiere subir un robot.")
         if (handleValidation()) {
-            
             let formData = new FormData();
-            console.log("FromData-Username: ", username);
             formData.append('username', username);
             formData.append('robotName', nameRobot);
 
@@ -134,43 +144,91 @@ export function UploadBotForm() {
 
             const API = '/user/creacion_de_robot/'
             const URL = "http://127.0.0.1:8000" + API
-
+      
             axios.post(URL, formData)
             .then((res) => {
-                console.log("Tu robot se subió correctamente! 🤖 ")
-                // Redirigir a otra pagina.
-                console.log(res.data)
-                }
-            ) 
+                setSuccessUpload(true);
+            }) 
             .catch((err) => {
                 if(err.response.data.detail === "User doesn't exist."){
-                    console.log("Username error. Try again.")
-                    // Redirgo a otra pagina.
+                    setValidForm(true);
                 }
                 else if(err.response.data.detail === "File must be a .py"){
+                    setValidForm(true);
                     codeRobotInput.current.value = null;
                     setCodeRobot(null);
-            		setCodeErr("El archivo del robot no es valido. Por favor ingrese un archivo valido.");
+                    setCodeErr("El archivo del robot no es valido. Por favor ingrese un archivo valido.");
                 }
-                else if(err.response.data.detail === "You already have a robot with that name."){
+                else if(err.response.data.detail === "You already havea robot with that name."){
+                    setValidForm(true);
                     nameRobotInput.current.value = "";
                     setNameRobot(''); 
                     setRobotNameErr("Nombre de robot en uso. Por favor ingrese un nombre valido.");
                 }
                 else if(err.response.data.detail === "File is not an image."){
+                    setValidForm(true);
                     avatarRobotInput.current.value = null;
                     setAvatarRobot(null);
-            		setAvatarErr("El avatar no es valido. Por favor ingrese una imagen valida.");
+                    setAvatarErr("El avatar no es valido. Por favor ingrese una imagen valida.");
+                }
+                else{
+                    console.log(err)
                 }
             });
         }
         else {
-            console.log("El formulario contiene errores. Revisa los datos e intente nuevamente.");
+            setValidForm(true);
 		}
     }
         
     return (
         <Form onSubmit={ handleSubmit } className="form_upload_bot_pyrobot">
+            
+            <Modal
+                className='modal-upload'
+                show={successUpload}
+                onHide={handleCloseModal}
+                backdrop="static"
+                keyboard={false}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Tu robot se subió correctamente! 🔥 </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <span style={{ color: "red" }}>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <a href='/post-login'>
+                        <Button 
+                            variant="primary" 
+                            onClick={handleCloseModal}
+                            className='buttonModal'>
+                                Aceptar
+                        </Button>
+                    </a>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal
+                className='modal-errorForm'
+                show={validForm}
+                onHide={hideErrorForm}
+                backdrop="static"
+                keyboard={false}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>No se pudo subir tu robot 😔</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Revisa los datos del formulario e intenta nuevamente.
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button 
+                            variant="primary" 
+                            onClick={hideErrorForm}
+                            className='buttonModal'>
+                                Aceptar
+                        </Button>
+                </Modal.Footer>
+            </Modal>
 
             <Image src={logo}></Image>
             <Image src={logo}></Image>
