@@ -55,15 +55,15 @@ const ListPartidas = () => {
     return (
       <tbody className='partidas-list'>
         {results.map((partida, id) => (
-            <tr key={ partida.id } className="Rows-List">
-              <td key={1}> { partida.partida_id } </td>
-              <td key={2}> { partida.namepartida } </td>
-              <td key={3}> { partida.status } </td>
-              <td key={4}> { partida.minplayers} a { partida.maxplayers } </td>
-              <td key={5}> { partida.numgames } </td>
-              <td key={6}> { partida.numrondas } </td>
-              <td key={7}> { partida.numcurrentplayers } </td>
-              <td key={8}> { partida.creador } </td>
+            <tr key={ id } className="Rows-List">
+              <td> { partida.partida_id } </td>
+              <td> { partida.namepartida } </td>
+              <td> { partida.status } </td>
+              <td> { partida.minplayers} a { partida.maxplayers } </td>
+              <td> { partida.numgames } </td>
+              <td> { partida.numrondas } </td>
+              <td> { partida.numcurrentplayers } </td>
+              <td> { partida.creador } </td>
               {
                 (!partida.password) ? <td>Desbloqueada</td>
                 : <td>Bloqueada</td>
