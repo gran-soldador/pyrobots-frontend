@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from 'react'
+import React, { useState, useRef } from 'react'
 
 import axios from "axios";
 
@@ -12,31 +12,6 @@ import './css/UploadBotForm.css';
 import logo from './logo.png';
 
 export function UploadBotForm() {
-    
-    const [username, setUsername] = useState('');
-
-    useEffect(function () {
-        
-        const API_ID = '/login/verify_token'
-        const URL_ID = "http://127.0.0.1:8000" + API_ID
-        
-        const tokenDict = localStorage.getItem('user');
-        if(tokenDict !== null){
-            const tokenValue = (JSON.parse(tokenDict)).accessToken;
-    
-            let TokenData = new FormData();
-            TokenData.append('Authorization', tokenValue);
-            
-            axios.post(URL_ID, TokenData)
-            .then((res) => {
-                setUsername(res.data.nombre_usuario)
-            }) 
-            .catch((err) => {
-                console.log(err)               
-            });
-        }
-
-    }, []);
 
 	// Datos del formulario
     const [nameRobot, setNameRobot] = useState('');
@@ -133,7 +108,10 @@ export function UploadBotForm() {
 
         if (handleValidation()) {
             let formData = new FormData();
-            formData.append('username', username);
+
+            const tokenDict = localStorage.getItem('user');
+            const tokenValue = (JSON.parse(tokenDict)).accessToken;
+
             formData.append('robotName', nameRobot);
 
             if(avatarRobot){
@@ -145,7 +123,9 @@ export function UploadBotForm() {
             const API = '/user/creacion_de_robot/'
             const URL = "http://127.0.0.1:8000" + API
       
-            axios.post(URL, formData)
+            axios.post(URL, formData, {
+                headers: {"Authorization" : `Bearer ${tokenValue}`}
+                })
             .then((res) => {
                 setSuccessUpload(true);
             }) 

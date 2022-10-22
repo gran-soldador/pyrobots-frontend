@@ -29,7 +29,7 @@ const CreatePartida = () => {
 
   // Modal:
   const [successUpload, setSuccessUpload] = useState(false);
-
+  // setear todos los campos
   const handleCloseModal = () => {
     setSuccessUpload(false);
     namepartidaRef.current.value = '';
@@ -45,54 +45,23 @@ const CreatePartida = () => {
   const [idrobot, setIdRobot] = useState(0);
   const [datosRobot, setDatosRobot] = useState([]);
 
-  const [username, setUsername] = useState('');
-  const [tokenReady, setTokenReady] = useState(false);
-
-  useEffect(function () {
-        
-    const API_ID = '/login/verify_token'
-    const URL_ID = "http://127.0.0.1:8000" + API_ID
-    
-    const tokenDict = localStorage.getItem('user');
-    if(tokenDict !== null){
-        const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        console.log(tokenValue);
-
-        let TokenData = new FormData();
-        TokenData.append('Authorization', tokenValue);
-        
-        axios.post(URL_ID, TokenData)
-        .then((res) => {
-            console.log("Token Partida: ", res.data.nombre_usuario)
-            setUsername(res.data.nombre_usuario)
-            setTokenReady(true)
-        }) 
-        .catch((err) => {
-            console.log(err)
-        });
-    }
-
-  } , []);
-
   //Leer datos de robots
   useEffect(function () {
-      if(tokenReady){
-
-        let robot_list = new FormData();
-        robot_list.append('username', username);
-        
-        axios.post('http://127.0.0.1:8000/lista-robots', robot_list)
-        .then((res) => {
-          console.log(res)
-          setDatosRobot(res.data)
-        }) 
-        .catch((err) => {
-          console.log(err)
-        });
-        
-        console.log(username);
-      }
-    }, [tokenReady]);
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      axios.get('http://127.0.0.1:8000/lista-robots', {
+        headers: { 'Authorization': `Bearer ${tokenValue}` }
+      })
+      .then((res) => {
+        console.log(res)
+        setDatosRobot(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+    }
+    }, []);
 
   //Enviar datos a la API
   async function handleSubmit(event) {
@@ -101,21 +70,27 @@ const CreatePartida = () => {
     const API = 'http://127.0.0.1:8000/crear-partida';
     let formData = new FormData();
 
-    formData.append('namepartida', namepartida);
-    formData.append('password', password);
-    formData.append('numgames', numgames);
-    formData.append('numrondas', numrondas);
-    formData.append('minplayers', minplayers);
-    formData.append('maxplayers', maxplayers);
-    formData.append('idrobot', idrobot);
-
-    try {
-      const response = await axios.post(API, formData);
-      console.log(response);
-      setSuccessUpload(true);
-    } catch (e) {
-      console.log(e);
-      console.log('error')
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) { 
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      formData.append('namepartida', namepartida);
+      formData.append('password', password);
+      formData.append('numgames', numgames);
+      formData.append('numrondas', numrondas);
+      formData.append('minplayers', minplayers);
+      formData.append('maxplayers', maxplayers);
+      formData.append('idrobot', idrobot);
+      
+      try {
+        const response = await axios.post(API, formData, {
+          headers: { 'Authorization': `Bearer ${tokenValue}` }
+        });
+        console.log(response);
+        setSuccessUpload(true);
+      } catch (e) {
+        console.log(e);
+        console.log('error')
+      }
     }
   }
 
