@@ -17,6 +17,7 @@ const CreatePartida = () => {
   // Mostar Modal de error si hay errores en los imputs.
   const [validForm, setValidForm] = useState(false);
   const hideErrorForm = () => setValidForm(false);
+  const [validplayers, setValidPlayers] = useState('');
 
   // Referencias a los inputField.
   const namepartidaRef = useRef();
@@ -27,6 +28,17 @@ const CreatePartida = () => {
   const maxplayersRef = useRef();
   const idrobotRef = useRef();
 
+  const handleValidation = () => {
+    let valid = true;
+    if (minplayers > maxplayers) {
+      valid = false;
+      setValidPlayers('El número de jugadores mínimo no puede ser mayor que el número de jugadores máximo');
+    }
+    if (valid) {
+      setValidPlayers('');
+    }
+    return valid;
+  }
   // Modal:
   const [successUpload, setSuccessUpload] = useState(false);
   // setear todos los campos
@@ -66,31 +78,35 @@ const CreatePartida = () => {
   //Enviar datos a la API
   async function handleSubmit(event) {
     event.preventDefault()
-    console.log('Enviando datos al servidor');
-    const API = 'http://127.0.0.1:8000/crear-partida';
-    let formData = new FormData();
+    if (handleValidation()) {
+      console.log('Enviando datos al servidor');
+      const API = 'http://127.0.0.1:8000/crear-partida';
+      let formData = new FormData();
 
-    const tokenDict = localStorage.getItem('user');
-    if (tokenDict !== null) { 
-      const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      formData.append('namepartida', namepartida);
-      formData.append('password', password);
-      formData.append('numgames', numgames);
-      formData.append('numrondas', numrondas);
-      formData.append('minplayers', minplayers);
-      formData.append('maxplayers', maxplayers);
-      formData.append('idrobot', idrobot);
+      const tokenDict = localStorage.getItem('user');
+      if (tokenDict !== null) {
+        const tokenValue = (JSON.parse(tokenDict)).accessToken;
+        formData.append('namepartida', namepartida);
+        formData.append('password', password);
+        formData.append('numgames', numgames);
+        formData.append('numrondas', numrondas);
+        formData.append('minplayers', minplayers);
+        formData.append('maxplayers', maxplayers);
+        formData.append('idrobot', idrobot);
       
-      try {
-        const response = await axios.post(API, formData, {
-          headers: { 'Authorization': `Bearer ${tokenValue}` }
-        });
-        console.log(response);
-        setSuccessUpload(true);
-      } catch (e) {
-        console.log(e);
-        console.log('error')
+        try {
+          const response = await axios.post(API, formData, {
+            headers: { 'Authorization': `Bearer ${tokenValue}` }
+          });
+          console.log(response);
+          setSuccessUpload(true);
+        } catch (e) {
+          console.log(e);
+          console.log('error')
+        }
       }
+    } else {
+      console.log('Formulario no válido');
     }
   }
 
@@ -106,7 +122,7 @@ const CreatePartida = () => {
             <Modal.Title>Tu partida se creo correctamente! </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span style={{ color: "red" }}>{namepartida}</span> se añadió a la lista de partidas.
+            <span style={{ color: 'red' }}>{namepartida}</span> se añadió a la lista de partidas.
           </Modal.Body>
           <Modal.Footer>
             <a href='/post-login'>
@@ -175,16 +191,17 @@ const CreatePartida = () => {
           required
           min={2}
           ref={minplayersRef}
-          max={3}
+          max={4}
           onChange={event => setMinPlayers(event.target.value)} />
          <Form.Control
           type='number'
           placeholder='Cantidad máxima de jugadores'
           required
           ref={maxplayersRef}
-          min={3}
+          min={2}
           max={4}
-          onChange={event => setMaxPlayers(event.target.value)}/>
+          onChange={event => setMaxPlayers(event.target.value)} />
+        <span style={{ color: 'red' }}>{validplayers}</span>
       </Form.Group>
 
       <Form.Group className='form-group'>
@@ -198,8 +215,7 @@ const CreatePartida = () => {
           ref={numgamesRef}
           min={1}
           max={200}
-          onChange={event => setNumGames(event.target.value)}
-        />
+          onChange={event => setNumGames(event.target.value)} />
       </Form.Group>
 
       <Form.Group className='form-group'>
@@ -213,7 +229,7 @@ const CreatePartida = () => {
           ref={numrondasRef}
           min={1}
           max={10000}
-          onChange={event => setNumRondas(event.target.value)}/>
+          onChange={event => setNumRondas(event.target.value)} />
       </Form.Group>
 
       <Form.Group className='form-group'>
