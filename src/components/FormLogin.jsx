@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from './logo.png';
 import './css/FormLogin.css';
-
+import NavBar from './NavBar_1';
 
 import axios from "axios";
   const baseURL = "http://127.0.0.1:8000/login";
@@ -44,6 +44,8 @@ const FormLogin = () => {
 
   return (
     <>
+      <NavBar />
+      <br/>
       <Form className='form_pyrobots_login' onSubmit={handleSubmit}>
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>

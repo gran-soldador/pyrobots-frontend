@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import logo from './logo.png';
 import axios from 'axios';
 import './css/CreatePartida.css';
+import NavBar from './NavBar_2';
 
 const CreatePartida = () => {
   //Datos partida
@@ -111,6 +112,9 @@ const CreatePartida = () => {
   }
 
   return (
+    <>
+    <NavBar />
+    <br/>
     <Form className='form_create_pardida' onSubmit={handleSubmit}>
       <Modal
         className='modal-upload'
@@ -259,8 +263,8 @@ const CreatePartida = () => {
             datosRobot.map((robot) => (
               <option value={robot.id} key={robot.id}>{robot.nombre}</option>
               )
-            )
-          }
+              )
+            }
         </Form.Control>
       </Form.Group>
       <br/>
@@ -280,7 +284,8 @@ const CreatePartida = () => {
             Cancelar
         </Button>
       </Form.Group>
-      </Form>
+    </Form>
+    </>
   )
 }
 

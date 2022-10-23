@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
+import NavBar from './NavBar_2';
 
 const ListPartidas = () => {
   //Estado de la lista
@@ -76,6 +77,7 @@ const ListPartidas = () => {
 
   return (
     <div>
+      <NavBar />
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>

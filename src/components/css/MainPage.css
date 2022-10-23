@@ -11,6 +11,10 @@
   text-align: center;
 }
 
+.app-header {
+  background-color: #282c34;
+}
+
 .title {
   font-size: 40px;
   font-weight: bold !important;

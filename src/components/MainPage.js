@@ -1,18 +1,15 @@
 import React from "react";
+import NavBar from './NavBar_1';
 import './css/MainPage.css';
 
 const MainPage = () => {
   return (
-        <div className='Box-main'>
-          <h1 className='title'>Bienvenido a<br/> PY-Robots</h1>
-            <a href='/login'>
-              <button className='btn btn-primary btn-lg'>Login</button>
-            </a>
-            &nbsp;
-            <a href='/registrarse'>
-            <button className='btn btn-primary btn-lg'>Registro</button>
-            </a>
-        </div>
+    <> 
+      <NavBar/>
+      <div className='Box-main'>
+        <h1 className='title'>Bienvenido a<br/> PY-Robots</h1>
+      </div>
+    </>
   );
 }
 

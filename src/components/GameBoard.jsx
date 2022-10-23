@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import NavBar from './NavBar_2';
 
 import './css/GameBoard.css';
 
@@ -141,6 +142,9 @@ export function GameBoard() {
     }
 
     return (
+        <>
+        <NavBar />
+        <br/>
         <div className='gameboard-pyrobots'>
                 <header className="mb-3">
                     <h1>Simulación de PyRobots</h1>
@@ -157,6 +161,7 @@ export function GameBoard() {
             <br></br>
             <button type="button" className="btn btn-success" onClick={runAnimation}>Simular</button>
         </div>
+        </>
     );
 };
 

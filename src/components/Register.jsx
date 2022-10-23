@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import logo from './logo.png';
 import React, { useState } from 'react';
 import axios from "axios";
+import NavBar from './NavBar_1';
 
 export function RegisterForm() {
 
@@ -43,32 +44,32 @@ export function RegisterForm() {
     }
 
     //Confirmar email
-    if (datos.useremail !==datos.useremailconf) {
+    if (datos.useremail !== datos.useremailconf) {
       formIsValid = false;
       setUseremailconfErr("Confirmación de email es distinto al email seleccionado");
     }
 
     //Contraseña
     if (!datos.password
-    .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])/)) {
+      .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])/)) {
       formIsValid = false;
       setPasswordErr(
-      "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial");
+        "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial");
     }
 
     //Confirmar contraseña
     if (datos.password !== datos.passwordconf) {
       formIsValid = false;
       setPasswordconfErr(
-      "Confirmación de contraseña es distinta a la contraseña seleccionada");
+        "Confirmación de contraseña es distinta a la contraseña seleccionada");
     }
 
     //Avatar
     if (userAvatar !== null) {
       let ext = userAvatar.name.split('.').pop();
       if (ext !== "jpg" && ext !== "jpeg" &&
-          ext !== "jpe" && ext !== "jfif" &&
-          ext !== "gif" && ext !== "png") {
+        ext !== "jpe" && ext !== "jfif" &&
+        ext !== "gif" && ext !== "png") {
         formIsValid = false;
         setAvatarErr(
           "Solo se permiten imagenes con extensiones .jpg .jpeg .jpe .jfif .gif .png");
@@ -122,18 +123,18 @@ export function RegisterForm() {
         const response = await axios.post(URL, formData)
         console.log(response);
         alert("Usuario registrado");
-      } catch(err) {
+      } catch (err) {
         console.log(err?.response);
-            if (err?.response?.data?.detail === "User name already exist.") {
-              alert("El formulario contiene errores");
-              setUsernameErr("Username ya registrado");
-            } else if (err?.response?.data?.detail === "Email already registered.") {
-              alert("El formulario contiene errores");
-              setUseremailErr("Email ya registrado");
-            } else {
-              alert("Algo salió mal");
-            }
+        if (err?.response?.data?.detail === "User name already exist.") {
+          alert("El formulario contiene errores");
+          setUsernameErr("Username ya registrado");
+        } else if (err?.response?.data?.detail === "Email already registered.") {
+          alert("El formulario contiene errores");
+          setUseremailErr("Email ya registrado");
+        } else {
+          alert("Algo salió mal");
         }
+      }
 
     } else {
       alert("El formulario contiene errores");
@@ -141,125 +142,129 @@ export function RegisterForm() {
   }
 
   return (
-    <form className='registerform' onSubmit={handleSubmit}>
-      <img src={logo} className="" alt="logo" />
-      <Image src={logo}></Image>
-      <Image src={logo}></Image>
-      <Form.Text>
-        <h1>Bienvenido a PyRobots!</h1>
-      </Form.Text>
-      <Form.Text>
-        Registro
-      </Form.Text>
-      <hr></hr>
+    <>
+      <NavBar />
+      <br/>
+      <form className='registerform' onSubmit={handleSubmit}>
+        <img src={logo} className="" alt="logo" />
+        <Image src={logo}></Image>
+        <Image src={logo}></Image>
+        <Form.Text>
+          <h1>Bienvenido a PyRobots!</h1>
+        </Form.Text>
+        <Form.Text>
+          Registro
+        </Form.Text>
+        <hr></hr>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
-        <Form.Label column sm={12}>Usuario</Form.Label>
-        <Col sm={12}>
-        <input
-          placeholder='Ingresar usuario'
-          className="form-control"
-          type='text'
-          minLength={1}
-          maxLength={32}
-          name='username'
-          onChange={handleChange}
-          required
-        />
-        <span style={{ color: "red" }}>{usernameErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
+          <Form.Label column sm={12}>Usuario</Form.Label>
+          <Col sm={12}>
+          <input
+            placeholder='Ingresar usuario'
+            className="form-control"
+            type='text'
+            minLength={1}
+            maxLength={32}
+            name='username'
+            onChange={handleChange}
+            required
+          />
+          <span style={{ color: "red" }}>{usernameErr}</span>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
-        <Form.Label column sm={12}>Email</Form.Label>
-        <Col sm={12}>
-        <input
-          placeholder='Ingresar Email'
-          className="form-control"
-          type='email'
-          name='useremail'
-          onChange={handleChange}
-          required
-        />
-        <span style={{ color: "red" }}>{useremailErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicEmail">
+          <Form.Label column sm={12}>Email</Form.Label>
+          <Col sm={12}>
+          <input
+            placeholder='Ingresar Email'
+            className="form-control"
+            type='email'
+            name='useremail'
+            onChange={handleChange}
+            required
+            />
+          <span style={{ color: "red" }}>{useremailErr}</span>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicEmailConf">
-        <Form.Label column sm={12}>Confirmar Email</Form.Label>
-        <Col sm={12}>
-        <input
-          placeholder='Confirmar Email'
-          className="form-control"
-          type='email'
-          name='useremailconf'
-          onChange={handleChange}
-          required
-        />
-        <span style={{ color: "red" }}>{useremailconfErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicEmailConf">
+          <Form.Label column sm={12}>Confirmar Email</Form.Label>
+          <Col sm={12}>
+          <input
+            placeholder='Confirmar Email'
+            className="form-control"
+            type='email'
+            name='useremailconf'
+            onChange={handleChange}
+            required
+            />
+          <span style={{ color: "red" }}>{useremailconfErr}</span>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
-        <Form.Label column sm={12}>Contraseña</Form.Label>
-        <Col sm={12}>
-        <input
-          placeholder='Ingresar contraseña'
-          className="form-control"
-          type='password'
-          name='password'
-          minLength={8}
-          onChange={handleChange}
-          required
-        />
-        <span style={{ color: "red" }}>{passwordErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+          <Form.Label column sm={12}>Contraseña</Form.Label>
+          <Col sm={12}>
+          <input
+            placeholder='Ingresar contraseña'
+            className="form-control"
+            type='password'
+            name='password'
+            minLength={8}
+            onChange={handleChange}
+            required
+            />
+          <span style={{ color: "red" }}>{passwordErr}</span>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicPasswordConf">
-        <Form.Label column sm={12}>Confirmar Contraseña</Form.Label>
-        <Col sm={12}>
-        <input
-          placeholder='Confirmar contraseña'
-          className="form-control"
-          type='password'
-          name='passwordconf'
-          minLength={8}
-          onChange={handleChange}
-          required
-        />
-        <span style={{ color: "red" }}>{passwordconfErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicPasswordConf">
+          <Form.Label column sm={12}>Confirmar Contraseña</Form.Label>
+          <Col sm={12}>
+          <input
+            placeholder='Confirmar contraseña'
+            className="form-control"
+            type='password'
+            name='passwordconf'
+            minLength={8}
+            onChange={handleChange}
+            required
+            />
+          <span style={{ color: "red" }}>{passwordconfErr}</span>
+          </Col>
+        </Form.Group>
 
-      <Form.Group as={Row} className="mb-3" controlId="formBasicAvatar">
-        <Form.Label column sm={12}>Avatar (Opcional)</Form.Label>
-        <Col sm={12}>
-        <input
-          className="form-control"
-          type='file'
-          name='avatar'
-          onChange={handleUserAvatar}
-        />
-        <span style={{ color: "red" }}>{avatarErr}</span>
-        </Col>
-      </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formBasicAvatar">
+          <Form.Label column sm={12}>Avatar (Opcional)</Form.Label>
+          <Col sm={12}>
+          <input
+            className="form-control"
+            type='file'
+            name='avatar'
+            onChange={handleUserAvatar}
+            />
+          <span style={{ color: "red" }}>{avatarErr}</span>
+          </Col>
+        </Form.Group>
 
-      <button
-        type="reset"
-        className="btn btn-block mb-4 btn-dark"
-        onClick={resetForm}
-      >
-        Cancelar
-      </button>
-      &nbsp;
-      <button
-        type="submit"
-        className="btn btn-block mb-4 btn-success"
-      >
-        Registrarte
-      </button>
-    </form>
+        <button
+          type="reset"
+          className="btn btn-block mb-4 btn-dark"
+          onClick={resetForm}
+          >
+          Cancelar
+        </button>
+        &nbsp;
+        <button
+          type="submit"
+          className="btn btn-block mb-4 btn-success"
+          >
+          Registrarte
+        </button>
+      </form>
+    </>
   )
 };
 

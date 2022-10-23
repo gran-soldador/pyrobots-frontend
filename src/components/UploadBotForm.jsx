@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import './css/UploadBotForm.css';
 import logo from './logo.png';
+import NavBar from './NavBar_2';
 
 export function UploadBotForm() {
 
@@ -162,6 +163,9 @@ export function UploadBotForm() {
     }
         
     return (
+        <>
+        <NavBar />
+        <br/>
         <Form onSubmit={ handleSubmit } className="form_upload_bot_pyrobot">
             
             <Modal
@@ -273,6 +277,7 @@ export function UploadBotForm() {
                 </Button>
             </Form.Group>
         </Form>
+        </>
     );
 }
 
