@@ -140,7 +140,9 @@ const FormLogin = () => {
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
           <Button disabled={!password ||!username } type="submit">Iniciar sesion</Button>
           {/* <Button > ¿ Olvidaste tu contraseña ?</Button> */}
-          <Button variant="link">Crear cuenta nueva</Button>
+          <a href='/registrarse'>
+            <Button variant="link">Crear cuenta nueva</Button>
+          </a>
         </Form.Group>
       </Form>
       </>
