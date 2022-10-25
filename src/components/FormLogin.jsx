@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
@@ -23,8 +23,6 @@ const FormLogin = () => {
 
   //handle del modal
   const handleClose = () => setSuccessLogin(false);
-  const handleShow = () => setSuccessLogin(true);
-
   // Mostar Modal de error, si no logro loguearse correctamente.
   const [validForm, setValidForm] = useState(false);
   const hideErrorForm = () => setValidForm(false);
