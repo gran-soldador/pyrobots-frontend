@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import NavBar from './NavBar_1';
 
+
 export function RegisterForm() {
 
   const [datos, setDatos] = useState({

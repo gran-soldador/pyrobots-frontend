@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
 
+
 const ListPartidas = () => {
   //Estado de la lista
   const [isEmptyList, setIsEmptyList] = useState(false);

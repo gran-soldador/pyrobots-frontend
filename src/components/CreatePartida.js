@@ -6,6 +6,7 @@ import axios from 'axios';
 import './css/CreatePartida.css';
 import NavBar from './NavBar_2';
 
+
 const CreatePartida = () => {
   //Datos partida
   const [namepartida, setNamePartidas] = useState('');
@@ -129,7 +130,7 @@ const CreatePartida = () => {
             <span style={{ color: 'red' }}>{namepartida}</span> se añadió a la lista de partidas.
           </Modal.Body>
           <Modal.Footer>
-            <a href='/post-login'>
+            <a href='/home'>
               <Button 
                 variant="primary" 
                 onClick={handleCloseModal}

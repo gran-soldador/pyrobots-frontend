@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from './NavBar_1';
 import './css/MainPage.css';
 
+
 const MainPage = () => {
   return (
     <> 

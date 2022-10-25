@@ -12,6 +12,7 @@ import redRobotImage from '../media/rojo.svg';
 import blueRobotImage from '../media/azul.svg';
 import greenRobotImage from '../media/verde.svg';
 
+
 export function GameBoard() {
     
     // Descomentar para probar juego de 10.000 rondas.

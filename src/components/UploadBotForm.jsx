@@ -12,6 +12,7 @@ import './css/UploadBotForm.css';
 import logo from './logo.png';
 import NavBar from './NavBar_2';
 
+
 export function UploadBotForm() {
 
 	// Datos del formulario
@@ -181,7 +182,7 @@ export function UploadBotForm() {
                         <span style={{ color: "red" }}>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
                     </Modal.Body>
                     <Modal.Footer>
-                    <a href='/post-login'>
+                    <a href='/home'>
                         <Button 
                             variant="primary" 
                             onClick={handleCloseModal}

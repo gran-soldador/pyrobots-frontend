@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
   const baseURL = "http://127.0.0.1:8000/login";
 
+
 // Función Formulario de Login.
 const FormLogin = () => {
   const [username, setUsername] = useState('');
@@ -78,7 +79,7 @@ const FormLogin = () => {
                     <span style={{ color: "green" }}>Bienvenida {username}.</span>
                 </Modal.Body>
                 <Modal.Footer>
-                <a href='/post-login'>
+                <a href='/home'>
                     <Button 
                         variant="primary" 
                         onClick={handleClose}
