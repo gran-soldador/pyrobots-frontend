@@ -8,7 +8,7 @@ import MainPage from './components/MainPage';
 import UploadBotForm from './components/UploadBotForm'
 import GameBoard  from "./components/GameBoard"
 import Home from './components/Home';
-import ListRobots from './components/ListRobots';
+import ListRobots from './components/Cards';
 import NotFound from './components/NotFound';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
