@@ -308,6 +308,7 @@ export function RegisterForm() {
             type='file'
             name='avatar'
             onChange={handleUserAvatar}
+            data-testid="test-file-image"
             />
           <span style={{ color: "red" }}>{avatarErr}</span>
           </Col>
@@ -323,6 +324,7 @@ export function RegisterForm() {
         &nbsp;
         <button
           type="submit"
+          data-testid="test-button"
           className="btn btn-block mb-4 btn-success"
           >
           Registrarte
