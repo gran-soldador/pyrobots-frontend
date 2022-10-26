@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
+import { Button, Modal, Form } from 'react-bootstrap';
 
 
 const ListPartidas = () => {
@@ -11,6 +12,12 @@ const ListPartidas = () => {
   const [listGame, setListGame] = useState([]);
   //estados para buscar
   const [search, setSearch] = useState("")
+
+  //modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [password, setPassword] = useState('');
 
   //buscar en table
   const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
@@ -67,8 +74,44 @@ const ListPartidas = () => {
               <td> { partida.numcurrentplayers } </td>
               <td> { partida.creador } </td>
               {
-                (!partida.password) ? <td>Desbloqueada</td>
-                : <td>Bloqueada</td>
+                (!partida.password) ?
+                  <td>
+                    <a href='lobby'>
+                      <Button variant='outline-success'> Desbloqueada </Button>
+                    </a>
+                  </td>
+                :
+                <td>
+                  <Button onClick={handleShow} variant='outline-danger'> Bloqueada </Button>
+                  <Modal className='modal-upload'show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Ingresar al Lobby</Modal.Title>
+                    </Modal.Header>
+                    <Form>
+                      <Form.Group>
+                        <Form.Label>
+                          Contraseña
+                        </Form.Label>
+                        <Form.Control
+                          type='password'
+                          placeholder='Ingrese contraseña'
+                          minLength={1}
+                          maxLength={10}
+                          onChange={event => setPassword(event.target.value)} />
+                    </Form.Group>
+                    <Modal.Footer>
+                      <a href='/lobby'>
+                        <Button variant='primary' onClick={handleClose}>
+                          Aceptar
+                          </Button>
+                      </a>
+                      <Button variant='secondary' onClick={handleClose}>
+                        Cancelar
+                      </Button>
+                    </Modal.Footer>
+                    </Form>
+                  </Modal>
+                </td>
               }
             </tr>
           ))}
