@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
+import NavBar from './NavBar_2';
+
 
 const ListPartidas = () => {
   //Estado de la lista
@@ -55,8 +57,8 @@ const ListPartidas = () => {
     return (
       <tbody className='partidas-list'>
         {results.map((partida, id) => (
-            <tr key={ partida.id } className="Rows-List">
-              <td >  { partida.partida_id } </td>
+            <tr key={ id } className="Rows-List">
+              <td> { partida.partida_id } </td>
               <td> { partida.namepartida } </td>
               <td> { partida.status } </td>
               <td> { partida.minplayers} a { partida.maxplayers } </td>
@@ -76,6 +78,7 @@ const ListPartidas = () => {
 
   return (
     <div>
+      <NavBar />
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>

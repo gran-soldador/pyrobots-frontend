@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import NavBar from './NavBar_2';
 
 import './css/GameBoard.css';
 
@@ -10,6 +11,7 @@ import yellowRobotImage from '../media/amarillo.svg';
 import redRobotImage from '../media/rojo.svg';
 import blueRobotImage from '../media/azul.svg';
 import greenRobotImage from '../media/verde.svg';
+
 
 export function GameBoard() {
     
@@ -141,6 +143,9 @@ export function GameBoard() {
     }
 
     return (
+        <>
+        <NavBar />
+        <br/>
         <div className='gameboard-pyrobots'>
                 <header className="mb-3">
                     <h1>Simulación de PyRobots</h1>
@@ -157,6 +162,7 @@ export function GameBoard() {
             <br></br>
             <button type="button" className="btn btn-success" onClick={runAnimation}>Simular</button>
         </div>
+        </>
     );
 };
 
