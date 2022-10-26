@@ -171,7 +171,9 @@ export function RegisterForm() {
           backdrop="static"
           keyboard={false}>
             <Modal.Header>
-            <Modal.Title>Registro correcto!</Modal.Title>
+            <Modal.Title>
+              Registro correcto! <Image src={logo}></Image>
+            </Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <span>Por favor revise su correo para proceder a la confirmación de la cuenta.</span>
@@ -182,7 +184,7 @@ export function RegisterForm() {
                     variant="primary" 
                     onClick={handleClose}
                     className='buttonModal'>
-                        Aceptar
+                        Aceptary
                 </Button>
             </a>
           </Modal.Footer>
