@@ -59,10 +59,14 @@ const ListRobots = () => {
       <>
       <tbody className='partidas-list'>
         {results.map((robots, id) => (
-            <tr key={ id } className="Rows-List">
+            <tr key={ id } className='Rows-List'>
               <td> { robots.robot_id } </td>
               <td> { robots.name } </td>
-              <td> <Avatar src = {robots.avatar }/> </td>  
+              <td>
+                <Avatar
+                  style={{ margin:'auto' }}
+                  src={robots.avatar} />
+              </td>
             </tr>
           ))}
       </tbody>
@@ -74,7 +78,7 @@ const ListRobots = () => {
     <div>
       <NavBar />
       <div className='partidas-header'>
-        <h1 className='partida-title'> Lista de Robots</h1>
+        <h1 className='partida-title'> Lista de robots</h1>
         <p className='-count'>
            # Robots = {listRobots.length}
         </p>
