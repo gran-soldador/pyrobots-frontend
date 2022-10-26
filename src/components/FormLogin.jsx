@@ -74,7 +74,7 @@ const FormLogin = () => {
                 <Modal.Title>Login correcto!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <span style={{ color: "green" }}>Bienvenida {username}.</span>
+                    <span style={{ color: "green" }}>Bienvenido/a {username}.</span>
                 </Modal.Body>
                 <Modal.Footer>
                 <a href='/home'>

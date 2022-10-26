@@ -4,13 +4,13 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import NavBar from './NavBar_1';
 import logo from './logo.png';
+
 import React, { useState } from 'react';
 import axios from "axios";
-import NavBar from './NavBar_1';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-
 
 export function RegisterForm() {
 
@@ -30,13 +30,29 @@ export function RegisterForm() {
   const [passwordErr, setPasswordErr] = useState("");
   const [passwordconfErr, setPasswordconfErr] = useState("");
   const [avatarErr, setAvatarErr] = useState("");
-  const [successRegister, setSuccessRegister] = useState(false);
 
+  const [successRegister, setSuccessRegister] = useState(false);
+  
   //handle del modal
   const handleClose = () => setSuccessRegister(false);
+  // Mostar Modal de error, si no logro registrarse correctamente.
+  const [invalidForm, setInvalidForm] = useState(false);
+  const [formErrTitle, setFormErrTitle] = useState("");
+  const [formErrBody, setFormErrBody] = useState("");
+  const hideErrorForm = () => {
+    setInvalidForm(false);
+    setFormErrTitle("")
+    setFormErrBody("");
+  }
 
   const handleValidation = () => {
     let formIsValid = true;
+    setUsernameErr("");
+    setUseremailErr("");
+    setUseremailconfErr("");
+    setPasswordErr("");
+    setPasswordconfErr("");
+    setAvatarErr("");
 
     //Username
     if (!datos.username.match(/^[a-zA-Z0-9-]+$/)) {
@@ -61,7 +77,7 @@ export function RegisterForm() {
       .match(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])/)) {
       formIsValid = false;
       setPasswordErr(
-        "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial");
+        "Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial de los siguientes: !@#$%^&*-");
     }
 
     //Confirmar contraseña
@@ -84,15 +100,6 @@ export function RegisterForm() {
       }
     }
 
-    if (formIsValid) {
-      setUsernameErr("");
-      setUseremailErr("");
-      setUseremailconfErr("");
-      setPasswordErr("");
-      setPasswordconfErr("");
-      setAvatarErr("");
-    }
-
     return formIsValid;
   };
 
@@ -113,6 +120,8 @@ export function RegisterForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setFormErrTitle("El formulario de registro contiene errores")
+    setFormErrBody("Modifique los datos señalados.");
     if (handleValidation()) {
 
       let formData = new FormData();
@@ -127,25 +136,26 @@ export function RegisterForm() {
       const URL = "http://127.0.0.1:8000/" + API
 
       try {
-        const response = await axios.post(URL, formData)
-        console.log(response);
-        setSuccessRegister(true);
-        // alert("Usuario registrado");
+        const response = await axios.post(URL, formData, { headers: 
+          { 'Content-Type': 'multipart/form-data' } });
+        if (response?.data) {
+          setSuccessRegister(true);
+        }
       } catch (err) {
-        console.log(err?.response);
         if (err?.response?.data?.detail === "User name already exist.") {
-          alert("El formulario contiene errores");
+          setInvalidForm(true);
           setUsernameErr("Username ya registrado");
         } else if (err?.response?.data?.detail === "Email already registered.") {
-          alert("El formulario contiene errores");
+          setInvalidForm(true);
           setUseremailErr("Email ya registrado");
         } else {
-          alert("Algo salió mal");
+          setInvalidForm(true);
+          setFormErrTitle("Algo salió mal")
+          setFormErrBody("Por favor intente más tarde.");
         }
       }
-
     } else {
-      alert("El formulario contiene errores");
+      setInvalidForm(true);
     }
   }
 
@@ -160,14 +170,14 @@ export function RegisterForm() {
           onHide={handleClose}
           backdrop="static"
           keyboard={false}>
-          <Modal.Header>
-          <Modal.Title>Registro correcto!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+            <Modal.Header>
+            <Modal.Title>Registro correcto!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
             <span>Por favor revise su correo para proceder a la confirmación de la cuenta.</span>
-          </Modal.Body>
-          <Modal.Footer>
-            <a href='/home'>
+            </Modal.Body>
+            <Modal.Footer>
+            <a href='/login'>
                 <Button 
                     variant="primary" 
                     onClick={handleClose}
@@ -177,6 +187,29 @@ export function RegisterForm() {
             </a>
           </Modal.Footer>
         </Modal>
+
+        <Modal
+          className=''
+          show={invalidForm}
+          onHide={hideErrorForm}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header closeButton>
+          <Modal.Title>{formErrTitle}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {formErrBody}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button 
+                variant="primary" 
+                onClick={hideErrorForm}
+                className='buttonModal'>
+                    Aceptar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>
         <Image src={logo}></Image>
