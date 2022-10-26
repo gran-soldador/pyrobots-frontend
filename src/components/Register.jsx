@@ -8,6 +8,8 @@ import logo from './logo.png';
 import React, { useState } from 'react';
 import axios from "axios";
 import NavBar from './NavBar_1';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 
 export function RegisterForm() {
@@ -28,6 +30,10 @@ export function RegisterForm() {
   const [passwordErr, setPasswordErr] = useState("");
   const [passwordconfErr, setPasswordconfErr] = useState("");
   const [avatarErr, setAvatarErr] = useState("");
+  const [successRegister, setSuccessRegister] = useState(false);
+
+  //handle del modal
+  const handleClose = () => setSuccessRegister(false);
 
   const handleValidation = () => {
     let formIsValid = true;
@@ -123,7 +129,8 @@ export function RegisterForm() {
       try {
         const response = await axios.post(URL, formData)
         console.log(response);
-        alert("Usuario registrado");
+        setSuccessRegister(true);
+        // alert("Usuario registrado");
       } catch (err) {
         console.log(err?.response);
         if (err?.response?.data?.detail === "User name already exist.") {
@@ -147,6 +154,29 @@ export function RegisterForm() {
       <NavBar />
       <br/>
       <form className='registerform' onSubmit={handleSubmit}>
+        <Modal
+          className='modal-success-register'
+          show={successRegister}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+          <Modal.Title>Registro correcto!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <span>Por favor revise su correo para proceder a la confirmación de la cuenta.</span>
+          </Modal.Body>
+          <Modal.Footer>
+            <a href='/home'>
+                <Button 
+                    variant="primary" 
+                    onClick={handleClose}
+                    className='buttonModal'>
+                        Aceptar
+                </Button>
+            </a>
+          </Modal.Footer>
+        </Modal>
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>
         <Image src={logo}></Image>
