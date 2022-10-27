@@ -27,16 +27,11 @@ const ListPartidas = () => {
     setSearch(e.target.value)
   }
 
-  //Actualizar lista
+  //Primera solicitud de datos
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
-  
-  useEffect(() => {
-    const autoRefresh = setInterval(handleGames, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Solicitar datos API
   async function handleGames() {
@@ -51,6 +46,7 @@ const ListPartidas = () => {
       if (response.status === 200) {
         setListGame(await response.json())
         setIsEmptyList(false)
+        console.log('estoy solicitando datos')
       } else {
         setListGame([])
         setIsEmptyList(true)
@@ -125,7 +121,7 @@ const ListPartidas = () => {
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>
-           # Partidas = {listGame.length}
+          <Button onClick={handleGames}>Actualizar</Button>
         </p>
       </div>
       <input
