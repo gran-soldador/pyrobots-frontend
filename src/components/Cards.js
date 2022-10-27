@@ -25,7 +25,8 @@ const Cards = () => {
       })
       .then((res) => {
         console.log(res)
-        setlistRobots(res.data)
+        // setlistRobots(sort_lists('nombre', res.data))
+        setlistRobots(res.data.sort((a, b) => (a.nombre > b.nombre ? 1 : -1 )))
       })
       .catch((err) => {
         console.log(err)
