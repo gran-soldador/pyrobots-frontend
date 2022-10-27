@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import NavBar from './NavBar_2';
+import axios from 'axios';
+
 
 const Cards = () => {
   //Datos de la partida
@@ -17,23 +19,21 @@ const Cards = () => {
     return () => clearInterval(autoRefresh);
   }, []);
 
-  //Solicitar datos API
-  async function handleGames() {
-    try {
-      const response = await fetch('https://63458450745bd0dbd36aae3e.mockapi.io/list-robots', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
+  //Leer datos de robots
+  const handleGames = () => {
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      axios.get('http://127.0.0.1:8000/lista-robots', {
+        headers: { 'Authorization': `Bearer ${tokenValue}` }
+      })
+      .then((res) => {
+        console.log(res)
+        setlistRobots(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
       });
-      if (response.status === 200) {
-        setlistRobots(await response.json())
-      } else {
-        setlistRobots([])
-      }
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -50,9 +50,9 @@ const Cards = () => {
     <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row">
         {
-          listRobots.map(({ name, avatar, id }) => (
+          listRobots.map(({ nombre, avatar, id }) => (
             <div className="col-md-4" key={id}>
-              <Card imageSource={avatar} title={name} /> &nbsp;
+              <Card imageSource={avatar} title={nombre} /> &nbsp;
             </div>
             )
           )
