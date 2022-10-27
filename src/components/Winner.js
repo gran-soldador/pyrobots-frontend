@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import './css/Winner.css';
 
 const MainPage = () => {
   //Estado de la lista
@@ -40,23 +40,16 @@ const MainPage = () => {
     }
   }
 
-  function DisplayData() {
-    return (
-      <tbody className='partidas-list'>
+  return (
+    <div className='container-winner'>
+      <h1> Ganador </h1>
         {!isEmptyList && listGame.map((winner, id) => (
-            <tr key={ id } className="Rows-List">
-              <td> { winner.usuario } </td>
-              <td> { winner.robot } </td>
+            <tr key={ id }>
+              <td> Jugador: { winner.usuario }, </td> &nbsp;
+              <td> Robot: { winner.robot } </td>
             </tr>
           ))}
-      </tbody>
-    )
-  }
-  return (
-    <>
-      <h1> Win </h1>
-      {DisplayData()}
-    </>
+    </div>
   );
 }
 
