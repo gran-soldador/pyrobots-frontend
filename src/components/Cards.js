@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import NavBar from './NavBar_2';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 
 const Cards = () => {
@@ -13,11 +14,6 @@ const Cards = () => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
-  
-  useEffect(() => {
-    const autoRefresh = setInterval(handleGames, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Leer datos de robots
   const handleGames = () => {
@@ -44,19 +40,17 @@ const Cards = () => {
     <div className='partidas-header'>
       <h1 className='partida-title'> Lista de robots</h1>
       <p className='-count'>
-        # Robots = {listRobots.length}
+       <Button onClick={handleGames}>Actualizar Lista</Button>
       </p>
     </div>
     <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row">
-        {
-          listRobots.map(({ nombre, avatar, id }) => (
+        {listRobots.map(({ nombre, avatar, id }) => (
             <div className="col-md-4" key={id}>
               <Card imageSource={avatar} title={nombre} /> &nbsp;
             </div>
-            )
           )
-        }
+        )}
       </div>
     </div>
     </>
