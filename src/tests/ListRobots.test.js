@@ -5,4 +5,6 @@ import ListRobots from '../components/Cards'
 test('Renderizar componentes', () => {
   render(<ListRobots />)
   expect(screen.getByText(/Lista de robots/i)).toBeInTheDocument()
-})
+  expect(screen.getByText(/# Robots = 0/i)).toBeInTheDocument()
+});
+
