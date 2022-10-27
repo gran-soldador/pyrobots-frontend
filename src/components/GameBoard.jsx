@@ -12,6 +12,11 @@ import redRobotImage from '../media/rojo.svg';
 import blueRobotImage from '../media/azul.svg';
 import greenRobotImage from '../media/verde.svg';
 
+import yellowMisilImage from '../media/misilAmarillo.svg';
+import redMisilImage from '../media/misilRojo.svg';
+import blueMisilImage from '../media/misilAzul.svg';
+import greenMisilImage from '../media/misilVerde.svg';
+
 
 export function GameBoard() {
     
@@ -44,10 +49,24 @@ export function GameBoard() {
             render()
         };
 
+        const yellowMisil = new Image();
+        yellowMisil.src = yellowMisilImage;
+        const redMisil = new Image();
+        redMisil.src = redMisilImage;
+        const blueMisil = new Image();
+        blueMisil.src = blueMisilImage;
+        const greenMisil = new Image();
+        greenMisil.src = greenMisilImage;
+
+        // greenMisil.onload = () => {
+        //     render()
+        // }
+
         const render = () => {
             
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
+            const ctxMisil = canvas.getContext("2d");
             
             const width = canvas.width;
             const height = canvas.height;
@@ -55,16 +74,23 @@ export function GameBoard() {
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
+            const misilList = [yellowMisil, redMisil, blueMisil, greenMisil];
+
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
-            
+            //recorro la lsita de robots,
             for (let i = 0; i < dataSimulation.robotcount; i++) {
                 if (dataSimulation.robots[i].damage[index] < 100) {
                     ctx.drawImage(robotList[i], dataSimulation.robots[i].positions[index].x-robotSize/2, 
                         dataSimulation.robots[i].positions[index].y-robotSize/2, robotSize, robotSize);
+
+                    ctxMisil.drawImage(misilList[i], dataSimulation.robots[i].positions[index].x, 
+                    dataSimulation.robots[i].positions[index].y, 40 , 40);
+                } else {
+                    console.log("Desaparecio el robot?");
                 }
             }
-
+            
             if(index < dataSimulation.rounds){
                 index++;
             }
@@ -89,6 +115,7 @@ export function GameBoard() {
                 
                 // Comentar esta linea para probar el juego con 10.000 rondas.
                 setDataSimulation(response.data);
+                console.log("response: ", response.data);
                 setLoading(false);
             })
             .catch((e) => {
@@ -98,8 +125,7 @@ export function GameBoard() {
 
         getDataSimulation();
         
-    }, []);
-    
+    }, []);    
 
     function createDamageBar(){
 
@@ -132,7 +158,7 @@ export function GameBoard() {
             renderElements
         )
     };
-    
+        
     function runAnimation (){
         if(!isLoading){
             drawingIncanvas(dataSimulation);                
