@@ -6,16 +6,22 @@ import { Button } from 'react-bootstrap';
 const Lobby = () => {
   const [listPlayers, setListPlayers] = useState([])
   const ws = useRef(null)
- 
+  const [isReady, setIsready] = useState(false)
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8000/ws/' + '1')
-      ws.current.onmessage = (event) => {
-        console.log("recibiendo datos lobby");
-        setListPlayers(JSON.parse(event.data));
-        console.log(listPlayers);
-      };
+    const partida_id = localStorage.getItem('id_lobby');
+    console.log("El id es: ", partida_id)
+    ws.current = new WebSocket('ws://localhost:8000/ws/' + partida_id)
+    ws.current.onmessage = (event) => {
+      console.log("recibiendo datos lobby");
+      setListPlayers(JSON.parse(event.data));
+      setIsready(true);
+    };
   }, []);
+
+  if(isReady){
+    console.log(listPlayers);
+  }
   
   return (
     <div>

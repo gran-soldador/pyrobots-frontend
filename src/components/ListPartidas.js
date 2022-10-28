@@ -56,6 +56,13 @@ const ListPartidas = () => {
     }
   }
 
+  // const [id, setId] = useState(0);
+
+  function handleSubmit(id) {
+    alert(id);
+    localStorage.setItem("id_lobby", id);
+  }
+
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
@@ -73,7 +80,8 @@ const ListPartidas = () => {
                 (!partida.password) ?
                   <td>
                     <a href='lobby'>
-                      <Button variant='outline-success'> Desbloqueada </Button>
+                      <Button variant='outline-success' 
+                        onClick={() => {handleSubmit(partida.partida_id)}} > Desbloqueada </Button>
                     </a>
                   </td>
                 :
