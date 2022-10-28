@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
 import './css/Lobby.css';
 import { Button } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
 
 
 const Lobby = () => {
+  const [listPlayers, setListPlayers] = useState([])
+  const ws = useRef(null)
+ 
 
+  useEffect(() => {
+    ws.current = new WebSocket('ws://localhost:8000/ws/' + '1')
+      ws.current.onmessage = (event) => {
+        console.log("recibiendo datos lobby");
+        setListPlayers(JSON.parse(event.data));
+        console.log(listPlayers);
+      };
+  }, []);
+  
   return (
     <div>
       <div className="Title">
