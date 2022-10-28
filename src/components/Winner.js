@@ -40,15 +40,27 @@ const MainPage = () => {
     }
   }
 
+  function DisplayData() {
+    return (
+      <tbody>
+      {!isEmptyList && listGame.map((winner, id) => (
+          <tr key={ id }>
+            <td> Jugador: { winner.usuario },&nbsp;</td> 
+            <td> Robot: { winner.robot } </td>
+          </tr>
+        ))}
+      </tbody>
+    )
+  }
+
   return (
     <div className='container-winner'>
-      <h1> Ganador </h1>
-        {!isEmptyList && listGame.map((winner, id) => (
-            <tr key={ id }>
-              <td> Jugador: { winner.usuario }, </td> &nbsp;
-              <td> Robot: { winner.robot } </td>
-            </tr>
-          ))}
+      <div>
+        <h1> Ganador </h1>
+      </div>
+        <table className='table-winner'>
+          {DisplayData()}
+        </table>
     </div>
   );
 }
