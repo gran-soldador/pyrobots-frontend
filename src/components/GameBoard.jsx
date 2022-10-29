@@ -191,13 +191,13 @@ export function GameBoard() {
 
         let colorBars = ["amarillo-pbar", "rojo-pbar", "azul-pbar", "verde-pbar"];
 
-        for (let i = 0; i < dataSimulation.robotcount; i++) {
-            let currentDamage = 100 - dataSimulation.robots[i].damage[index];
+        for (let i = 0; i < dataSimulation.players.length; i++) {
+            let currentDamage = 100 - dataSimulation.rounds[index].robots[i].damage;
             
             renderElements.push( 
                 <div className="col" key={"robot"+i}>
                     <div className='robot-damage'>
-                        <p>{dataSimulation.robots[i].name}</p>
+                        <p>{dataSimulation.players[i].name}</p>
                         <div className="progress mb-2" style={{height: '25px'}}>
                             <div className={"progress-bar " + colorBars[i]}
                                 role="progressbar" 
