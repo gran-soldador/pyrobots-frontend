@@ -14,6 +14,7 @@ import yellowMisilImage from '../media/misilAmarillo.svg';
 import redMisilImage from '../media/misilRojo.svg';
 import blueMisilImage from '../media/misilAzul.svg';
 import greenMisilImage from '../media/misilVerde.svg';
+import missileBurstImage from '../media/missileBurst.svg';
 
 export function GameBoard() {
     
@@ -60,6 +61,10 @@ export function GameBoard() {
         blueMisil.src = blueMisilImage;
         const greenMisil = new Image();
         greenMisil.src = greenMisilImage;
+
+        // Estallido de missil
+        const missileBurst = new Image();
+        missileBurst.src = missileBurstImage;
 
         //inicalizamos la propiedad onload del objeto de la clase Image,
         //esto se ejecuta cuando cuando finaliza la carga de la Imagen en el navegador.
@@ -125,6 +130,7 @@ export function GameBoard() {
             const height = canvas.height;
             const robotSize = 50;
             const missilSize = 40;
+            const missileBurstSize = 60;
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
@@ -147,6 +153,12 @@ export function GameBoard() {
                 ctxMisil.drawImage(misilList[robot], dataSimulation.rounds[index].missiles[j].x, 
                     dataSimulation.rounds[index].missiles[j].y , missilSize , missilSize);
             }
+
+            //muestra el estallido del missil.
+            for (let j = 0; j < dataSimulation.rounds[index].explosions.length; j++) {
+                ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[j].x, 
+                    dataSimulation.rounds[index].explosions[j].y , missileBurstSize , missileBurstSize);
+            }
                     
             if(index < dataSimulation.rounds_played){
                 index++;
@@ -156,7 +168,7 @@ export function GameBoard() {
             }
             
             requestAnimationFrame(render)
-            // setTimeout(render, 500);
+            // setTimeout(render, 500);    
         }
     }
     
