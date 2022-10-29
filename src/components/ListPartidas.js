@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
 import { Button, Modal, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const ListPartidas = () => {
@@ -12,12 +13,6 @@ const ListPartidas = () => {
   const [listGame, setListGame] = useState([]);
   //estados para buscar
   const [search, setSearch] = useState("")
-
-  //modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [password, setPassword] = useState('');
 
   //buscar en table
   const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
@@ -79,42 +74,16 @@ const ListPartidas = () => {
               {
                 (!partida.password) ?
                   <td>
-                    <a href='lobby'>
-                      <Button variant='outline-success' 
-                        onClick={() => {handleSubmit(partida.partida_id)}} > Desbloqueada </Button>
-                    </a>
+                    <Link to={`/lobby/${partida.partida_id}`}>
+                      <Button variant='outline-success'
+                        onClick={() => {handleSubmit(partida.partida_id)}} > Pública </Button>
+                    </Link>
                   </td>
                 :
                 <td>
-                  <Button onClick={handleShow} variant='outline-danger'> Bloqueada </Button>
-                  <Modal className='modal-upload'show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                      <Modal.Title>Ingresar al Lobby</Modal.Title>
-                    </Modal.Header>
-                    <Form>
-                      <Form.Group>
-                        <Form.Label>
-                          Contraseña
-                        </Form.Label>
-                        <Form.Control
-                          type='password'
-                          placeholder='Ingrese contraseña'
-                          minLength={1}
-                          maxLength={10}
-                          onChange={event => setPassword(event.target.value)} />
-                    </Form.Group>
-                    <Modal.Footer>
-                      <a href='/lobby'>
-                        <Button variant='primary' onClick={handleClose}>
-                          Aceptar
-                          </Button>
-                      </a>
-                      <Button variant='secondary' onClick={handleClose}>
-                        Cancelar
-                      </Button>
-                    </Modal.Footer>
-                    </Form>
-                  </Modal>
+                  <Link to={`/lobby/${partida.partida_id}`}>
+                    <Button onClick={() => { handleSubmit(partida.partida_id) }} variant='outline-danger'> Privada </Button>
+                  </Link>
                 </td>
               }
             </tr>
