@@ -5,18 +5,13 @@ const MainPage = () => {
   //Estado de la lista
   const [isEmptyList, setIsEmptyList] = useState(false);
   //Datos de la partida
-  const [listGame, setListGame] = useState([]);
+  const [result, setResult] = useState([]);
 
    //Actualizar lista
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
-  
-  useEffect(() => {
-    const autoRefresh = setInterval(handleGames, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Solicitar datos API
   async function handleGames() {
@@ -29,10 +24,10 @@ const MainPage = () => {
         }
       });
       if (response.status === 200) {
-        setListGame(await response.json())
+        setResult(await response.json())
         setIsEmptyList(false)
       } else {
-        setListGame([])
+        setResult([])
         setIsEmptyList(true)
       }
     } catch (error) {
@@ -43,7 +38,7 @@ const MainPage = () => {
   function DisplayData() {
     return (
       <tbody>
-      {!isEmptyList && listGame.map((winner, id) => (
+      {!isEmptyList && result.map((winner, id) => (
           <tr key={ id }>
             <td> Jugador: { winner.usuario },&nbsp;</td> 
             <td> Robot: { winner.robot } </td>
@@ -56,10 +51,10 @@ const MainPage = () => {
   return (
     <div className='container-winner'>
       <div>
-        <h1> Ganador </h1>
+        <h1> Ganador: </h1>
       </div>
         <table className='table-winner'>
-          {DisplayData()}
+          { DisplayData() }
         </table>
     </div>
   );
