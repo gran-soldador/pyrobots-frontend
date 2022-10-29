@@ -6,3 +6,9 @@
   background-color: rgb(248, 249, 250);
   padding: 20px;
 }
+.form-element {
+  display: block;
+  width: 40%;
+  margin: 1rem auto;
+  align-items: center;
+}
