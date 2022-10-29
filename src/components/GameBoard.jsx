@@ -17,9 +17,9 @@ import greenMisilImage from '../media/misilVerde.svg';
 
 export function GameBoard() {
     
-    const jsonData= require('./misiles.json'); 
+    // const jsonData= require('./misiles.json'); 
     // const listMisiles = JSON.parse(jsonData);
-    const missiles = jsonData.missiles;
+    // const missiles = jsonData.missiles;
 
     // Descomentar para probar juego de 10.000 rondas.
     // const jsonData= require('./out.json'); 
@@ -83,68 +83,38 @@ export function GameBoard() {
         //     requestAnimationFrame(renderDos);
         // }
 
-        redMisil.onload = () => {
-            renderTres()
-        }
+        // redMisil.onload = () => {
+        //     renderTres()
+        // }
 
-        // Algunas pruebas de lo que ofrece canva.
-        const renderTres = () => {
-            const canvas = canvasRef.current;
-            const ctxTest = canvas.getContext("2d");
+        // // Algunas pruebas de lo que ofrece canva.
+        // const renderTres = () => {
+        //     const canvas = canvasRef.current;
+        //     const ctxTest = canvas.getContext("2d");
 
-            // Define the points as {x, y}
-            let start = { x: 50,    y: 20  };
-            let cp1 =   { x: 230,   y: 30  };
-            let cp2 =   { x: 150,   y: 80  };
-            let end =   { x: 250,   y: 100 };
+        //     // Define the points as {x, y}
+        //     let start = { x: 50,    y: 20  };
+        //     let cp1 =   { x: 230,   y: 30  };
+        //     let cp2 =   { x: 150,   y: 80  };
+        //     let end =   { x: 250,   y: 100 };
 
-            // Cubic Bézier curve
-            ctxTest.beginPath();
-            ctxTest.moveTo(start.x, start.y);
-            ctxTest.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
-            ctxTest.stroke();
+        //     // Cubic Bézier curve
+        //     ctxTest.beginPath();
+        //     ctxTest.moveTo(start.x, start.y);
+        //     ctxTest.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
+        //     ctxTest.stroke();
 
-            // ctxTest.strokeStyle = "white";
+        //     // ctxTest.strokeStyle = "white";
 
-            // Start and end points
-            ctxTest.fillStyle = 'blue';
-            ctxTest.beginPath();
-            ctxTest.arc(start.x, start.y, 5, 0, 2 * Math.PI);  // Start point
-            ctxTest.arc(end.x, end.y, 5, 0, 2 * Math.PI);      // End point
-            ctxTest.fill();
-
-            // // First path
-            // ctxTest.beginPath(); // método para crear una nueva ruta o Start a new path.
-            // ctxTest.strokeStyle = 'blue';
-            // ctxTest.moveTo(100,100); //comienza una nueva subruta en el punto especificado por las (x, y)coordenadas dadas.
-            // ctxTest.lineTo(200,20); //agrega una línea recta a la ruta secundaria actual al conectar el último punto de la ruta secundaria a las (x, y)coordenadas especificadas.
-            // ctxTest.stroke(2);
-
-            // // Second path
-            // ctxTest.beginPath();
-            // ctxTest.strokeStyle = 'red';
-            // ctxTest.moveTo(100,100);
-            // ctxTest.lineTo(120,120);
-            // ctxTest.stroke();
-
-            // //3ra path
-            // // Draw the ellipse's line of reflection
-            // ctxTest.beginPath();
-            // ctxTest.setLineDash([10, 10]);
-            // ctxTest.moveTo(20, 20);
-            // ctxTest.lineTo(200, 0);
-            // ctxTest.stroke();
-
-            // //4to. path 
-            // ctxTest.beginPath();
-            // ctxTest.moveTo(50, 50); // Begin first sub-path
-            // ctxTest.lineTo(200, 50);
-            // ctxTest.moveTo(50, 90); // Begin second sub-path
-            // ctxTest.lineTo(280, 120);
-            // ctxTest.stroke();
-
-            requestAnimationFrame(renderTres)
-        } 
+        //     // Start and end points
+        //     ctxTest.fillStyle = 'blue';
+        //     ctxTest.beginPath();
+        //     ctxTest.arc(start.x, start.y, 5, 0, 2 * Math.PI);  // Start point
+        //     ctxTest.arc(end.x, end.y, 5, 0, 2 * Math.PI);      // End point
+        //     ctxTest.fill();
+            
+        //     requestAnimationFrame(renderTres)
+        // } 
 
         const render = () => {
             const canvas = canvasRef.current;
@@ -154,6 +124,7 @@ export function GameBoard() {
             const width = canvas.width;
             const height = canvas.height;
             const robotSize = 50;
+            const missilSize = 40;
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
@@ -162,52 +133,22 @@ export function GameBoard() {
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
 
-            //recorro la lista de robots, de longitud 4,
-            for (let i = 0; i < dataSimulation.robotcount; i++) {
-                if (dataSimulation.robots[i].damage[index] < 100) {
-                    ctx.drawImage(robotList[i], dataSimulation.robots[i].positions[index].x-robotSize/2,
-                        dataSimulation.robots[i].positions[index].y-robotSize/2, robotSize, robotSize);
-
-                    // ctxMisil.drawImage(misilList[i], dataSimulation.robots[i].positions[index].x, 
-                    // dataSimulation.robots[i].positions[index].y, 40 , 40);
-                    
-                    //vuelos de misiles cuando este disponible el dato.
-                    // for (let j = 0; j < dataSimulation.robots[i].misiles.length; j++) {
-                    //     //chequeo que la lista de misiles no este vacia
-                    //     if (dataSimulation.robots[i].misiles.length !== 0) {
-                    //         var robot = dataSimulation.robots[i].missiles[index].robots  
-                    //         ctxMisil.drawImage(robot, dataSimulation.robots[i].misiles[index].x, 
-                    //             dataSimulation.robots[i].missiles[index].y , 40 , 40);
-                    //     } else {
-                            
-                    //     }
-                    // }
-                    
-                    //Vuelos de misiles, probando un Json con información de missiles
-                    console.log("missiles: ", missiles.length);
-                    for (let j = 0; j < missiles.length; j++) {
-                        console.log("entro");
-                        //Chequeo que la lista de missiles no este vacia
-                        if (missiles[j].length !== 0) {
-                            //Recorro las posiciones correspondiente a los missiles
-                            for (let k=0; k < missiles[j].length; k++ ) {
-                                console.log("x:", missiles[j][k].x);
-                                console.log("y:", missiles[j][k].y);
-                                ctxMisil.drawImage(misilList[missiles[j][k].robot], missiles[j][k].x, missiles[j][k].y, 40 , 40);
-                            }
-                        } else {
-                            console.log("No dibujo nada");
-                        }
-                    }
-                } else {
-                    console.log("Desaparecio el robot");
+            // muestra los robots en la simulación
+            for (let i = 0; i < dataSimulation.players.length; i++) {
+                if (dataSimulation.rounds[index].robots[i].damage < 100 ) {
+                    ctx.drawImage(robotList[i], dataSimulation.rounds[index].robots[i].x,
+                        dataSimulation.rounds[index].robots[i].y, robotSize, robotSize);
                 }
             }
-            // cuando el index es menor de 100.000 rounds
-            if(index < 1000){
-                console.log("Valor del index: ", index);
-                //Pruebo el movimiento usando el index
-                ctxMisil.drawImage(misilList[0], index, index, 40 , 40);
+                    
+            //muestra los vuelos de misiles en la simulación.
+            for (let j = 0; j < dataSimulation.rounds[index].missiles.length; j++) {
+                var robot = dataSimulation.rounds[index].missiles[j].sender;  
+                ctxMisil.drawImage(misilList[robot], dataSimulation.rounds[index].missiles[j].x, 
+                    dataSimulation.rounds[index].missiles[j].y , missilSize , missilSize);
+            }
+                    
+            if(index < dataSimulation.rounds_played){
                 index++;
             }
             else{
@@ -215,6 +156,7 @@ export function GameBoard() {
             }
             
             requestAnimationFrame(render)
+            // setTimeout(render, 500);
         }
     }
     
@@ -275,7 +217,6 @@ export function GameBoard() {
         )
     };
     
-
     function runAnimation (){
         if(!isLoading){
             drawingIncanvas(dataSimulation);              
