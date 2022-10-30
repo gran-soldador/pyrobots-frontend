@@ -68,57 +68,34 @@ export function GameBoard() {
 
         //inicalizamos la propiedad onload del objeto de la clase Image,
         //esto se ejecuta cuando cuando finaliza la carga de la Imagen en el navegador.
-        // yellowMisil.onload = () => {
-        //     renderDos()
-        // }
+        redMisil.onload = () => {
+            // renderTest();
+        }
 
-        // const renderDos = () => {
-        //     const misilList = [yellowMisil, redMisil, blueMisil, greenMisil]; // array de misiles
+        // // Algunas pruebas de lo que ofrece canva.
+        // const renderTest = () => {
         //     const canvas = canvasRef.current;
         //     const ctxTest = canvas.getContext("2d");
-        //     ctxTest.drawImage(misilList[0],0,0); // se dibuja con el tamaño original de la img.
-        //     ctxTest.drawImage(misilList[0],300,0,50,50); // ancho-alto : 50
-        //     //extayendo parte de la imagen 125px de ancho-alto
-        //     // y se dibuja esa parte de la imagen en la coordenada (0,300) con ancho y alto (72,72)
-        //     ctxTest.drawImage(misilList[0],0,0,125,125,0,300,72,72);
+        //     // rectángulos a la izquierda, rotar desde el origen del lienzo
+        //     ctxTest.save();
+        //     // rect azul
+        //     ctxTest.fillStyle = '#0095DD';
+        //     ctxTest.fillRect(30, 30, 100, 100);
+        //     ctxTest.rotate((Math.PI / 180) * 25);
+        //     // rect gris
+        //     ctxTest.fillStyle = '#4D4E53';
+        //     ctxTest.fillRect(30, 30, 100, 100);
+        //     ctxTest.restore();
+        //     // rect blanco
+        //     ctxTest.fillStyle = 'white';
+        //     ctxTest.fillRect(60, 60, 100, 100);   // Dibuja un rectángulo con la configuración restaurada
 
         //     // El método window.requestAnimationFrame informa al navegador que quieres realizar una animación 
         //     // y solicita que el navegador programe el repintado de la ventana para el próximo ciclo de animación.
         //     // El método acepta como argumento una función a la que llamar antes de efectuar el repintado.
-        //     requestAnimationFrame(renderDos);
-        // }
+        //    // requestAnimationFrame(renderTest);
+        //     // setTimeout(renderTest, 500); //nos permite ejecutar una función una vez, pasado un intervalo de tiempo dado.   
 
-        // redMisil.onload = () => {
-        //     renderTres()
-        // }
-
-        // // Algunas pruebas de lo que ofrece canva.
-        // const renderTres = () => {
-        //     const canvas = canvasRef.current;
-        //     const ctxTest = canvas.getContext("2d");
-
-        //     // Define the points as {x, y}
-        //     let start = { x: 50,    y: 20  };
-        //     let cp1 =   { x: 230,   y: 30  };
-        //     let cp2 =   { x: 150,   y: 80  };
-        //     let end =   { x: 250,   y: 100 };
-
-        //     // Cubic Bézier curve
-        //     ctxTest.beginPath();
-        //     ctxTest.moveTo(start.x, start.y);
-        //     ctxTest.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
-        //     ctxTest.stroke();
-
-        //     // ctxTest.strokeStyle = "white";
-
-        //     // Start and end points
-        //     ctxTest.fillStyle = 'blue';
-        //     ctxTest.beginPath();
-        //     ctxTest.arc(start.x, start.y, 5, 0, 2 * Math.PI);  // Start point
-        //     ctxTest.arc(end.x, end.y, 5, 0, 2 * Math.PI);      // End point
-        //     ctxTest.fill();
-            
-        //     requestAnimationFrame(renderTres)
         // } 
 
         const render = () => {
@@ -149,25 +126,32 @@ export function GameBoard() {
                     
             //muestra los vuelos de misiles en la simulación.
             for (let j = 0; j < dataSimulation.rounds[index].missiles.length; j++) {
-                var robot = dataSimulation.rounds[index].missiles[j].sender;  
+                // console.log("ctxMsil :", ctxMisil);
+                ctxMisil.save(); //Guarda todo el estado del lienzo.
+                ctxMisil.rotate(dataSimulation.rounds[index].missiles[j].angle);// missil rotado
+
+                var robot = dataSimulation.rounds[index].missiles[j].sender;
                 ctxMisil.drawImage(misilList[robot], dataSimulation.rounds[index].missiles[j].x, 
                     dataSimulation.rounds[index].missiles[j].y , missilSize , missilSize);
+
+                ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
+            }            
+            
+            //muestra el estallido del missil.
+            for (let k = 0; k < dataSimulation.rounds[index].explosions.length; k++) {
+                ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[k].x, 
+                    dataSimulation.rounds[index].explosions[k].y , missileBurstSize , missileBurstSize);
             }
 
-            //muestra el estallido del missil.
-            for (let j = 0; j < dataSimulation.rounds[index].explosions.length; j++) {
-                ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[j].x, 
-                    dataSimulation.rounds[index].explosions[j].y , missileBurstSize , missileBurstSize);
-            }
-                    
-            if(index < dataSimulation.rounds_played){
+            if(index < dataSimulation.rounds_played){                                
                 index++;
             }
             else{
                 return;
             }
-            
-            requestAnimationFrame(render)
+            // Informa al navegador que quieres realizar una animación.
+            requestAnimationFrame(render);
+            //nos permite ejecutar una función una vez, pasado un intervalo de tiempo dado.
             // setTimeout(render, 500);    
         }
     }
