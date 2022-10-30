@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './css/Winner.css';
-import axios from 'axios';
-import { Button } from 'bootstrap';
-
 
 const MainPage = () => {
   const [result, setResult] = useState([]);
