@@ -79,7 +79,7 @@ const ListPartidas = () => {
             <td>
               <Link to={'/ganador'}>
                 <button
-                  type="button" className="btn btn-outline-dark"
+                  variant='outline-success'
                   disabled={partida.status !== 'finalizada'}
                   onClick={() => { handleSubmit(partida.partida_id) }}>
                     Ver
