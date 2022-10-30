@@ -113,6 +113,8 @@ export function GameBoard() {
 
             const misilList = [yellowMisil, redMisil, greenMisil, blueMisil];
 
+            const missilesLanzados = [];
+
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
 
@@ -124,19 +126,25 @@ export function GameBoard() {
                 }
             }
                     
+
             //muestra los vuelos de misiles en la simulación.
             for (let j = 0; j < dataSimulation.rounds[index].missiles.length; j++) {
-                // console.log("ctxMsil :", ctxMisil);
                 ctxMisil.save(); //Guarda todo el estado del lienzo.
-                ctxMisil.rotate(dataSimulation.rounds[index].missiles[j].angle);// missil rotado
-
                 var robot = dataSimulation.rounds[index].missiles[j].sender;
                 ctxMisil.drawImage(misilList[robot], dataSimulation.rounds[index].missiles[j].x, 
                     dataSimulation.rounds[index].missiles[j].y , missilSize , missilSize);
-
-                ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
+                    
+                ctxMisil.translate(dataSimulation.rounds[index].missiles[j].x, dataSimulation.rounds[index].missiles[j].y);
+                ctxMisil.rotate(dataSimulation.rounds[index].missiles[j].angle);// missil rotado
+                missilesLanzados.push(dataSimulation.rounds[index].missiles[j]);
+                ctxMisil.translate(-dataSimulation.rounds[index].missiles[j].x, -dataSimulation.rounds[index].missiles[j].y);
+                // ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
             }            
-            
+
+            // Muestra por consola si el array de missiles, vuelve a tener las mismas propiedades.
+            // console.log("Longitud de missilesLanzados : ", missilesLanzados.length);
+            // console.log("missilesLanzados ["+ index +"]: ", missilesLanzados);
+
             //muestra el estallido del missil.
             for (let k = 0; k < dataSimulation.rounds[index].explosions.length; k++) {
                 ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[k].x, 
