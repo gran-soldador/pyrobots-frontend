@@ -35,28 +35,45 @@ const MainPage = () => {
     }
   }
 
-  function DisplayData() {
-    return (
-      <tbody>
-      {!isEmptyList && result.map((winner, id) => (
-          <tr key={ id }>
-            <td> Jugador: { winner.usuario },&nbsp;</td> 
-            <td> Robot: { winner.robot } </td>
-          </tr>
-        ))}
-      </tbody>
-    )
-  }
-
+  // <div style="overflow:hidden; position:absolute; left:0; top:0; width:50px; height:25px;">
+  //   <div>
+  //     <h1> Ganador: </h1>
+  //   </div>
+  //     <table className='table-winner'>
+  //       <tbody>
+  //         {!isEmptyList && result.map((winner, id) => (
+  //           <tr key={ id }>
+  //           <td> Jugador: { winner.usuario },&nbsp;</td>
+  //           <td> Robot: { winner.robot } </td>
+  //          </tr>
+  //         ))}
+  //       </tbody>
+  //     </table>
+  // </div>
+  // <>
+  //   <div id="titles">
+  //     <div id="titlecontent">
+        
+  //       <p className="center">Ganador<br /></p>
+  //       {!isEmptyList && result.map((winner, id) => (
+  //         <p className="center" key={id}>
+  //           Jugador: {winner.usuario}, Robot: {winner.robot}
+  //         </p>
+  //       ))}
+  //     </div>
+  //   </div>
+  // </>
   return (
-    <div className='container-winner'>
-      <div>
-        <h1> Ganador: </h1>
-      </div>
-        <table className='table-winner'>
-          { DisplayData() }
-        </table>
-    </div>
+    <p>
+      Ganador
+      {!isEmptyList && result.map((winner, id) => (
+        <span className="center" key={id}>
+          {winner.usuario},
+          Robot: {winner.robot}
+        </span>
+        ))}
+      &mdash; PyRobots &mdash;
+    </p>
   );
 }
 
