@@ -3,9 +3,8 @@ import NavBar from './NavBar_2';
 
 import './css/GameBoard.css';
 
-
 import 'bootstrap/dist/css/bootstrap.css';
-import axios from "axios";
+import { Button, Modal } from 'react-bootstrap';
 
 import yellowRobotImage from '../media/amarillo.svg';
 import redRobotImage from '../media/rojo.svg';
@@ -21,7 +20,9 @@ export function GameBoard() {
     const canvasRef = useRef();
 
     const [dataSimulation, setDataSimulation] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+
+    const [invalidSim, setInvalidSim] = useState(false);
+    const [showError, setShowError] = useState(false);
 
     const [progressBar, setProgressBar] = useState("");
     var index = 0;
@@ -78,26 +79,16 @@ export function GameBoard() {
     
     useEffect(function () {
         const getDataSimulation = () => {
-            const API = "simulacion" 
-            const URL = "http://127.0.0.1:8000/" + API;
-            
-            axios.get(URL)
-            .then((response) => {
-
-                // Descomentar para probar juego con 10.000 rondas.
-                // setDataSimulation(jsonData);
-                
-                // Comentar esta linea para probar el juego con 10.000 rondas.
-                setDataSimulation(response.data);
-                setLoading(false);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+            const sim = localStorage.getItem('sim');
+            if (sim !== null) {
+                const simValue = (JSON.parse(sim)).sim;
+                setDataSimulation(simValue);
+            } else {
+                setInvalidSim(true);
+            }
         }
 
         getDataSimulation();
-        
     }, []);
     
 
@@ -134,11 +125,10 @@ export function GameBoard() {
     };
     
     function runAnimation (){
-        if(!isLoading){
-            drawingIncanvas(dataSimulation);                
-        }
-        else{
-            alert("Espera unos segundos e intente de nuevo.")
+        if (!invalidSim) {
+            drawingIncanvas(dataSimulation);
+        } else {
+            setShowError(true);
         }
     }
 
@@ -146,6 +136,27 @@ export function GameBoard() {
         <>
         <NavBar />
         <br/>
+        <Modal
+          className='modal-upload'
+          show={showError}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>No se pudo cargar la simulación</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Por favor intente de nuevo más tarde.
+            </Modal.Body>
+            <Modal.Footer>
+              <a href='/crear-sim'>
+                <Button 
+                  variant="primary"
+                  className='buttonModal'>
+                    Ok
+                </Button>
+              </a>
+            </Modal.Footer>
+        </Modal>
         <div className='gameboard-pyrobots'>
                 <header className="mb-3">
                     <h1>Simulación de PyRobots</h1>
@@ -160,7 +171,10 @@ export function GameBoard() {
 
             <canvas id='canvas' width={1000} height={1000} ref={canvasRef}/>
             <br></br>
-            <button type="button" className="btn btn-success" onClick={runAnimation}>Simular</button>
+            <button
+                type="button"
+                className="btn btn-success"
+                onClick={runAnimation}>Simular</button>
         </div>
         </>
     );

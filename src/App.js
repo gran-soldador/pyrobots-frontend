@@ -8,6 +8,7 @@ import MainPage from './components/MainPage';
 import UploadBotForm from './components/UploadBotForm'
 import GameBoard  from "./components/GameBoard"
 import Home from './components/Home';
+import CreateSim from './components/SimulationForm';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -26,6 +27,7 @@ function App() {
           <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
           <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
           <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
+          <Route exact path='/crear-sim' element={<CreateSim />}></Route>
         </Routes>
       </div>
     </Router>
