@@ -1,46 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import './css/Winner.css';
+import axios from 'axios';
+import { Button } from 'bootstrap';
+
 
 const MainPage = () => {
-  //Estado de la lista
-  const [isEmptyList, setIsEmptyList] = useState(false);
-  //Datos de la partida
   const [result, setResult] = useState([]);
+  const [isEmptyList, setIsEmptyList] = useState(false);
 
-   //Actualizar lista
-  useEffect(() => {
-    const firstCall = setTimeout(handleGames, 0);
-    return () => clearTimeout(firstCall);
-  }, [])
+  //conección con api
+  useEffect(function () {
+    console.log("lee datos winner");
+    axios.get('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'))
+    .then((res) => {
+      setResult(res.data)
+      setIsEmptyList(false)
+    })
+    .catch((err) => {
+      setResult([])
+      console.log(err)
+      console.log(err.response.data)
+    });
+  }, []);
 
-  //Solicitar datos API
-  async function handleGames() {
-    try {
-      const response = await fetch('https://63458450745bd0dbd36aae3e.mockapi.io/winner', {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-        }
-      });
-      if (response.status === 200) {
-        setResult(await response.json())
-        setIsEmptyList(false)
-      } else {
-        setResult([])
-        setIsEmptyList(true)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  console.log('estoydandolosdatos', result);
 
   return (
     <p>
       Ganador
-      {!isEmptyList && result.map((winner, id) => (
-        <span className="center" key={id}>
-          {winner.usuario}
+     {result.map((user, id) => (
+        <span className='center' key={id}>
+         {user.usuario}-{user.robot}
         </span>
         ))}
       &mdash; PyRobots &mdash;
