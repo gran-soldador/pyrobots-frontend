@@ -1,16 +1,16 @@
 body {
   font: 400 1em/1.5 "Neuton";
-  background: #090d00;
-  color: rgba(255, 255, 255, .25);
+  background: #d3d4d1;
+  color: rgba(0, 0, 0, 1.25);
   text-align: center;
   margin: 0
 }
 
-p {
+p#winner {
   text-transform: uppercase;
   letter-spacing: 0.5em;
   display: inline-block;
-  border: 4px double rgba(250, 248, 248, 0.25);
+  border: 4px double rgba(0, 0, 0, 0.25);
   border-width:6px 0;
   padding: 2.5em 0em;
   position: absolute;
@@ -20,7 +20,7 @@ p {
   margin: 0 0 0 -20em;
 }
 
-p span {
+p#winner span {
   font: 600 4em "Oswald", sans-serif;
   letter-spacing: 350;
   padding: 0.25em 0 0.325em;

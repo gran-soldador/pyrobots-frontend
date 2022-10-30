@@ -40,7 +40,7 @@ const MainPage = () => {
   console.log('estoydandolosdatos', result);
 
   return (
-    <p>
+    <p id='winner'>
       Ganador
      {!isEmptyList && result.map((user, id) => (
         <span className='center' key={id}>
