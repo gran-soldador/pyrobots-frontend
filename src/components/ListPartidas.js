@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
@@ -79,11 +78,12 @@ const ListPartidas = () => {
               }
             <td>
               <Link to={'/ganador'}>
-                <Button
-                  variant='outline-success'
+                <button
+                  type="button" className="btn btn-outline-dark"
+                  disabled={partida.status !== 'finalizada'}
                   onClick={() => { handleSubmit(partida.partida_id) }}>
                     Ver
-                </Button>
+                </button>
               </Link>
             </td>
             </tr>

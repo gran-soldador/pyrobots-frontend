@@ -18,6 +18,7 @@ const MainPage = () => {
     })
     .catch((err) => {
       setResult([])
+      setIsEmptyList(true)
       console.log(err)
       console.log(err.response.data)
     });
@@ -28,7 +29,7 @@ const MainPage = () => {
   return (
     <p>
       Ganador
-     {result.map((user, id) => (
+     {!isEmptyList && result.map((user, id) => (
         <span className='center' key={id}>
          {user.usuario}-{user.robot}
         </span>
