@@ -131,19 +131,22 @@ export function GameBoard() {
             for (let j = 0; j < dataSimulation.rounds[index].missiles.length; j++) {
                 ctxMisil.save(); //Guarda todo el estado del lienzo.
                 var robot = dataSimulation.rounds[index].missiles[j].sender;
-                ctxMisil.drawImage(misilList[robot], dataSimulation.rounds[index].missiles[j].x, 
-                    dataSimulation.rounds[index].missiles[j].y , missilSize , missilSize);
-                    
-                ctxMisil.translate(dataSimulation.rounds[index].missiles[j].x, dataSimulation.rounds[index].missiles[j].y);
-                ctxMisil.rotate(dataSimulation.rounds[index].missiles[j].angle);// missil rotado
+                var x = dataSimulation.rounds[index].missiles[j].x;
+                var y = dataSimulation.rounds[index].missiles[j].y;
+                var angle = dataSimulation.rounds[index].missiles[j].angle;
+
+                ctxMisil.drawImage(misilList[robot], x, y , missilSize , missilSize);
+                ctxMisil.translate(x, y);
+                ctxMisil.rotate(angle);// missil rotado
                 missilesLanzados.push(dataSimulation.rounds[index].missiles[j]);
-                ctxMisil.translate(-dataSimulation.rounds[index].missiles[j].x, -dataSimulation.rounds[index].missiles[j].y);
+                ctxMisil.translate(-x, -y);
+                
                 // ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
             }            
 
             // Muestra por consola si el array de missiles, vuelve a tener las mismas propiedades.
-            // console.log("Longitud de missilesLanzados : ", missilesLanzados.length);
-            // console.log("missilesLanzados ["+ index +"]: ", missilesLanzados);
+            console.log("Longitud de missilesLanzados : ", missilesLanzados.length);
+            console.log("missilesLanzados ["+ index +"]: ", missilesLanzados);
 
             //muestra el estallido del missil.
             for (let k = 0; k < dataSimulation.rounds[index].explosions.length; k++) {
@@ -202,6 +205,7 @@ export function GameBoard() {
                 <div className="col" key={"robot"+i}>
                     <div className='robot-damage'>
                         <p>{dataSimulation.players[i].name}</p>
+                        <p>{dataSimulation.rounds[index].robots[i].damage}</p>
                         <div className="progress mb-2" style={{height: '25px'}}>
                             <div className={"progress-bar " + colorBars[i]}
                                 role="progressbar" 
