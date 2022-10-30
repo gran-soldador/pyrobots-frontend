@@ -9,20 +9,33 @@ const MainPage = () => {
   const [isEmptyList, setIsEmptyList] = useState(false);
 
   //conección con api
-  useEffect(function () {
-    console.log("lee datos winner");
-    axios.get('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'))
-    .then((res) => {
-      setResult(res.data)
-      setIsEmptyList(false)
-    })
-    .catch((err) => {
-      setResult([])
-      setIsEmptyList(true)
-      console.log(err)
-      console.log(err.response.data)
-    });
-  }, []);
+    //Actualizar lista
+  useEffect(() => {
+    const firstCall = setTimeout(handleGames, 0);
+    return () => clearTimeout(firstCall);
+  }, [])
+  
+  //Solicitar datos API
+  async function handleGames() {
+    try {
+      const response = await fetch('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'), {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+      if (response.status === 200) {
+        setResult(await response.json())
+        setIsEmptyList(false)
+      } else {
+        setResult([])
+        setIsEmptyList(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   console.log('estoydandolosdatos', result);
 
