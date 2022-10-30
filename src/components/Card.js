@@ -10,7 +10,7 @@ function Card({ imageSource, title }) {
         <img src={imageSource} alt='a wallpaper' className='card-img-top'/>
       </div>
       <div className='card-body text-light'>
-        <h3 data-testid='name' className='card-title'>{title}</h3>
+        <h3 className='card-title'>{title}</h3>
       </div>
     </div>
   );

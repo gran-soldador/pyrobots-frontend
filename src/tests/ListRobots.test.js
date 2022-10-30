@@ -2,8 +2,7 @@ import React from 'react'
 import mockAxios from "axios";
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import ListRobots from '../components/Cards'
-import { waitForDebugger } from 'inspector';
-import { joinPaths } from '@remix-run/router';
+
 
 beforeEach(() => {
   render(<ListRobots />);
@@ -33,7 +32,7 @@ test('renders learn react link', async () => {
           avatar: 'https://robohash.org/2'
         }]
     })
-  );
+  )
   expect(mockAxios.get).toHaveBeenCalledTimes(0);
 });
 
