@@ -3,6 +3,7 @@ import './css/Lobby.css';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 
+
 const Lobby = () => {
   //datos ws
   const ws = useRef(null)
@@ -31,7 +32,55 @@ const Lobby = () => {
     setJoinGameForm(true)
     setShow(true);
   }
+  
+  //Enviar datos para iniciar partida
+  async function handleSubmitAbandonar(event) {
+    event.preventDefault()
+    console.log('Enviando datos al servidor');
+    const API = 'http://127.0.0.1:8000/abandonar-partida';
+    let formData = new FormData();
 
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      const partida_id = localStorage.getItem('id_lobby')
+      console.log('partida', partida_id)
+      formData.append('partida_id', partida_id);
+      try {
+        const response = await axios.post(API, formData, {
+          headers: { 'Authorization': `Bearer ${tokenValue}` }
+        });
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  //Enviar datos para iniciar partida
+  async function handleSubmitUniciar(event) {
+    event.preventDefault()
+    console.log('Enviando datos al servidor');
+    const API = 'http://127.0.0.1:8000/iniciar-partida';
+    let formData = new FormData();
+
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      const partida_id = localStorage.getItem('id_lobby')
+      console.log('partida', partida_id)
+      formData.append('partida_id', partida_id);
+      try {
+        const response = await axios.post(API, formData, {
+          headers: { 'Authorization': `Bearer ${tokenValue}` }
+        });
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+  
   //Enviar datos para unirme a partida
   async function handleSubmit(event) {
     event.preventDefault()
@@ -59,8 +108,13 @@ const Lobby = () => {
       } catch (e) {
         console.log(e);
       }
-      console.log('Formulario no válido');
     }
+  }
+
+  //salir del websocket
+  const exitLobby = () => {
+    console.log('estoy saliendo del lobby')
+    ws.current.close()
   }
 
   //Conección con websocket
@@ -103,24 +157,32 @@ const Lobby = () => {
       for (let index = 0; index < listPlayers.robot.length; index++) {
         renderElements.push(
           <tr key={index}>
-          <td> {listPlayers.robot[index].usuario} </td>
-          <td> {listPlayers.robot[index].nombre} </td>
-        </tr>
+            <td> {listPlayers.robot[index].usuario} </td>  
+            <td> {listPlayers.robot[index].nombre} </td>
+          </tr>
       )
     }
   }
   return renderElements;
   };
 
-  //diferenciar boton de host
-  function boton_correcto() {
-    if(isHost){
-      return "Iniciar"
-    }
-    else{
-      return isJoined ? "Iniciar" : "Unirse"
-    } 
-  }
+  // //diferenciar boton de host
+  // function boton_correcto() {
+  //   if (isHost) {
+  //     return (
+  //       <Button variant='primary' onClick={() => { handleSubmitUniciar(); handleShow(); sendLobby() }}> 
+  //         Iniciar partida
+  //       </Button>
+  //     )
+  //   }
+  //   else {
+  //     return (
+  //       <Button variant='primary' onClick={handleSubmitUniciar}> 
+  //         Iniciar Partida
+  //       </Button>
+  //     )
+  //   }
+  // }
 
   return (
     <div>
@@ -141,12 +203,17 @@ const Lobby = () => {
           </tbody>
         </table>
         <div className="GameButton-lobby">
-          <Button variant='primary' onClick={handleShow}> 
-            { boton_correcto() }
-          </Button> &nbsp;
-          <Button variant='secondary'>
-            Cancelar
+          <Button variant='primary' onClick={() => { handleSubmitUniciar(); handleShow() }}> 
+            Iniciar partida
           </Button>
+          <a href='/listar-partidas'>
+          <Button variant='secondary' onClick={()=>{exitLobby()}}>
+            Cancelar
+            </Button>
+             <Button variant='secondary' onClick={handleSubmitAbandonar}>
+            Abandonar
+            </Button>
+          </a>
         </div>
       </div>
       <Modal
@@ -201,7 +268,7 @@ const Lobby = () => {
                 type='submit'
                 size='lg'
                 disabled={!idrobot}
-                onClick={handleClose}>
+                onClick={() => { handleClose() } }>
                 Unirme
               </Button>
               &nbsp;
