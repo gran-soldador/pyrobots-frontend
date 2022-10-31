@@ -15,25 +15,21 @@ const Lobby = () => {
   const [password, setPassword] = useState(false)
   const [idrobot, setIdRobot] = useState(0);
   //validaciones
-  const [isJoined, setIsJoined] = useState(false)
-  const [joinGameForm, setJoinGameForm] = useState(false);
   const [isHost, setIsHost] = useState(false);
+  const [isJoined, setIsJoined] = useState(false);
+
+  //errores
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Modal:
-  const passwordRef = useRef();
-  const idrobotRef = useRef();
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
-    passwordRef.current.value = '';
-    idrobotRef.current.value = '';
-  }
-  const handleShow = () => {
-    setJoinGameForm(true)
-    setShow(true);
+    setErrorShow(false);
   }
   
-  //Enviar datos para iniciar partida
+  //Enviar datos para abandonar partida
   async function handleSubmitAbandonar(event) {
     event.preventDefault()
     console.log('Enviando datos al servidor');
@@ -51,14 +47,28 @@ const Lobby = () => {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
         console.log(response);
+        setIsJoined(false);
       } catch (e) {
-        console.log(e);
+        setErrorMsg('');
+        console.log(e.response);
+        if (e.response.data.detail === 'no es un participante') {
+          setErrorShow(true);
+          setErrorMsg('No eres un participante de esta partida.');
+        }
+        if (e.response.data.detail === 'el creador no puede abandonar') {
+          setErrorShow(true);
+          setErrorMsg('El creador no puede abandonar la partida.');
+        }
+        if (e.response.data.detail === 'ya no tiene permitido abandonar') {
+          setErrorShow(true);
+          setErrorMsg('Ya no se tiene permitido abandonar.');
+        }
       }
     }
   }
 
   //Enviar datos para iniciar partida
-  async function handleSubmitUniciar(event) {
+  async function handleSubmitIniciar(event) {
     event.preventDefault()
     console.log('Enviando datos al servidor');
     const API = 'http://127.0.0.1:8000/iniciar-partida';
@@ -76,13 +86,30 @@ const Lobby = () => {
         });
         console.log(response);
       } catch (e) {
-        console.log(e);
+        setErrorMsg('');
+        console.log(e.response);
+        if (e.response.data.detail === 'la partida no existe') {
+          setErrorShow(true);
+          setErrorMsg('La partida no existe.');
+        }
+        if (e.response.data.detail === 'permiso denegado') {
+          setErrorShow(true);
+          setErrorMsg('No tienes el permiso para iniciar la partida.');
+        }
+        if (e.response.data.detail === 'jugadores insuficientes') {
+          setErrorShow(true);
+          setErrorMsg('Número de jugadores insuficientes.');
+        }
+        if (e.response.data.detail === 'la partida ya fue iniciada') {
+          setErrorShow(true);
+          setErrorMsg('La partida ya fue iniciada.');
+        }
       }
     }
   }
   
   //Enviar datos para unirme a partida
-  async function handleSubmit(event) {
+  async function handleSubmitUnirse(event) {
     event.preventDefault()
     console.log('Enviando datos al servidor');
     const API = 'http://127.0.0.1:8000/unir-partida';
@@ -105,8 +132,38 @@ const Lobby = () => {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
         console.log(response);
+        setIsJoined(true);
       } catch (e) {
-        console.log(e);
+        setErrorMsg('');
+        console.log(e.response);
+        if (e.response.data.detail === 'la partida no existe') {
+          setErrorShow(true);
+          setErrorMsg('La partida no existe.');
+        }
+        if (e.response.data.detail === 'partida no disponible') {
+          setErrorShow(true);
+          setErrorMsg('La partida ya alcanzó su máximo de jugadores o ya fue iniciada.');
+        }
+        if (e.response.data.detail === 'contraseña incorrecta') {
+          setErrorShow(true);
+          setErrorMsg('Contraseña incorrecta.');
+        }
+        if (e.response.data.detail === 'no puede unirse a su propia partida') {
+          setErrorShow(true);
+          setErrorMsg('No puedes unirte a tu propia partida.');
+        }
+        if (e.response.data.detail === 'usuario ya unido') {
+          setErrorShow(true);
+          setErrorMsg('Usuario ya unido.');
+        }
+        if (e.response.data.detail === 'el robot no existe') {
+          setErrorShow(true);
+          setErrorMsg('El robot no existe.');
+        }
+        if (e.response.data.detail === 'el robot no pertenece al usuario') {
+          setErrorShow(true);
+          setErrorMsg('El robot no pertenece al usuario.');
+        }
       }
     }
   }
@@ -127,6 +184,11 @@ const Lobby = () => {
       setIsready(true);
       if(JSON.parse(event.data).creador === localStorage.getItem("username")){
         setIsHost(true);
+      }
+      for (let i = 0; i < JSON.parse(event.data).robot.length; i++) { //ARREGLAR
+        if(JSON.parse(event.data).robot[i] === localStorage.getItem("username")){
+          setIsJoined(true);
+        }
       }
     };
   }, []);
@@ -166,24 +228,34 @@ const Lobby = () => {
   return renderElements;
   };
 
-  // //diferenciar boton de host
-  // function boton_correcto() {
-  //   if (isHost) {
-  //     return (
-  //       <Button variant='primary' onClick={() => { handleSubmitUniciar(); handleShow(); sendLobby() }}> 
-  //         Iniciar partida
-  //       </Button>
-  //     )
-  //   }
-  //   else {
-  //     return (
-  //       <Button variant='primary' onClick={handleSubmitUniciar}> 
-  //         Iniciar Partida
-  //       </Button>
-  //     )
-  //   }
-  // }
+  //diferenciar boton de host
+  function boton_correcto() {
+    if (isHost) {
+      return (
+        <Button variant='primary' onClick={(e) => { handleSubmitIniciar(e)}}> 
+            Iniciar partida
+        </Button>
+      )
+    }
+    else {
+      return (
+        <Button variant='primary' onClick={(e) => { setShow(true); }}>
+          Unirse
+        </Button>
+      )
+    }
+  }
 
+  //diferenciar boton de abandonar
+  function show_boton_abandonar() {
+    if (isJoined) {
+      return (
+        <Button variant='secondary' onClick={() => { handleSubmitAbandonar(); exitLobby() }}>
+          Abandonar
+        </Button>
+      )
+    }
+  }
   return (
     <div>
       <div className="Title">
@@ -203,16 +275,12 @@ const Lobby = () => {
           </tbody>
         </table>
         <div className="GameButton-lobby">
-          <Button variant='primary' onClick={() => { handleSubmitUniciar(); handleShow() }}> 
-            Iniciar partida
-          </Button>
+          {boton_correcto()}
           <a href='/listar-partidas'>
-          <Button variant='secondary' onClick={()=>{exitLobby()}}>
+          <Button variant='secondary'>
             Cancelar
-            </Button>
-             <Button variant='secondary' onClick={handleSubmitAbandonar}>
-            Abandonar
-            </Button>
+          </Button>
+          {show_boton_abandonar()}
           </a>
         </div>
       </div>
@@ -225,7 +293,7 @@ const Lobby = () => {
             <Modal.Title> Unirte a la partida <span style={{ color: 'red' }}> gameName </span> </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmitUnirse}>
             <Form.Text>
               <h1>Unirme a Partida</h1>
             </Form.Text>
@@ -238,7 +306,6 @@ const Lobby = () => {
                 placeholder='Ingrese contraseña'
                 minLength={1}
                 maxLength={10}
-                ref={passwordRef}
                 disabled={listPlayers.contraseña ? 0 : 1}
                 onChange={event => setPassword(event.target.value)} />
             </Form.Group>
@@ -251,7 +318,6 @@ const Lobby = () => {
                 multiple
                 type='select'
                 as='select'
-                ref={idrobotRef}
                 onChange={event => { setIdRobot(event.target.value) }}>
                 {
                   datosRobot.map((robot) => (
@@ -282,6 +348,27 @@ const Lobby = () => {
             </Form.Group>
           </Form>
         </Modal.Body>
+      </Modal>
+      <Modal
+        className='modal-errorForm'
+        show={errorShow}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Ha ocurrido un error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {errorMsg}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={handleClose}
+            className='buttonModal'>
+            Aceptar
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
