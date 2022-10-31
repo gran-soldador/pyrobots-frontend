@@ -111,9 +111,7 @@ export function GameBoard() {
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
-            const misilList = [yellowMisil, redMisil, greenMisil, blueMisil];
-
-            const missilesLanzados = [];
+            const misilList = [yellowMisil, redMisil, blueMisil, greenMisil];
 
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
@@ -121,8 +119,8 @@ export function GameBoard() {
             // muestra los robots en la simulación
             for (let i = 0; i < dataSimulation.players.length; i++) {
                 if (dataSimulation.rounds[index].robots[i].damage < 100 ) {
-                    ctx.drawImage(robotList[i], dataSimulation.rounds[index].robots[i].x,
-                        dataSimulation.rounds[index].robots[i].y, robotSize, robotSize);
+                    ctx.drawImage(robotList[i], dataSimulation.rounds[index].robots[i].x-robotSize/2,
+                        dataSimulation.rounds[index].robots[i].y-robotSize/2, robotSize, robotSize);
                 }
             }
                     
@@ -135,23 +133,18 @@ export function GameBoard() {
                 var y = dataSimulation.rounds[index].missiles[j].y;
                 var angle = dataSimulation.rounds[index].missiles[j].angle;
 
-                ctxMisil.drawImage(misilList[robot], x, y , missilSize , missilSize);
                 ctxMisil.translate(x, y);
                 ctxMisil.rotate(angle);// missil rotado
-                missilesLanzados.push(dataSimulation.rounds[index].missiles[j]);
                 ctxMisil.translate(-x, -y);
-                
-                // ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
-            }            
+                ctxMisil.drawImage(misilList[robot], x-missilSize/2, y-missilSize/2 , missilSize , missilSize);
 
-            // Muestra por consola si el array de missiles, vuelve a tener las mismas propiedades.
-            console.log("Longitud de missilesLanzados : ", missilesLanzados.length);
-            console.log("missilesLanzados ["+ index +"]: ", missilesLanzados);
+                ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
+            }
 
             //muestra el estallido del missil.
             for (let k = 0; k < dataSimulation.rounds[index].explosions.length; k++) {
-                ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[k].x, 
-                    dataSimulation.rounds[index].explosions[k].y , missileBurstSize , missileBurstSize);
+                ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[k].x-missileBurstSize/2,
+                    dataSimulation.rounds[index].explosions[k].y-missileBurstSize/2 , missileBurstSize , missileBurstSize);
             }
 
             if(index < dataSimulation.rounds_played){                                
