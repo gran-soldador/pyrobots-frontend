@@ -104,7 +104,7 @@ export function GameBoard() {
         const getDataSimulation = () => {
             const sim = localStorage.getItem('sim');
             if (sim !== null) {
-                const simValue = (JSON.parse(sim)).sim;
+                const simValue = (JSON.parse(sim));
                 setDataSimulation(simValue);
                 setDataLoaded(true);
                 localStorage.removeItem('sim');

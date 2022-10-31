@@ -73,16 +73,17 @@ const CreateSim = () => {
     event.preventDefault()
     if (handleValidation()) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8001/crear-sim'; //CAMBIAR
+      const API = 'http://127.0.0.1:8000/create_simulation';
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('numrondas', numrondas);
+        formData.append('rounds', numrondas);
         idrobots.forEach(item => {
-          formData.append('idrobots', item);
+          formData.append('robot_ids', item);
           });
+        console.log(formData);
         setSuccessUpload(true);
       
         try {
