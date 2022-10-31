@@ -13,16 +13,25 @@ import greenRobotImage from '../media/verde.svg';
 
 
 export function GameBoard() {
-    
-    // Descomentar para probar juego de 10.000 rondas.
-    // const jsonData= require('./out.json'); 
 
     const canvasRef = useRef();
 
     const [dataSimulation, setDataSimulation] = useState([]);
 
     const [invalidSim, setInvalidSim] = useState(false);
+    const [dataLoaded, setDataLoaded] = useState(false);
     const [showError, setShowError] = useState(false);
+
+    const [showWinner, setShowWinner] = useState(false);
+    const [showTied, setShowTied] = useState(false);
+    const [showAllLosers, setShowAllLosers] = useState(false);
+    const hideModal = () => {
+        setShowWinner(false);
+        setShowTied(false);
+        setShowAllLosers(false);
+    }
+
+    const [winners, setWinners] = useState([]);
 
     const [progressBar, setProgressBar] = useState("");
     var index = 0;
@@ -66,10 +75,24 @@ export function GameBoard() {
                 }
             }
 
-            if(index < dataSimulation.rounds){
+            if (index < dataSimulation.rounds) {
                 index++;
             }
-            else{
+            else {
+                const winnersTemp = [];
+                for (let i=0; i < dataSimulation.robotcount; i++) {
+                    if (dataSimulation.robots[i].damage[dataSimulation.rounds] < 100) {
+                        winnersTemp.push(dataSimulation.robots[i].name);
+                    }
+                }
+                setWinners(winnersTemp);
+                if (winnersTemp.length > 1) {
+                    setShowTied(true);
+                } else if (winnersTemp.length === 1){
+                    setShowWinner(true);
+                } else {
+                    setShowAllLosers(true);
+                }
                 return;
             }
             
@@ -83,13 +106,18 @@ export function GameBoard() {
             if (sim !== null) {
                 const simValue = (JSON.parse(sim)).sim;
                 setDataSimulation(simValue);
+                setDataLoaded(true);
+                localStorage.removeItem('sim');
             } else {
-                setInvalidSim(true);
+                if (!dataLoaded) {
+                    setInvalidSim(true);
+                }
             }
         }
-
+        
         getDataSimulation();
-    }, []);
+        
+    }, [dataLoaded]);
     
 
     function createDamageBar(){
@@ -155,6 +183,69 @@ export function GameBoard() {
                     Ok
                 </Button>
               </a>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showWinner}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>El robot ganador es:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h4><span style={{ color: 'green' }}>{winners[0]}</span></h4>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showTied}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>Estos robots empataron:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h5><span style={{ color: 'green' }}>{winners[0]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[1]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[2]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[3]}</span></h5>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showAllLosers}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>No hubo ganadores</Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
             </Modal.Footer>
         </Modal>
         <div className='gameboard-pyrobots'>

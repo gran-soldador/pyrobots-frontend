@@ -5,6 +5,10 @@ import logo from './logo.png';
 import axios from 'axios';
 import NavBar from './NavBar_2';
 import './css/SimulationForm.css';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+
 
 const CreateSim = () => {
   //Datos sim
@@ -12,6 +16,7 @@ const CreateSim = () => {
 
   // Mostar Modal de error si hay errores en los imputs.
   const [invalidForm, setInvalidForm] = useState(false);
+  const [errorString, setErrorString] = useState('');
   const hideErrorForm = () => setInvalidForm(false);
   const [invalidAmountR, setInvalidAmountR] = useState(false);
  
@@ -48,9 +53,11 @@ const CreateSim = () => {
 
   const resetForm = () => {
     setIdRobots([]);
+    setInvalidAmountR('')
   }
 
   const handleValidation = () => {
+    setErrorString('');
     let valid = true;
     if (idrobots.length < 2 || idrobots.length > 4) {
       valid = false;
@@ -75,30 +82,33 @@ const CreateSim = () => {
         formData.append('numrondas', numrondas);
         idrobots.forEach(item => {
           formData.append('idrobots', item);
-         });
+          });
+        setSuccessUpload(true);
       
         try {
           const response = await axios.post(API, formData, {
             headers: { 'Authorization': `Bearer ${tokenValue}` }
           });
           console.log(response);
-          setSuccessUpload(true);
           setLoading(false);
           localStorage.setItem("sim", JSON.stringify(response.data));
         } catch (e) {
+          setSuccessUpload(false);
           console.log(e);
+          setErrorString('Por favor intente de nuevo más tarde.');
           setInvalidForm(true);
         }
       }
     } else {
-      console.log('Formulario no válido');
+      setErrorString('Por favor revise los datos del formulario.');
+      setInvalidForm(true);
     }
   }
 
-  const handleSelect = function(selectedItems) {
+  const handleSelect = event => {
     const robots = [];
-    for (let i=0; i<selectedItems.length; i++) {
-        robots.push(selectedItems[i].value);
+    for (let i=0; i<event.target.value.length; i++) {
+        robots.push(event.target.value[i]);
     }
     setIdRobots(robots);
   }
@@ -109,7 +119,7 @@ return (
   <br/>
   <Form className='form_create_sim' onSubmit={handleSubmit}>
     <Modal
-      className='modal-upload'
+      className='modal'
       show={successUpload}
       onHide={handleCloseModal}
       backdrop="static"
@@ -119,6 +129,8 @@ return (
         </Modal.Header>
         <Modal.Body>
           Aguarde un momento mientras se calcula la simulación.
+          <br/>
+          Cuando la simulación esté lista podrá hacer click abajo.
         </Modal.Body>
         <Modal.Footer>
           <a href='/ver-tablero'>
@@ -127,7 +139,7 @@ return (
               disabled={isLoading}
               onClick={handleCloseModal}
               className='buttonModal'>
-                Aceptar
+                Ver simulación
             </Button>
           </a>
         </Modal.Footer>
@@ -142,7 +154,7 @@ return (
         <Modal.Title>No se pudo cargar la simulación</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Por favor intente de nuevo más tarde.
+        {errorString}
       </Modal.Body>
       <Modal.Footer>
         <Button 
@@ -159,7 +171,7 @@ return (
       <h1>PyRobots</h1>
     </Form.Text>
     <Form.Text>
-      <h1>Crear Partida</h1>
+      <h1>Crear Simulación</h1>
     </Form.Text>
 
     <hr></hr>
@@ -178,20 +190,24 @@ return (
 
     <Form.Group className='form-group'>
       <Form.Label>
-        Seleccione sus robots(Utilize "Ctrl + Click"):
+        Seleccione sus robots:
       </Form.Label>
-      <Form.Control
+      <br/>
+      <FormControl sx={{ m: 1, width: 300 }}>
+      <Select
         multiple
-        type='select'
-        as='select'
-        onChange={e => {handleSelect(e.target.selectedOptions)}}>
-        {
-          datosRobot.map((robot) => (
-            <option value={robot.id} key={robot.id}>{robot.nombre}</option>
-            )
-            )
-          }
-      </Form.Control>
+        value={idrobots}
+        onChange={handleSelect}>
+          {datosRobot.map((robot) => (
+            <MenuItem
+              key={robot.id}
+              value={robot.id}>
+              {robot.nombre}
+            </MenuItem>
+          ))}
+      </Select>
+      </FormControl>
+      <br/>
       <span style={{ color: 'red' }}>{invalidAmountR}</span>
     </Form.Group>
     <br/>
