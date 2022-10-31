@@ -48,6 +48,8 @@ const Lobby = () => {
         });
         console.log(response);
         setIsJoined(false);
+        console.log('estoy saliendo del lobby')
+        ws.current.close()
       } catch (e) {
         setErrorMsg('');
         console.log(e.response);
@@ -168,12 +170,6 @@ const Lobby = () => {
     }
   }
 
-  //salir del websocket
-  const exitLobby = () => {
-    console.log('estoy saliendo del lobby')
-    ws.current.close()
-  }
-
   //Conección con websocket
   useEffect(() => {
     console.log('estoy conectandome al ws')
@@ -185,11 +181,11 @@ const Lobby = () => {
       if(JSON.parse(event.data).creador === localStorage.getItem("username")){
         setIsHost(true);
       }
-      for (let i = 0; i < JSON.parse(event.data).robot.length; i++) { //ARREGLAR
-        if(JSON.parse(event.data).robot[i] === localStorage.getItem("username")){
+      // for (let i = 0; i < JSON.parse(event.data).robot.length; i++) { //ARREGLAR
+        if(JSON.parse(event.data).creador !== localStorage.getItem("username")){
           setIsJoined(true);
         }
-      }
+      // }
     };
   }, []);
 
@@ -239,7 +235,7 @@ const Lobby = () => {
     }
     else {
       return (
-        <Button variant='primary' onClick={(e) => { setShow(true); }}>
+        <Button variant='primary' onClick={(e) => { setShow(true) }}>
           Unirse
         </Button>
       )
@@ -250,12 +246,13 @@ const Lobby = () => {
   function show_boton_abandonar() {
     if (isJoined) {
       return (
-        <Button variant='secondary' onClick={() => { handleSubmitAbandonar(); exitLobby() }}>
+        <Button variant='secondary' onClick={handleSubmitAbandonar}>
           Abandonar
         </Button>
       )
     }
   }
+
   return (
     <div>
       <div className="Title">
