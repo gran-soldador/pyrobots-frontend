@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
+import { Button, Modal, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const ListPartidas = () => {
@@ -20,16 +22,11 @@ const ListPartidas = () => {
     setSearch(e.target.value)
   }
 
-  //Actualizar lista
+  //Primera solicitud de datos
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
-  
-  useEffect(() => {
-    const autoRefresh = setInterval(handleGames, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Solicitar datos API
   async function handleGames() {
@@ -44,6 +41,7 @@ const ListPartidas = () => {
       if (response.status === 200) {
         setListGame(await response.json())
         setIsEmptyList(false)
+        console.log('estoy solicitando datos')
       } else {
         setListGame([])
         setIsEmptyList(true)
@@ -53,6 +51,11 @@ const ListPartidas = () => {
     }
   }
 
+  function handleSubmit(id) {
+    alert(id);
+    localStorage.setItem("id_lobby", id);
+  }
+  
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
@@ -67,9 +70,30 @@ const ListPartidas = () => {
               <td> { partida.numcurrentplayers } </td>
               <td> { partida.creador } </td>
               {
-                (!partida.password) ? <td>Desbloqueada</td>
-                : <td>Bloqueada</td>
+                (!partida.password) ?
+                  <td>
+                    <Link to={`/lobby/${partida.partida_id}`}>
+                      <Button variant='outline-success'
+                        onClick={() => {handleSubmit(partida.partida_id)}} > Pública </Button>
+                    </Link>
+                  </td>
+                :
+                <td>
+                  <Link to={`/lobby/${partida.partida_id}`}>
+                    <Button onClick={() => { handleSubmit(partida.partida_id) }} variant='outline-danger'> Privada </Button>
+                  </Link>
+                </td>
               }
+            <td>
+              <Link to={'/ganador'}>
+                <button
+                  variant='outline-success'
+                  disabled={partida.status !== 'finalizada'}
+                  onClick={() => { handleSubmit(partida.partida_id) }}>
+                    Ver
+                </button>
+              </Link>
+            </td>
             </tr>
           ))}
       </tbody>
@@ -82,7 +106,7 @@ const ListPartidas = () => {
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>
-           # Partidas = {listGame.length}
+          <Button onClick={handleGames}>Actualizar</Button>
         </p>
       </div>
       <input
@@ -107,6 +131,7 @@ const ListPartidas = () => {
             <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
             <th scope='col'>Contraseña</th>
+            <th scope='col'>Resultado</th>
           </tr>
         </thead>
         {

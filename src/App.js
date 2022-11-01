@@ -8,6 +8,10 @@ import MainPage from './components/MainPage';
 import UploadBotForm from './components/UploadBotForm'
 import GameBoard  from "./components/GameBoard"
 import Home from './components/Home';
+import Lobby from './components/Lobby';
+import ListRobots from './components/Cards';
+import NotFound from './components/NotFound';
+import Winner from './components/Winner';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -26,9 +30,14 @@ function App() {
           <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
           <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
           <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
+          <Route path='/lobby/:id' element={<Lobby />}></Route>
+          <Route exact path='/list-robots' element={<ListRobots />}></Route>
+          <Route exact path='/ganador' element={<Winner />}></Route>
+          <Route exact path='*' element={<NotFound />}></Route>
         </Routes>
       </div>
     </Router>
   );
 }
+
 export default App;
