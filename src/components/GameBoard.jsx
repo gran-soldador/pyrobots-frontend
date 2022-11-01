@@ -10,10 +10,10 @@ import redRobotImage from '../media/rojo.svg';
 import blueRobotImage from '../media/azul.svg';
 import greenRobotImage from '../media/verde.svg';
 
-import yellowMisilImage from '../media/misilAmarillo.svg';
-import redMisilImage from '../media/misilRojo.svg';
-import blueMisilImage from '../media/misilAzul.svg';
-import greenMisilImage from '../media/misilVerde.svg';
+import yellowMissileImage from '../media/misilAmarillo.svg';
+import redMissileImage from '../media/misilRojo.svg';
+import blueMissileImage from '../media/misilAzul.svg';
+import greenMissileImage from '../media/misilVerde.svg';
 import missileBurstImage from '../media/missileBurst.svg';
 
 export function GameBoard() {
@@ -48,55 +48,25 @@ export function GameBoard() {
         const greenRobot = new Image();
         greenRobot.src = greenRobotImage;
         
+        //inicalizamos la propiedad onload del objeto de la clase Image,
+        //esto se ejecuta cuando cuando finaliza la carga de la Imagen en el navegador.
         greenRobot.onload = () => {
             render()
         };
 
-        // Misiles
-        const yellowMisil = new Image();
-        yellowMisil.src = yellowMisilImage;
-        const redMisil = new Image();
-        redMisil.src = redMisilImage;
-        const blueMisil = new Image();
-        blueMisil.src = blueMisilImage;
-        const greenMisil = new Image();
-        greenMisil.src = greenMisilImage;
+        // Missiles
+        const yellowMissile = new Image();
+        yellowMissile.src = yellowMissileImage;
+        const redMissile = new Image();
+        redMissile.src = redMissileImage;
+        const blueMissile = new Image();
+        blueMissile.src = blueMissileImage;
+        const greenMissile = new Image();
+        greenMissile.src = greenMissileImage;
 
         // Estallido de missil
         const missileBurst = new Image();
         missileBurst.src = missileBurstImage;
-
-        //inicalizamos la propiedad onload del objeto de la clase Image,
-        //esto se ejecuta cuando cuando finaliza la carga de la Imagen en el navegador.
-        redMisil.onload = () => {
-            // renderTest();
-        }
-
-        // // Algunas pruebas de lo que ofrece canva.
-        // const renderTest = () => {
-        //     const canvas = canvasRef.current;
-        //     const ctxTest = canvas.getContext("2d");
-        //     // rectángulos a la izquierda, rotar desde el origen del lienzo
-        //     ctxTest.save();
-        //     // rect azul
-        //     ctxTest.fillStyle = '#0095DD';
-        //     ctxTest.fillRect(30, 30, 100, 100);
-        //     ctxTest.rotate((Math.PI / 180) * 25);
-        //     // rect gris
-        //     ctxTest.fillStyle = '#4D4E53';
-        //     ctxTest.fillRect(30, 30, 100, 100);
-        //     ctxTest.restore();
-        //     // rect blanco
-        //     ctxTest.fillStyle = 'white';
-        //     ctxTest.fillRect(60, 60, 100, 100);   // Dibuja un rectángulo con la configuración restaurada
-
-        //     // El método window.requestAnimationFrame informa al navegador que quieres realizar una animación 
-        //     // y solicita que el navegador programe el repintado de la ventana para el próximo ciclo de animación.
-        //     // El método acepta como argumento una función a la que llamar antes de efectuar el repintado.
-        //    // requestAnimationFrame(renderTest);
-        //     // setTimeout(renderTest, 500); //nos permite ejecutar una función una vez, pasado un intervalo de tiempo dado.   
-
-        // } 
 
         const render = () => {
             const canvas = canvasRef.current;
@@ -111,7 +81,7 @@ export function GameBoard() {
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
-            const misilList = [yellowMisil, redMisil, blueMisil, greenMisil];
+            const misilList = [yellowMissile, redMissile, blueMissile, greenMissile];
 
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
@@ -124,7 +94,6 @@ export function GameBoard() {
                 }
             }
                     
-
             //muestra los vuelos de misiles en la simulación.
             for (let j = 0; j < dataSimulation.rounds[index].missiles.length; j++) {
                 ctxMisil.save(); //Guarda todo el estado del lienzo.
