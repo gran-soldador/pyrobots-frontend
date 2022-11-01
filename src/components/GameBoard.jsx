@@ -3,9 +3,8 @@ import NavBar from './NavBar_2';
 
 import './css/GameBoard.css';
 
-
 import 'bootstrap/dist/css/bootstrap.css';
-import axios from "axios";
+import { Button, Modal } from 'react-bootstrap';
 
 import yellowRobotImage from '../media/amarillo.svg';
 import redRobotImage from '../media/rojo.svg';
@@ -14,14 +13,25 @@ import greenRobotImage from '../media/verde.svg';
 
 
 export function GameBoard() {
-    
-    // Descomentar para probar juego de 10.000 rondas.
-    // const jsonData= require('./out.json'); 
 
     const canvasRef = useRef();
 
     const [dataSimulation, setDataSimulation] = useState([]);
-    const [isLoading, setLoading] = useState(true);
+
+    const [invalidSim, setInvalidSim] = useState(false);
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [showError, setShowError] = useState(false);
+
+    const [showWinner, setShowWinner] = useState(false);
+    const [showTied, setShowTied] = useState(false);
+    const [showAllLosers, setShowAllLosers] = useState(false);
+    const hideModal = () => {
+        setShowWinner(false);
+        setShowTied(false);
+        setShowAllLosers(false);
+    }
+
+    const [winners, setWinners] = useState([]);
 
     const [progressBar, setProgressBar] = useState("");
     var index = 0;
@@ -65,10 +75,24 @@ export function GameBoard() {
                 }
             }
 
-            if(index < dataSimulation.rounds){
+            if (index < dataSimulation.rounds) {
                 index++;
             }
-            else{
+            else {
+                const winnersTemp = [];
+                for (let i=0; i < dataSimulation.robotcount; i++) {
+                    if (dataSimulation.robots[i].damage[dataSimulation.rounds] < 100) {
+                        winnersTemp.push(dataSimulation.robots[i].name);
+                    }
+                }
+                setWinners(winnersTemp);
+                if (winnersTemp.length > 1) {
+                    setShowTied(true);
+                } else if (winnersTemp.length === 1){
+                    setShowWinner(true);
+                } else {
+                    setShowAllLosers(true);
+                }
                 return;
             }
             
@@ -78,27 +102,22 @@ export function GameBoard() {
     
     useEffect(function () {
         const getDataSimulation = () => {
-            const API = "simulacion" 
-            const URL = "http://127.0.0.1:8000/" + API;
-            
-            axios.get(URL)
-            .then((response) => {
-
-                // Descomentar para probar juego con 10.000 rondas.
-                // setDataSimulation(jsonData);
-                
-                // Comentar esta linea para probar el juego con 10.000 rondas.
-                setDataSimulation(response.data);
-                setLoading(false);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+            const sim = localStorage.getItem('sim');
+            if (sim !== null) {
+                const simValue = (JSON.parse(sim));
+                setDataSimulation(simValue);
+                setDataLoaded(true);
+                localStorage.removeItem('sim');
+            } else {
+                if (!dataLoaded) {
+                    setInvalidSim(true);
+                }
+            }
         }
-
+        
         getDataSimulation();
         
-    }, []);
+    }, [dataLoaded]);
     
 
     function createDamageBar(){
@@ -134,11 +153,10 @@ export function GameBoard() {
     };
     
     function runAnimation (){
-        if(!isLoading){
-            drawingIncanvas(dataSimulation);                
-        }
-        else{
-            alert("Espera unos segundos e intente de nuevo.")
+        if (!invalidSim) {
+            drawingIncanvas(dataSimulation);
+        } else {
+            setShowError(true);
         }
     }
 
@@ -146,6 +164,90 @@ export function GameBoard() {
         <>
         <NavBar />
         <br/>
+        <Modal
+          className='modal-upload'
+          show={showError}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>No se pudo cargar la simulación</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Por favor intente de nuevo más tarde.
+            </Modal.Body>
+            <Modal.Footer>
+              <a href='/crear-sim'>
+                <Button 
+                  variant="primary"
+                  className='buttonModal'>
+                    Ok
+                </Button>
+              </a>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showWinner}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>El robot ganador es:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h4><span style={{ color: 'green' }}>{winners[0]}</span></h4>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showTied}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>Estos robots empataron:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <h5><span style={{ color: 'green' }}>{winners[0]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[1]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[2]}</span>
+                <br/>
+                <span style={{ color: 'green' }}>{winners[3]}</span></h5>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
+            </Modal.Footer>
+        </Modal>
+        <Modal
+          className='modal'
+          show={showAllLosers}
+          backdrop="static"
+          keyboard={false}>
+            <Modal.Header>
+              <Modal.Title>No hubo ganadores</Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+              <Button 
+                variant="primary"
+                onClick={hideModal}
+                className='buttonModal'>
+                  Ok
+              </Button>
+            </Modal.Footer>
+        </Modal>
         <div className='gameboard-pyrobots'>
                 <header className="mb-3">
                     <h1>Simulación de PyRobots</h1>
@@ -160,7 +262,10 @@ export function GameBoard() {
 
             <canvas id='canvas' width={1000} height={1000} ref={canvasRef}/>
             <br></br>
-            <button type="button" className="btn btn-success" onClick={runAnimation}>Simular</button>
+            <button
+                type="button"
+                className="btn btn-success"
+                onClick={runAnimation}>Simular</button>
         </div>
         </>
     );

@@ -19,6 +19,18 @@ export const handlers = [
                 {
                   "id": "1",
                   "nombre": "Viserys",
+                },
+                {
+                  "id": 19,
+                  "nombre": "SquareRobot"
+                },
+                {
+                  "id": 20,
+                  "nombre": "RandomRobot"
+                },
+                {
+                  "id": 16,
+                  "nombre": "SpiralRobot"
                 }
             ])
         )
