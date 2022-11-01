@@ -52,8 +52,11 @@ const ListPartidas = () => {
 
   // const [id, setId] = useState(0);
 
-  function handleSubmit(id) {
-    localStorage.setItem("id_lobby", id);
+  function handleSubmit(partida) {
+    console.log(partida)
+    localStorage.setItem("id_lobby", partida.partida_id);
+    localStorage.setItem('mix_players', partida.minplayers);
+    localStorage.setItem('max_players', partida.maxplayers); 
   }
 
   function DisplayData() {
@@ -74,13 +77,13 @@ const ListPartidas = () => {
                   <td>
                     <a href='lobby'>
                       <Button variant='outline-success' 
-                        onClick={() => {handleSubmit(partida.partida_id)}} > Pública </Button>
+                        onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> Pública </Button>
                     </a>
                   </td>
                 :
                 <td>
                     <a href='lobby'>
-                    <Button onClick={() => { handleSubmit(partida.partida_id) }} variant='outline-danger'> Privada </Button>
+                    <Button onClick={() => { handleSubmit(partida) }} variant='outline-danger' disabled={partida.status === 'finalizada'}> Privada </Button>
                     </a>
                 </td>
               }
