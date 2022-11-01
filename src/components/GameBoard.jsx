@@ -17,11 +17,6 @@ import greenMissileImage from '../media/misilVerde.svg';
 import missileBurstImage from '../media/missileBurst.svg';
 
 export function GameBoard() {
-    
-    // const jsonData= require('./misiles.json'); 
-    // const listMisiles = JSON.parse(jsonData);
-    // const missiles = jsonData.missiles;
-
     // Descomentar para probar juego de 10.000 rondas.
     // const jsonData= require('./out.json'); 
 
@@ -81,7 +76,7 @@ export function GameBoard() {
 
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
 
-            const misilList = [yellowMissile, redMissile, blueMissile, greenMissile];
+            const missilList = [yellowMissile, redMissile, blueMissile, greenMissile];
 
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
@@ -105,7 +100,7 @@ export function GameBoard() {
                 ctxMisil.translate(x, y);
                 ctxMisil.rotate(angle);// missil rotado
                 ctxMisil.translate(-x, -y);
-                ctxMisil.drawImage(misilList[robot], x-missilSize/2, y-missilSize/2 , missilSize , missilSize);
+                ctxMisil.drawImage(missilList[robot], x-missilSize/2, y-missilSize/2 , missilSize , missilSize);
 
                 ctxMisil.restore(); //Restaura el estado de lienzo más recientemente salvado.
             }
@@ -145,7 +140,7 @@ export function GameBoard() {
                 setLoading(false);
             } catch (error) {
                 if (error?.response?.status === 500) {
-                    console.log("La simulación no existe");
+                    alert("ERROR DE SERVIDOR INTERNO");
                 }
             }
         }
@@ -166,7 +161,7 @@ export function GameBoard() {
                 <div className="col" key={"robot"+i}>
                     <div className='robot-damage'>
                         <p>{dataSimulation.players[i].name}</p>
-                        <p>{dataSimulation.rounds[index].robots[i].damage}</p>
+                        {/* <p>{dataSimulation.rounds[index].robots[i].damage}</p> */}
                         <div className="progress mb-2" style={{height: '25px'}}>
                             <div className={"progress-bar " + colorBars[i]}
                                 role="progressbar" 
