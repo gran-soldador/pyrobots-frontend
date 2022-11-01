@@ -129,30 +129,29 @@ export function GameBoard() {
         }
     }
     
-    useEffect(function () {
-        const getDataSimulation = () => {
-            const API = "simulacion" 
-            const URL = "http://127.0.0.1:8000/" + API;
-            
-            axios.get(URL)
-            .then((response) => {
 
+    useEffect(function () {
+        const getDataSimulation = async() => {
+            try {
+                const API = "simulacion" 
+                const URL = "http://127.0.0.1:8000/" + API;
+                
+                const response = await axios.get(URL)
                 // Descomentar para probar juego con 10.000 rondas.
                 // setDataSimulation(jsonData);
-                
                 // Comentar esta linea para probar el juego con 10.000 rondas.
                 setDataSimulation(response.data);
                 console.log("response: ", response.data);
                 setLoading(false);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+            } catch (error) {
+                if (error?.response?.status === 500) {
+                    console.log("La simulación no existe");
+                }
+            }
         }
-
         getDataSimulation();
         
-    }, []);    
+    }, []);
 
     function createDamageBar(){
 
