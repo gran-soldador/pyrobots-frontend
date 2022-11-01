@@ -190,13 +190,14 @@ return (
     </Form.Group>
 
     <Form.Group className='form-group'>
-      <Form.Label>
+      <Form.Label id="multiple-robots-label">
         Seleccione sus robots:
       </Form.Label>
       <br/>
       <FormControl sx={{ m: 1, width: 300 }}>
       <Select
         multiple
+        labelId="multiple-robots-label"
         value={idrobots}
         onChange={handleSelect}>
           {datosRobot.map((robot) => (
