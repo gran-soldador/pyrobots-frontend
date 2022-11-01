@@ -9,9 +9,7 @@ const Lobby = () => {
   const [isReady, setIsready] = useState(false)
 
   useEffect(() => {
-    const partida_id = localStorage.getItem('id_lobby');
-    console.log("El id es: ", partida_id)
-    ws.current = new WebSocket('ws://localhost:8000/ws/' + partida_id)
+    ws.current = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'))
     ws.current.onmessage = (event) => {
       console.log("recibiendo datos lobby");
       setListPlayers(JSON.parse(event.data));

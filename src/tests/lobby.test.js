@@ -23,14 +23,13 @@ test('prueba: el servidor realiza un seguimiento de los mensajes recibidos y los
   expect(server).toHaveReceivedMessages(["hello"]);
 });
 
-test('Recieve data from Websocket and render it', async () => {
-  const server = new WS("ws://localhost:8000/lobby/1", {
+test('Se reciben los datos y se renderizan', async () => {
+  const server = new WS('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'), {
     jsonProtocol: true
   });
-
-  const client1 = new WebSocket("ws://localhost:8000/lobby/1");
+  const client1 = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'));
   await server.connected;
-  const client2 = new WebSocket("ws://localhost:8000/lobby/1");
+  const client2 = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'));
   await server.connected;
 
   const messages = {
