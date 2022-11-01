@@ -43,6 +43,8 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
-    "@types/node": "^18.8.4"
+    "@types/node": "^18.8.4",
+    "jest-websocket-mock": "^2.4.0",
+    "msw": "^0.47.4"
   }
 }

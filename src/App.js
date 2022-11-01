@@ -28,6 +28,7 @@ function App() {
           <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
           <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
           <Route exact path='/lobby' element={<Lobby />}></Route>
+
         </Routes>
       </div>
     </Router>

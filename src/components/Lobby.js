@@ -22,6 +22,14 @@ const Lobby = () => {
   const [errorShow, setErrorShow] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Estado de la partida
+  const [gameState, setGameState] = useState(null);
+  const [isFull, setIsFull] = useState(false);
+
+  // Modal de estado de la partida
+  const [gameIsFinished, SetGameIsFinished] = useState(false);
+  const [closeFormFinish, setCloseFormFinished] = useState(false);
+
   // Modal:
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -161,31 +169,26 @@ const Lobby = () => {
       });
     }
   }
-
   
-  const [gameState, setGameState] = useState(null);
-  const [isFull, setIsFull] = useState(false);
-
   //Conección con websocket
   useEffect(() => {
-    
     ws.current = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'))
     ws.current.onmessage = (event) => {
-      console.log(event);
-      setListPlayers(JSON.parse(event.data));
-      setIsFull(JSON.parse(event.data).robot.length >= localStorage.getItem('max_players') 
-                || JSON.parse(event.data).robot.length <= localStorage.getItem('min_players'));
-      setGameState(JSON.parse(event.data).event)
+      const jsonData = JSON.parse(event.data)
+      setListPlayers(jsonData);
+      setIsFull(jsonData.robot.length >= localStorage.getItem('max_players') 
+                || jsonData.robot.length <= localStorage.getItem('min_players'));
+
+      setGameState(jsonData.event)
       setIsready(true);
 
-      const json = JSON.parse(event.data);
-      if(JSON.parse(event.data).creador === localStorage.getItem("username")){
+      if(jsonData.creador === localStorage.getItem("username")){
         setIsHost(true);
         setIsJoined(true);
       }
       
-      for (let i = 0; i < json.robot.length; i++) { //ARREGLAR
-        if(json.robot[i].usuario === localStorage.getItem("username")){
+      for (let i = 0; i < jsonData.robot.length; i++) {
+        if(jsonData.robot[i].usuario === localStorage.getItem("username")){
           setIsJoined(true); 
         }
       }
@@ -212,7 +215,6 @@ const Lobby = () => {
   //Leer datos de robots
   useEffect(function () {
     if(gameState === 'finish'){
-      console.log('e')
       SetGameIsFinished(true);
     }
   }, [gameState]);
@@ -249,7 +251,9 @@ const Lobby = () => {
     else if(!isHost && !isJoined){
       body = (
         <div className="button-game">
-          <Button variant='primary mr-1' value={"Unirse"} onClick={() => {setShow(true)}}  disabled={isFull}> 
+          <Button variant='primary mr-1' onClick={() => {setShow(true)}}  
+          disabled={isFull}
+          data-testid='boton-unirse'> 
             Unirse 
           </Button>
         </div>
@@ -269,20 +273,15 @@ const Lobby = () => {
     return body;
   }
 
-  //diferenciar boton de abandonar
   function show_boton_abandonar() {
     if (isJoined) {
       return (
-        <Button variant='secondary' onClick={handleSubmitAbandonar}>
-          Abandonar
-        </Button>
+        <Button variant='secondary' 
+          onClick={handleSubmitAbandonar}>Abandonar Sala</Button>
       )
     }
   }
 
-  // Modal de resultado de la partida
-  const [gameIsFinished, SetGameIsFinished] = useState(false);
-  const [closeFormFinish, setCloseFormFinished] = useState(false);
   function goWinner(){
     setCloseFormFinished(false)
   }
@@ -320,13 +319,21 @@ const Lobby = () => {
           <Modal.Title>La partida ha finalizado</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <a href="/listar-partidas">
+          <a href="/ganador">
             <Button
               variant="primary"
               onClick={goWinner}
               className='buttonModal'>
                 Ver resultado
             </Button>
+          </a>
+          {" "}
+          <a href="/listar-partidas">
+            <Button
+                variant="primary"
+                className="btn btn-dark ">
+                  Salir
+              </Button>
           </a>
         </Modal.Body>
       </Modal>
@@ -369,6 +376,7 @@ const Lobby = () => {
                 multiple
                 type='select'
                 as='select'
+                data-testid='robot-input'
                 onChange={event => { setIdRobot(event.target.value) }}>
                 {
                   datosRobot.map((robot) => (
@@ -386,6 +394,7 @@ const Lobby = () => {
                 variant='success'
                 type='submit'
                 size='lg'
+                data-testid='modal-unirme'
                 disabled={!idrobot}>
                  Unirme
               </Button>

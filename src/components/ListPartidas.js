@@ -76,7 +76,8 @@ const ListPartidas = () => {
                 (!partida.password) ?
                   <td>
                     <a href='lobby'>
-                      <Button variant='outline-success' 
+                      <Button variant='outline-success'
+                        data-testid="unirse-unirse" 
                         onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> Pública </Button>
                     </a>
                   </td>
