@@ -79,3 +79,7 @@ table {
   color: rgb(185, 39, 14);
   text-align: center;
 }
+
+a:link, a:visited, a:active {
+  text-decoration:none;
+}

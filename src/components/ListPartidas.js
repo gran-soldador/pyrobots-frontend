@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
-import { Button } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const ListPartidas = () => {
@@ -23,6 +24,7 @@ const ListPartidas = () => {
 
   //Primera solicitud de datos
   useEffect(() => {
+    localStorage.setItem('id_lobby', -1);
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
@@ -53,12 +55,11 @@ const ListPartidas = () => {
   // const [id, setId] = useState(0);
 
   function handleSubmit(partida) {
-    console.log(partida)
     localStorage.setItem("id_lobby", partida.partida_id);
     localStorage.setItem('mix_players', partida.minplayers);
     localStorage.setItem('max_players', partida.maxplayers); 
   }
-
+  
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
@@ -75,19 +76,33 @@ const ListPartidas = () => {
               {
                 (!partida.password) ?
                   <td>
-                    <a href='lobby'>
                       <Button variant='outline-success'
                         data-testid="unirse-unirse" 
-                        onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> Pública </Button>
-                    </a>
+                        onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                            Pública 
+                          </a>
+                      </Button>
                   </td>
                 :
                 <td>
-                    <a href='lobby'>
-                    <Button onClick={() => { handleSubmit(partida) }} variant='outline-danger' disabled={partida.status === 'finalizada'}> Privada </Button>
-                    </a>
+                    <Button onClick={() => { handleSubmit(partida) }} variant='outline-danger' disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                          Privada 
+                        </a>
+                    </Button>
                 </td>
               }
+            <td>
+              <a href='/ganador'>
+                <button
+                  variant='outline-success'
+                  disabled={partida.status !== 'finalizada'}
+                  onClick={() => { handleSubmit(partida) }}>
+                    Ver
+                </button>
+              </a>
+            </td>
             </tr>
           ))}
       </tbody>
@@ -125,6 +140,7 @@ const ListPartidas = () => {
             <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
             <th scope='col'>Contraseña</th>
+            <th scope='col'>Resultado</th>
           </tr>
         </thead>
         {
