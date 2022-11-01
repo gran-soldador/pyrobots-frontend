@@ -51,13 +51,11 @@ const ListPartidas = () => {
     }
   }
 
-  // const [id, setId] = useState(0);
-
   function handleSubmit(id) {
     alert(id);
     localStorage.setItem("id_lobby", id);
   }
-
+  
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
@@ -86,6 +84,16 @@ const ListPartidas = () => {
                   </Link>
                 </td>
               }
+            <td>
+              <Link to={'/ganador'}>
+                <button
+                  variant='outline-success'
+                  disabled={partida.status !== 'finalizada'}
+                  onClick={() => { handleSubmit(partida.partida_id) }}>
+                    Ver
+                </button>
+              </Link>
+            </td>
             </tr>
           ))}
       </tbody>
@@ -123,6 +131,7 @@ const ListPartidas = () => {
             <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
             <th scope='col'>Contraseña</th>
+            <th scope='col'>Resultado</th>
           </tr>
         </thead>
         {
