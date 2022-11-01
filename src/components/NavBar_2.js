@@ -13,6 +13,7 @@ const NavBar_2 = () => {
               <Nav.Link href='/crear-sim'>Crear Simulación</Nav.Link>
               <Nav.Link href='/crear-partida'>Crear Partida</Nav.Link>
               <Nav.Link href='/listar-partidas'>Listar Partidas</Nav.Link> 
+              <Nav.Link href='/list-robots'>Listar Robots</Nav.Link>
             </Nav>
         </Container>
       </Navbar>
