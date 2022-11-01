@@ -20,6 +20,7 @@ const CreatePartida = () => {
   const [validForm, setValidForm] = useState(false);
   const hideErrorForm = () => setValidForm(false);
   const [validplayers, setValidPlayers] = useState('');
+  const [passwordErr, setPasswordErr] = useState("");
 
   // Referencias a los inputField.
   const namepartidaRef = useRef();
@@ -105,6 +106,10 @@ const CreatePartida = () => {
         } catch (e) {
           console.log(e);
           console.log('error')
+          if (e?.response?.data.detail === 'password invalida') {
+          setValidForm(true);
+          setPasswordErr('Debe tener menos de 10 caracteres, y acepta - o _');
+        }
         }
       }
     } else {
@@ -248,6 +253,7 @@ const CreatePartida = () => {
           maxLength={10}
           ref={passwordRef}
           onChange={event => setPassword(event.target.value)} />
+          <span style={{ color: "red" }}>{passwordErr}</span>
       </Form.Group>
 
       <Form.Group className='form-group'>
