@@ -30,7 +30,7 @@ function App() {
           <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
           <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
           <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
-          <Route path='/lobby/:id' element={<Lobby />}></Route>
+          <Route path='/lobby' element={<Lobby />}></Route>
           <Route exact path='/list-robots' element={<ListRobots />}></Route>
           <Route exact path='/ganador' element={<Winner />}></Route>
           <Route exact path='*' element={<NotFound />}></Route>

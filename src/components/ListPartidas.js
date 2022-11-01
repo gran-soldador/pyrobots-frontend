@@ -24,6 +24,7 @@ const ListPartidas = () => {
 
   //Primera solicitud de datos
   useEffect(() => {
+    localStorage.setItem('id_lobby', -1);
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
@@ -51,9 +52,12 @@ const ListPartidas = () => {
     }
   }
 
-  function handleSubmit(id) {
-    alert(id);
-    localStorage.setItem("id_lobby", id);
+  // const [id, setId] = useState(0);
+
+  function handleSubmit(partida) {
+    localStorage.setItem("id_lobby", partida.partida_id);
+    localStorage.setItem('mix_players', partida.minplayers);
+    localStorage.setItem('max_players', partida.maxplayers); 
   }
   
   function DisplayData() {
@@ -72,27 +76,32 @@ const ListPartidas = () => {
               {
                 (!partida.password) ?
                   <td>
-                    <Link to={`/lobby/${partida.partida_id}`}>
                       <Button variant='outline-success'
-                        onClick={() => {handleSubmit(partida.partida_id)}} > Pública </Button>
-                    </Link>
+                        data-testid="unirse-unirse" 
+                        onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                            Pública 
+                          </a>
+                      </Button>
                   </td>
                 :
                 <td>
-                  <Link to={`/lobby/${partida.partida_id}`}>
-                    <Button onClick={() => { handleSubmit(partida.partida_id) }} variant='outline-danger'> Privada </Button>
-                  </Link>
+                    <Button onClick={() => { handleSubmit(partida) }} variant='outline-danger' disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                          Privada 
+                        </a>
+                    </Button>
                 </td>
               }
             <td>
-              <Link to={'/ganador'}>
+              <a href='/ganador'>
                 <button
                   variant='outline-success'
                   disabled={partida.status !== 'finalizada'}
-                  onClick={() => { handleSubmit(partida.partida_id) }}>
+                  onClick={() => { handleSubmit(partida) }}>
                     Ver
                 </button>
-              </Link>
+              </a>
             </td>
             </tr>
           ))}

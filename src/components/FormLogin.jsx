@@ -43,6 +43,7 @@ const FormLogin = () => {
       if (response?.data?.accessToken) {
         setSuccessLogin(true);
         localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("username", username);
         console.log(response.data);
       }
       return response;

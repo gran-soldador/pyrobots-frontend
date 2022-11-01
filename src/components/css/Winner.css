@@ -37,6 +37,8 @@ p#winner span {
   /* Activate hardware acceleration for smoother animations */
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
+  -webkit-text-stroke: 2px rgb(102, 102, 102); /* width and color */
+
 }
 
 /* Animate Background Image */
