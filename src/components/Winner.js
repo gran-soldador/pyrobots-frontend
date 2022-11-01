@@ -37,15 +37,17 @@ const MainPage = () => {
   console.log('estoydandolosdatos', result);
 
   return (
-    <p id='winner'>
-      Ganador
-     {!isEmptyList && result.map((user, id) => (
+    <div className='winner-pyrobot'>
+      <p id='winner'>
+        Ganador
+      {!isEmptyList && result.map((user, id) => (
         <span className='center' key={id}>
-         {user.usuario}-{user.robot}
-        </span>
-        ))}
-      &mdash; PyRobots &mdash;
-    </p>
+          {user.usuario}-{user.robot}
+          </span>
+          ))}
+        &mdash; PyRobots &mdash;
+      </p>
+    </div>
   );
 }
 

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
-import { Button, Modal, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 
 const ListPartidas = () => {
@@ -63,7 +62,7 @@ const ListPartidas = () => {
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
-        {results.map((partida, id) => (
+        {results.reverse().map((partida, id) => (
             <tr key={ id } className="Rows-List">
               <td> { partida.partida_id } </td>
               <td> { partida.namepartida } </td>
@@ -76,7 +75,7 @@ const ListPartidas = () => {
               {
                 (!partida.password) ?
                   <td>
-                      <Button variant='outline-success'
+                      <Button className="btn btn-success"
                         data-testid="unirse-unirse" 
                         onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
@@ -86,7 +85,7 @@ const ListPartidas = () => {
                   </td>
                 :
                 <td>
-                    <Button onClick={() => { handleSubmit(partida) }} variant='outline-danger' disabled={partida.status === 'finalizada'}> 
+                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-danger" disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
                           Privada 
                         </a>
@@ -94,14 +93,14 @@ const ListPartidas = () => {
                 </td>
               }
             <td>
-              <a href='/ganador'>
-                <button
-                  variant='outline-success'
+                <Button
+                  className="btn btn-primary"
                   disabled={partida.status !== 'finalizada'}
                   onClick={() => { handleSubmit(partida) }}>
+                  <a href='/ganador'>
                     Ver
-                </button>
-              </a>
+                  </a>
+                </Button>
             </td>
             </tr>
           ))}
