@@ -1,23 +1,23 @@
 import React from 'react'
 import mockAxios from "axios";
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import ListRobots from '../components/Cards'
+import Card from '../components/Card'
 
-
-beforeEach(() => {
-  render(<ListRobots />);
-})
 
 test('Renderizar componentes', () => {
+  render(<ListRobots />);
   expect(screen.getByText(/Lista de robots/i)).toBeInTheDocument()
 });
 
 test('button actualizar lista', () => {
+  render(<ListRobots />);
   const buttonis = screen.getByRole('button', { name: /Actualizar Lista/i });
   expect(buttonis).toBeInTheDocument();
 });
 
 test('renders learn react link', async () => {
+  render(<ListRobots />);
   mockAxios.get.mockResolvedValueOnce(() =>
     Promise.resolve({
       data: [
@@ -36,6 +36,14 @@ test('renders learn react link', async () => {
   expect(mockAxios.get).toHaveBeenCalledTimes(0);
 });
 
-// test('renders learn react link', async () => { 
-//   screen.get.
-// }); 
+test('img?', () => {
+  render(<Card />);
+  const winner = screen.getAllByRole('img');
+  expect(winner).toHaveLength(1);
+});
+
+test('name?', () => {
+  render(<Card />);
+  const winner = screen.getAllByRole('heading');
+  expect(winner).toHaveLength(1);
+});

@@ -19,7 +19,8 @@
 .card-img-top {
   transform: scale(1);
   transition: all 0.2s ease-in-out;
-  height: 250px;
+  height: 300px;
+  width: 300;
 }
 
 .card-img-top:hover {
