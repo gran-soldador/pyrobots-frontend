@@ -186,7 +186,7 @@ export function GameBoard() {
             drawingIncanvas(dataSimulation);              
         }
         else{
-            alert("Espera unos segundos e intente de nuevo.")
+            console.log("Espera unos segundos e intente de nuevo.")
         }
     }
 
