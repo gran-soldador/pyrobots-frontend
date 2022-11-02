@@ -4,15 +4,14 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-
 // src/setupTests.js
 import { server } from './mocks/server.js'
-// Establish API mocking before all tests.
+// Establezca la simulación de API antes de todas las pruebas.
 beforeAll(() => server.listen())
 
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
+// Restablece cualquier controlador de solicitudes que podamos agregar durante las pruebas,
+// para que no afecten a otras pruebas.
 afterEach(() => server.resetHandlers())
 
-// Clean up after the tests are finished.
+// Limpiar después de terminar las pruebas.
 afterAll(() => server.close())
