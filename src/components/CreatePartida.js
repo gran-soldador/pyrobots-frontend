@@ -113,7 +113,7 @@ const CreatePartida = () => {
           }
           if (e?.response?.data.detail === 'namepartida invalido') {
             setValidForm(true);
-            setNameErr('El nombre de la partida no acepta espacios');
+            setNameErr('El nombre de la partida no acepta espacios ni caracteres especiales');
           }
         }
       }
