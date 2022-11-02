@@ -12,3 +12,7 @@
   margin: 1rem auto;
   align-items: center;
 }
+
+.modal-body {
+  color: red;
+}
