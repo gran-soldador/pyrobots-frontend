@@ -45,6 +45,7 @@ const FormLogin = () => {
       if (response?.data?.accessToken) {
         setSuccessLogin(true);
         localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("username", username);
         console.log(response.data);
       }
       return response;
@@ -149,7 +150,7 @@ const FormLogin = () => {
         <Image src={logo}></Image>
         <Image src={logo}></Image>
         <Form.Text>
-          <h1>Pyrobots</h1>
+          <h1>PyRobots</h1>
         </Form.Text>
         <Form.Text>
           Formulario de Login
@@ -175,11 +176,11 @@ const FormLogin = () => {
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
           <Button disabled={!password ||!username } type="submit">Iniciar sesion</Button>
           {/* <Button > ¿ Olvidaste tu contraseña ?</Button> */}
-          <a href='/registrarse'>
-            <Button variant="link">Crear cuenta nueva</Button>
-          </a>
         </Form.Group>
       </Form>
+      <a href='/registrarse'>
+        <Button variant="link" className='crear-account'>Crear cuenta nueva</Button>
+      </a>
       </>
   );
 }

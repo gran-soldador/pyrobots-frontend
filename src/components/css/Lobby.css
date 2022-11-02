@@ -58,7 +58,7 @@ table {
   display: none;
 }
 
-.lobby-header {
+.partidas-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -66,7 +66,7 @@ table {
   padding: 10px;
 }
 
-.input-lobby {
+.input-table {
   padding: 10px;
   margin-bottom: 20px;
   font-size: 18px;
@@ -75,12 +75,11 @@ table {
   box-shadow: none;
 }
 
-.emptylist-lobby {
+.emptylist {
   color: rgb(185, 39, 14);
   text-align: center;
 }
 
-a { 
-  color: inherit; 
-  text-decoration:none;
-} 
+.form_create_pardida {
+  text-align: left;
+}
