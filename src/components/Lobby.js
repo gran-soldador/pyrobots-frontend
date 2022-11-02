@@ -28,6 +28,7 @@ const Lobby = () => {
 
   // Modal de estado de la partida
   const [gameIsFinished, SetGameIsFinished] = useState(false);
+  const [gameIsRunning, SetGameIsRunning] = useState(false);
   const [closeFormFinish, setCloseFormFinished] = useState(false);
 
   // Modal:
@@ -214,8 +215,12 @@ const Lobby = () => {
   
   //Leer datos de robots
   useEffect(function () {
+    console.log(gameState)
     if(gameState === 'finish'){
       SetGameIsFinished(true);
+    }
+    if(gameState === 'init'){
+      SetGameIsRunning(true);
     }
   }, [gameState]);
   
@@ -286,10 +291,22 @@ const Lobby = () => {
     setCloseFormFinished(false)
   }
 
+  function isRunning(){
+    if(gameIsRunning){
+      return("La partida ya ha comenzado!")
+    }
+    return " "
+  }
+
    return (
     <div>
       <div className="Title">
         <h1>Sala: {localStorage.getItem('id_lobby')}</h1>
+        <h2> 
+          <span style={{ color: "red" }}>
+            { isRunning()}
+          </span>
+        </h2>
         <table className='table table-striped table-hover mt-5 shadow-lg'
           cellSpacing='0'
           cellPadding='0'
