@@ -76,6 +76,8 @@ export function GameBoard() {
         const missileBurst = new Image();
         missileBurst.src = missileBurstImage;
 
+        const fps = 30; //velocidad de la simulación
+
         const render = () => {
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
@@ -146,10 +148,10 @@ export function GameBoard() {
                 setIsRunning(false);
                 return;
             }
-            // Informa al navegador que quieres realizar una animación.
-            requestAnimationFrame(render);
-            //nos permite ejecutar una función una vez, pasado un intervalo de tiempo dado.
-            // setTimeout(render, 500);    
+            
+            setTimeout(() => {
+                requestAnimationFrame(render);
+            }, 1000/fps)
         }
     }
     
