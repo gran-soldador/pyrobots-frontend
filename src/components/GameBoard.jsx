@@ -123,16 +123,17 @@ export function GameBoard() {
                     dataSimulation.rounds[index].explosions[k].y-missileBurstSize/2 , missileBurstSize , missileBurstSize);
             }
 
-            if(index < dataSimulation.rounds_played){                                
+            if(index < dataSimulation.rounds_played){
                 index++;
             }
             else {
                 const winnersTemp = [];
-                for (let i=0; i < dataSimulation.robotcount; i++) {
-                    if (dataSimulation.robots[i].damage[dataSimulation.rounds] < 100) {
-                        winnersTemp.push(dataSimulation.robots[i].name);
-                    }
+                for (let i = 0; i < dataSimulation.winners.length; i++) {
+                    console.log(dataSimulation.winners[i]);
+                    winnersTemp.push(dataSimulation.winners[i].name);
                 }
+                console.log('winnerstemp', winnersTemp);
+                console.log('winnerstemp',dataSimulation.winners);
                 setWinners(winnersTemp);
                 if (winnersTemp.length > 1) {
                     setShowTied(true);

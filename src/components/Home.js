@@ -24,6 +24,10 @@ const PostLogin = () => {
           <a href='/crear-sim'>
             <button className='btn btn-primary btn-lg'>Crear Simulación</button>
           </a>
+          &nbsp;
+          <a href='/list-robots'>
+            <button className='btn btn-primary btn-lg'>Listar Robots</button>
+          </a>
       </div>
     </div>
   );

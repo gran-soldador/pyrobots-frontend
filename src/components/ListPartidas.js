@@ -79,7 +79,7 @@ const ListPartidas = () => {
                         data-testid="unirse-unirse" 
                         onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
-                            Pública 
+                            Unirse 🔓
                           </a>
                       </Button>
                   </td>
@@ -87,7 +87,7 @@ const ListPartidas = () => {
                 <td>
                     <Button onClick={() => { handleSubmit(partida) }} className="btn btn-danger" disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
-                          Privada 
+                          Unirse 🔒
                         </a>
                     </Button>
                 </td>
@@ -138,7 +138,7 @@ const ListPartidas = () => {
             <th scope='col'>Cantidad de rondas</th>
             <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
-            <th scope='col'>Contraseña</th>
+            <th scope='col'>Unirse </th>
             <th scope='col'>Resultado</th>
           </tr>
         </thead>
