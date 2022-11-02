@@ -20,9 +20,11 @@ const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [successLogin, setSuccessLogin] = useState(false);
+  const [userNotVerified, setUserNotVerified] = useState(false);
 
   //handle del modal
-  const handleClose = () => setSuccessLogin(false);
+  const handleCloseModal1 = () => setSuccessLogin(false);
+  const handleCloseModal2 = () => setUserNotVerified(false);
   // Mostar Modal de error, si no logro loguearse correctamente.
   const [validForm, setValidForm] = useState(false);
   const hideErrorForm = () => setValidForm(false);
@@ -49,11 +51,19 @@ const FormLogin = () => {
       return response;
     } catch(error) {
       if (error?.response?.status === 400) {
+        console.log("detail error:", error?.response?.data?.detail);
         setUsernameErr("El usuario no existe");
       }
       else if (error?.response?.status === 401) {
-        setPasswordErr("Contraseña Incorrecta");
-      } else {
+        if (error?.response?.data?.detail === "Wrong Password.") {
+          console.log("detail error:", error?.response?.data?.detail);
+          setPasswordErr("Contraseña Incorrecta");
+        } else if (error?.response?.data?.detail === "User isn't verified yet. Please verify your account."){
+          console.log("detail error:", error?.response?.data?.detail);
+          setUserNotVerified(true);
+        }
+      } 
+      else {
         console.log(error);
         setValidForm(true);
       }
@@ -66,50 +76,75 @@ const FormLogin = () => {
       <br/>
       <Form className='form_pyrobots_login' onSubmit={handleSubmit}>
         <Modal
-            className='modal-success-login'
-            show={successLogin}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}>
-                <Modal.Header>
-                <Modal.Title>Login correcto!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <span style={{ color: "green" }}>Bienvenido/a {username}.</span>
-                </Modal.Body>
-                <Modal.Footer>
-                <a href='/home'>
-                    <Button 
-                        variant="primary" 
-                        onClick={handleClose}
-                        className='buttonModal'>
-                            Aceptar
-                    </Button>
-                </a>
-            </Modal.Footer>
+          className='modal-success-login'
+          show={successLogin}
+          onHide={handleCloseModal1}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header>
+          <Modal.Title>
+            Login correcto! <Image src={logo}></Image>
+          </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <span style={{ color: "green" }}>Bienvenido/a {username}.</span>
+          </Modal.Body>
+          <Modal.Footer>
+              <a href='/home'>
+                  <Button 
+                      variant="primary" 
+                      onClick={handleCloseModal1}
+                      className='buttonModal'>
+                          Aceptar
+                  </Button>
+              </a>
+          </Modal.Footer>
         </Modal>
 
         <Modal
-            className=''
-            show={validForm}
-            onHide={hideErrorForm}
-            backdrop="static"
-            keyboard={false}>
-            <Modal.Header closeButton>
-            <Modal.Title>Login incorrecto 😔</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                Vuelve a introducir nuevamente los datos.
-            </Modal.Body>
-            <Modal.Footer>
-              <Button 
-                  variant="primary" 
-                  onClick={hideErrorForm}
-                  className='buttonModal'>
-                      Aceptar
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          className='modal-unsuccess-login'
+          show={validForm}
+          onHide={hideErrorForm}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header closeButton>
+          <Modal.Title>Login incorrecto 😔</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              Vuelve a introducir nuevamente los datos.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button 
+                variant="primary" 
+                onClick={hideErrorForm}
+                className='buttonModal'>
+                    Aceptar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          className='modal-unsuccess-login'
+          show={userNotVerified}
+          onHide={handleCloseModal2}
+          backdrop="static"
+          keyboard={false}>
+          <Modal.Header closeButton>
+          <Modal.Title>El usuario no está verificado 😔</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Por favor revise su correo para proceder a la confirmación de la cuenta y 
+            luego intente loguearse de nuevo.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button 
+                variant="primary" 
+                onClick={handleCloseModal2}
+                className='buttonModal'>
+                    Aceptar
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         <img src={logo} className="" alt="logo" />
         <Image src={logo}></Image>
@@ -124,7 +159,8 @@ const FormLogin = () => {
         <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
           <Form.Label column sm={2}>Usuario</Form.Label>
           <Col sm={10}>
-            <Form.Control type="text" placeholder="Ingrese nombre de usuario" value={username} minLength={1} maxLength={32}
+            <Form.Control type="text" placeholder="Ingrese nombre de usuario" 
+              value={username} minLength={1} maxLength={32}
               required onChange={ev => setUsername(ev.target.value)}/>
           <span style={{ color: "red" }}> {usernameErr} </span>
           </Col>
@@ -132,8 +168,8 @@ const FormLogin = () => {
         <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
           <Form.Label column sm={2}>Contraseña </Form.Label>
           <Col sm={10}>
-          <Form.Control type="password" placeholder="Ingrese una contraseña" minLength={8} maxLength={32}
-            required onChange={ev => setPassword(ev.target.value)}/>
+          <Form.Control type="password" placeholder="Ingrese una contraseña" minLength={8} 
+            maxLength={32} required onChange={ev => setPassword(ev.target.value)}/>
           <span style={{ color: "red" }}> {passwordErr} </span>
           </Col>
         </Form.Group>
