@@ -25,6 +25,7 @@ export function GameBoard() {
     const [invalidSim, setInvalidSim] = useState(false);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [showError, setShowError] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
 
     const [showWinner, setShowWinner] = useState(false);
     const [showTied, setShowTied] = useState(false);
@@ -142,6 +143,7 @@ export function GameBoard() {
                 } else {
                     setShowAllLosers(true);
                 }
+                setIsRunning(false);
                 return;
             }
             // Informa al navegador que quieres realizar una animación.
@@ -206,6 +208,7 @@ export function GameBoard() {
     
     function runAnimation (){
         if (!invalidSim) {
+            setIsRunning(true);
             drawingIncanvas(dataSimulation);
         } else {
             setShowError(true);
@@ -317,6 +320,7 @@ export function GameBoard() {
             <button
                 type="button"
                 className="btn btn-success"
+                disabled={isRunning}
                 onClick={runAnimation}>Simular</button>
         </div>
         </>
