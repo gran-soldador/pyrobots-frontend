@@ -45,6 +45,8 @@ export function RegisterForm() {
     setFormErrBody("");
   }
 
+  const [wait, setWait] = useState(false);
+
   const handleValidation = () => {
     let formIsValid = true;
     setUsernameErr("");
@@ -123,6 +125,7 @@ export function RegisterForm() {
     setFormErrTitle("El formulario de registro contiene errores")
     setFormErrBody("Modifique los datos señalados.");
     if (handleValidation()) {
+      setWait(true);
 
       let formData = new FormData();
       formData.append('username', datos.username);
@@ -139,9 +142,11 @@ export function RegisterForm() {
         const response = await axios.post(URL, formData, { headers: 
           { 'Content-Type': 'multipart/form-data' } });
         if (response?.data) {
+          setWait(false);
           setSuccessRegister(true);
         }
       } catch (err) {
+        setWait(false);
         if (err?.response?.data?.detail === "User name already exist.") {
           setInvalidForm(true);
           setUsernameErr("Username ya registrado");
@@ -171,7 +176,9 @@ export function RegisterForm() {
           backdrop="static"
           keyboard={false}>
             <Modal.Header>
-            <Modal.Title>Registro correcto!</Modal.Title>
+            <Modal.Title>
+              Registro correcto! <Image src={logo}></Image>
+            </Modal.Title>
             </Modal.Header>
             <Modal.Body>
             <span>Por favor revise su correo para proceder a la confirmación de la cuenta.</span>
@@ -325,6 +332,7 @@ export function RegisterForm() {
         <button
           type="submit"
           data-testid="test-button"
+          disabled={wait}
           className="btn btn-block mb-4 btn-success"
           >
           Registrarte
