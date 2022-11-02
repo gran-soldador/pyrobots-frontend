@@ -100,7 +100,7 @@ export function GameBoard() {
             for (let i = 0; i < dataSimulation.players.length; i++) {
                 if (dataSimulation.rounds[index].robots[i].damage < 100 ) {
                     ctx.drawImage(robotList[i], dataSimulation.rounds[index].robots[i].x-robotSize/2,
-                        dataSimulation.rounds[index].robots[i].y-robotSize/2, robotSize, robotSize);
+                        1000 - dataSimulation.rounds[index].robots[i].y-robotSize/2, robotSize, robotSize);
                 }
             }
                     
@@ -109,8 +109,8 @@ export function GameBoard() {
                 ctxMisil.save(); //Guarda todo el estado del lienzo.
                 var robot = dataSimulation.rounds[index].missiles[j].sender;
                 var x = dataSimulation.rounds[index].missiles[j].x;
-                var y = dataSimulation.rounds[index].missiles[j].y;
-                var angle = dataSimulation.rounds[index].missiles[j].angle;
+                var y = 1000 - dataSimulation.rounds[index].missiles[j].y;
+                var angle = -dataSimulation.rounds[index].missiles[j].angle;
 
                 ctxMisil.translate(x, y);
                 ctxMisil.rotate(angle);// missil rotado
@@ -123,7 +123,7 @@ export function GameBoard() {
             //muestra el estallido del missil.
             for (let k = 0; k < dataSimulation.rounds[index].explosions.length; k++) {
                 ctxMisil.drawImage(missileBurst, dataSimulation.rounds[index].explosions[k].x-missileBurstSize/2,
-                    dataSimulation.rounds[index].explosions[k].y-missileBurstSize/2 , missileBurstSize , missileBurstSize);
+                    1000 - dataSimulation.rounds[index].explosions[k].y-missileBurstSize/2 , missileBurstSize , missileBurstSize);
             }
 
             if(index < dataSimulation.rounds_played){
