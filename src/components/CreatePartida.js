@@ -157,7 +157,7 @@ const CreatePartida = () => {
         backdrop="static"
         keyboard={false}>
         <Modal.Header closeButton>
-          <Modal.Title>No se pudo subir tu robot 😔</Modal.Title>
+          <Modal.Title>No se pudo crear tu partida 😔</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Revisa los datos del formulario e intenta nuevamente.
