@@ -1,5 +1,6 @@
 import React from "react";
-import './css/PostLogin.css';
+import './css/Home.css';
+
 
 const PostLogin = () => {
   
@@ -20,8 +21,12 @@ const PostLogin = () => {
             <button className='btn btn-primary btn-lg'>Subir bot</button>
           </a>
           &nbsp;
-          <a href='/ver-tablero'>
-            <button className='btn btn-primary btn-lg'>Ver tablero</button>
+          <a href='/crear-sim'>
+            <button className='btn btn-primary btn-lg'>Crear Simulación</button>
+          </a>
+          &nbsp;
+          <a href='/list-robots'>
+            <button className='btn btn-primary btn-lg'>Listar Robots</button>
           </a>
       </div>
     </div>

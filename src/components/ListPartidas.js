@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
+import NavBar from './NavBar_2';
+import { Button } from 'react-bootstrap';
+
 
 const ListPartidas = () => {
   //Estado de la lista
@@ -18,16 +21,12 @@ const ListPartidas = () => {
     setSearch(e.target.value)
   }
 
-  //Actualizar lista
+  //Primera solicitud de datos
   useEffect(() => {
+    localStorage.setItem('id_lobby', -1);
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
-  
-  useEffect(() => {
-    const autoRefresh = setInterval(handleGames, 10000);
-    return () => clearInterval(autoRefresh);
-  }, []);
 
   //Solicitar datos API
   async function handleGames() {
@@ -42,6 +41,7 @@ const ListPartidas = () => {
       if (response.status === 200) {
         setListGame(await response.json())
         setIsEmptyList(false)
+        console.log('estoy solicitando datos')
       } else {
         setListGame([])
         setIsEmptyList(true)
@@ -51,12 +51,20 @@ const ListPartidas = () => {
     }
   }
 
+  // const [id, setId] = useState(0);
+
+  function handleSubmit(partida) {
+    localStorage.setItem("id_lobby", partida.partida_id);
+    localStorage.setItem('mix_players', partida.minplayers);
+    localStorage.setItem('max_players', partida.maxplayers); 
+  }
+  
   function DisplayData() {
     return (
       <tbody className='partidas-list'>
-        {results.map((partida, id) => (
-            <tr key={ partida.id } className="Rows-List">
-              <td >  { partida.partida_id } </td>
+        {results.reverse().map((partida, id) => (
+            <tr key={ id } className="Rows-List">
+              <td> { partida.partida_id } </td>
               <td> { partida.namepartida } </td>
               <td> { partida.status } </td>
               <td> { partida.minplayers} a { partida.maxplayers } </td>
@@ -65,9 +73,35 @@ const ListPartidas = () => {
               <td> { partida.numcurrentplayers } </td>
               <td> { partida.creador } </td>
               {
-                (!partida.password) ? <td>Desbloqueada</td>
-                : <td>Bloqueada</td>
+                (!partida.password) ?
+                  <td>
+                      <Button className="btn btn-success"
+                        data-testid="unirse-unirse" 
+                        onClick={() => {handleSubmit(partida)}} disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                            Unirse 🔓
+                          </a>
+                      </Button>
+                  </td>
+                :
+                <td>
+                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-danger" disabled={partida.status === 'finalizada'}> 
+                          <a href='/lobby'>
+                          Unirse 🔒
+                        </a>
+                    </Button>
+                </td>
               }
+            <td>
+                <Button
+                  className="btn btn-primary"
+                  disabled={partida.status !== 'finalizada'}
+                  onClick={() => { handleSubmit(partida) }}>
+                  <a href='/ganador'>
+                    Ver
+                  </a>
+                </Button>
+            </td>
             </tr>
           ))}
       </tbody>
@@ -76,10 +110,11 @@ const ListPartidas = () => {
 
   return (
     <div>
+      <NavBar />
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
         <p className='-count'>
-           # Partidas = {listGame.length}
+          <Button onClick={handleGames}>Actualizar</Button>
         </p>
       </div>
       <input
@@ -103,7 +138,8 @@ const ListPartidas = () => {
             <th scope='col'>Cantidad de rondas</th>
             <th scope='col'>Participantes</th>
             <th scope='col'>Creador</th>
-            <th scope='col'>Contraseña</th>
+            <th scope='col'>Unirse </th>
+            <th scope='col'>Resultado</th>
           </tr>
         </thead>
         {
