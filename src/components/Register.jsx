@@ -11,6 +11,7 @@ import logo from './logo.png';
 
 import React, { useState } from 'react';
 import axios from "axios";
+import { API_ENDPOINT_REGISTER, BASE_URL } from './ApiTypes';
 
 export function RegisterForm() {
 
@@ -134,12 +135,8 @@ export function RegisterForm() {
       if (userAvatar !== null) {
         formData.append('userAvatar', userAvatar);
       }
-
-      const API = 'user/registro_de_usuario/'
-      const URL = "http://127.0.0.1:8000/" + API
-
       try {
-        const response = await axios.post(URL, formData, { headers: 
+        const response = await axios.post(BASE_URL + API_ENDPOINT_REGISTER, formData, { headers: 
           { 'Content-Type': 'multipart/form-data' } });
         if (response?.data) {
           setWait(false);

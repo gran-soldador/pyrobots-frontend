@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import './css/UploadBotForm.css';
 import logo from './logo.png';
 import NavBar from './NavBar_2';
+import { API_ENDPOINT_UPLOAD_BOT, BASE_URL } from './ApiTypes';
 
 
 export function UploadBotForm() {
@@ -121,11 +122,7 @@ export function UploadBotForm() {
             }
 
             formData.append('robotCode', codeRobot);
-
-            const API = '/user/creacion_de_robot/'
-            const URL = "http://127.0.0.1:8000" + API
-      
-            axios.post(URL, formData, {
+            axios.post(BASE_URL + API_ENDPOINT_UPLOAD_BOT, formData, {
                 headers: {"Authorization" : `Bearer ${tokenValue}`}
                 })
             .then((res) => {

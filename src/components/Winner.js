@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINT_WINNER, BASE_URL } from './ApiTypes';
 import './css/Winner.css';
 
 const MainPage = () => {
@@ -15,7 +16,7 @@ const MainPage = () => {
   //Solicitar datos API
   async function handleGames() {
     try {
-      const response = await fetch('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'), {
+      const response = await fetch(BASE_URL + API_ENDPOINT_WINNER + localStorage.getItem('id_lobby'), {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

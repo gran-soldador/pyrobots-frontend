@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
 import NavBar from './NavBar_2';
 import { Button } from 'react-bootstrap';
+import { API_ENDPOINT_LIST_GAMES, BASE_URL } from './ApiTypes';
 
 
 const ListPartidas = () => {
@@ -31,7 +32,7 @@ const ListPartidas = () => {
   //Solicitar datos API
   async function handleGames() {
     try {
-      const response = await fetch('http://127.0.0.1:8000/lista-partidas', {
+      const response = await fetch(BASE_URL + API_ENDPOINT_LIST_GAMES, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

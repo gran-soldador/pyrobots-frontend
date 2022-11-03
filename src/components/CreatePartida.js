@@ -5,6 +5,7 @@ import logo from './logo.png';
 import axios from 'axios';
 import './css/CreatePartida.css';
 import NavBar from './NavBar_2';
+import { API_ENDPOINT_CREATE_GAME, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
 
 
 const CreatePartida = () => {
@@ -66,7 +67,7 @@ const CreatePartida = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
@@ -84,7 +85,7 @@ const CreatePartida = () => {
     event.preventDefault()
     if (handleValidation()) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8000/crear-partida';
+      const API = BASE_URL + API_ENDPOINT_CREATE_GAME;
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');

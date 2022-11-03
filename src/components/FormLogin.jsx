@@ -9,10 +9,8 @@ import logo from './logo.png';
 import './css/FormLogin.css';
 import NavBar from './NavBar_1';
 import Modal from 'react-bootstrap/Modal';
-
-
 import axios from "axios";
-  const baseURL = "http://127.0.0.1:8000/login";
+import { API_ENDPOINT_LOGIN, BASE_URL } from './ApiTypes';
 
 
 // Función Formulario de Login.
@@ -41,7 +39,7 @@ const FormLogin = () => {
     formData.append('username', username);
     formData.append('password', password);
     try {
-      const response = await axios.post(baseURL, formData)
+      const response = await axios.post(BASE_URL + API_ENDPOINT_LOGIN, formData)
       if (response?.data?.accessToken) {
         setSuccessLogin(true);
         localStorage.setItem("user", JSON.stringify(response.data));

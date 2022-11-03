@@ -2,6 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import './css/Lobby.css';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
+import {
+  API_ENDPOINT_LEAVE_GAME, API_ENDPOINT_JOIN_GAME,
+  API_ENDPOINT_LIST_GAMES, API_ENDPOINT_START_GAME
+} from "./ApiTypes";
 
 
 const Lobby = () => {
@@ -43,7 +47,6 @@ const Lobby = () => {
   async function handleSubmitAbandonar(event) {
 
     event.preventDefault()
-    const API = 'http://127.0.0.1:8000/abandonar-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
@@ -52,7 +55,7 @@ const Lobby = () => {
       const partida_id = localStorage.getItem('id_lobby')
       formData.append('partida_id', partida_id);
       try {
-        await axios.post(API, formData, {
+        await axios.post(BASE_URL + API_ENDPOINT_LEAVE_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
         setIsJoined(false);
@@ -78,7 +81,6 @@ const Lobby = () => {
   //Enviar datos para iniciar partida
   async function handleSubmitIniciar(event) {
     event.preventDefault()
-    const API = 'http://127.0.0.1:8000/iniciar-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
@@ -88,7 +90,7 @@ const Lobby = () => {
       formData.append('partida_id', partida_id);
       
       try {
-        await axios.post(API, formData, {
+        await axios.post(BASE_URL + API_ENDPOINT_START_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
       } catch (e) {
@@ -118,7 +120,6 @@ const Lobby = () => {
   async function handleSubmitUnirse(event) {
     event.preventDefault()
     setShow(false);
-    const API = 'http://127.0.0.1:8000/unir-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
@@ -130,7 +131,7 @@ const Lobby = () => {
         formData.append('password', password);
       }
       formData.append('id_robot', idrobot);
-        await axios.post(API, formData, {
+        await axios.post(BASE_URL + API_ENDPOINT_JOIN_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         })
         .then((res) => {
@@ -201,7 +202,7 @@ const Lobby = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_GAMES, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {

@@ -3,6 +3,7 @@ import Card from './Card';
 import NavBar from './NavBar_2';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
 
 
 const Cards = () => {
@@ -20,7 +21,7 @@ const Cards = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {

@@ -8,6 +8,7 @@ import './css/SimulationForm.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import { API_ENDPOINT_SIMULATION, BASE_URL } from './ApiTypes';
 
 
 const CreateSim = () => {
@@ -73,7 +74,6 @@ const CreateSim = () => {
     event.preventDefault()
     if (handleValidation()) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8000/create_simulation';
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');
@@ -87,7 +87,7 @@ const CreateSim = () => {
         setSuccessUpload(true);
       
         try {
-          const response = await axios.post(API, formData, {
+          const response = await axios.post(BASE_URL + API_ENDPOINT_SIMULATION, formData, {
             headers: { 'Authorization': `Bearer ${tokenValue}` }
           });
           console.log(response);
