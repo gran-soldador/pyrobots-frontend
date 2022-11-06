@@ -154,22 +154,18 @@ const FormLogin = () => {
           Formulario de Login
         </Form.Text>
         <hr></hr>
-        <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
-          <Form.Label column sm={2}>Usuario</Form.Label>
-          <Col sm={10}>
+        <Form.Group className="mb-3" controlId="formBasicUsuario">
+          <Form.Label>Usuario</Form.Label>
             <Form.Control type="text" placeholder="Ingrese nombre de usuario" 
               value={username} minLength={1} maxLength={32}
               required onChange={ev => setUsername(ev.target.value)}/>
           <span style={{ color: "red" }}> {usernameErr} </span>
-          </Col>
         </Form.Group>
-        <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label column sm={2}>Contraseña </Form.Label>
-          <Col sm={10}>
           <Form.Control type="password" placeholder="Ingrese una contraseña" minLength={8} 
             maxLength={32} required onChange={ev => setPassword(ev.target.value)}/>
           <span style={{ color: "red" }}> {passwordErr} </span>
-          </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
           <Button disabled={!password ||!username } type="submit">Iniciar sesion</Button>
