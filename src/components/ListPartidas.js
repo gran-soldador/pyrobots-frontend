@@ -24,7 +24,6 @@ const ListPartidas = () => {
 
   //Primera solicitud de datos
   useEffect(() => {
-    localStorage.setItem('id_lobby', -1);
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
