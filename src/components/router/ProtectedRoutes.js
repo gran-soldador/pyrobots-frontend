@@ -1,13 +1,9 @@
 import React from "react";
-import { Navigate, Outlet} from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 
 const ProtectedRoutes = () => {
-  let isLogged = false;
-
-  if (localStorage.getItem('user')) {
-    isLogged = true;
-  }
+  let isLogged = localStorage.getItem('user') ? true : false;
 
   if (!isLogged) {
     return <Navigate to='/login' />;
