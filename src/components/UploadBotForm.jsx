@@ -176,7 +176,7 @@ export function UploadBotForm() {
                     <Modal.Title>Tu robot se subió correctamente! 🔥 </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <span style={{ color: "red" }}>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
+                        <span>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
                     </Modal.Body>
                     <Modal.Footer>
                     <a href='/home'>

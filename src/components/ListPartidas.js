@@ -86,7 +86,7 @@ const ListPartidas = () => {
                   </td>
                 :
                 <td>
-                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-danger" disabled={partida.status === 'finalizada'}> 
+                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-primary" disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
                           Unirse 🔒
                         </a>

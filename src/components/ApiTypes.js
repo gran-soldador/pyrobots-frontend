@@ -14,3 +14,4 @@ export const API_ENDPOINT_LEAVE_GAME =  '/abandonar-partida'
 export const API_ENDPOINT_START_GAME =  '/iniciar-partida'
 export const API_ENDPOINT_JOIN_GAME =   '/unir-partida'
 export const API_ENDPOINT_VERIFY =      '/verify/'
+

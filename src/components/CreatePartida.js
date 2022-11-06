@@ -138,7 +138,7 @@ const CreatePartida = () => {
             <Modal.Title>Tu partida se creo correctamente! </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span style={{ color: 'red' }}>{namepartida}</span> se añadió a la lista de partidas.
+            <span>{namepartida}</span> se añadió a la lista de partidas.
           </Modal.Body>
           <Modal.Footer>
             <a href='/home'>
