@@ -5,7 +5,7 @@ import axios from 'axios';
 import {
   API_ENDPOINT_LEAVE_GAME, API_ENDPOINT_JOIN_GAME,
   API_ENDPOINT_LIST_GAMES, API_ENDPOINT_START_GAME,
-  BASE_URL
+  BASE_URL, BASE_URL_LOBBY
 } from "./ApiTypes";
 
 
@@ -175,7 +175,7 @@ const Lobby = () => {
   
   //Conección con websocket
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'))
+    ws.current = new WebSocket(BASE_URL_LOBBY + localStorage.getItem('id_lobby'))
     ws.current.onmessage = (event) => {
       const jsonData = JSON.parse(event.data)
       setListPlayers(jsonData);
