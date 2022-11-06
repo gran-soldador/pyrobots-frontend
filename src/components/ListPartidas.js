@@ -114,7 +114,7 @@ const ListPartidas = () => {
       <NavBar />
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
-        <p className='-count'>
+        <p>
           <Button onClick={handleGames}>Actualizar</Button>
         </p>
       </div>

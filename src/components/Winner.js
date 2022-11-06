@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { API_ENDPOINT_WINNER, BASE_URL } from './ApiTypes';
 import './css/Winner.css';
+import { Button } from 'react-bootstrap';
+
 
 const MainPage = () => {
   const [result, setResult] = useState([]);
@@ -35,8 +37,6 @@ const MainPage = () => {
     }
   }
 
-  console.log('estoydandolosdatos', result);
-
   return (
     <div className='winner-pyrobot'>
       <p id='winner'>
@@ -47,6 +47,11 @@ const MainPage = () => {
           </span>
           ))}
         &mdash; PyRobots &mdash;
+        <br/>
+        <br />
+        <a href='/home'>
+          <Button> Home </Button>
+        </a>
       </p>
     </div>
   );

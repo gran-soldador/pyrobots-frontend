@@ -4,7 +4,7 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import {
   API_ENDPOINT_LEAVE_GAME, API_ENDPOINT_JOIN_GAME,
-  API_ENDPOINT_LIST_GAMES, API_ENDPOINT_START_GAME,
+  API_ENDPOINT_LIST_ROBOTS, API_ENDPOINT_START_GAME,
   BASE_URL, BASE_URL_LOBBY
 } from "./ApiTypes";
 
@@ -116,7 +116,6 @@ const Lobby = () => {
     }
   }
 
-  
   //Enviar datos para unirme a partida
   async function handleSubmitUnirse(event) {
     event.preventDefault()
@@ -203,7 +202,7 @@ const Lobby = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get(BASE_URL + API_ENDPOINT_LIST_GAMES, {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
