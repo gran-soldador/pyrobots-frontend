@@ -14,6 +14,7 @@ import ListRobots from './components/Cards';
 import NotFound from './components/NotFound';
 import Winner from './components/Winner';
 import Verify from './components/Verify'
+import ProtectedRoutes from './components/router/ProtectedRoutes';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -25,19 +26,21 @@ function App() {
       <div className='App'>
         <Routes>
           <Route path='/' element={<MainPage />} />
-          <Route exact path='/home' element={<Home/>} />
           <Route exact path='/login' element={<FormLogin/>}></Route>
-          <Route exact path='/registrarse' element={<RegisterForm/>}></Route>
-          <Route exact path='/listar-partidas' element={<ListPartidas/>}></Route>
-          <Route exact path='/crear-partida' element={<CreatePartida/>}></Route>
-          <Route exact path='/subir-bot' element={<UploadBotForm/>}></Route>
-          <Route exact path='/ver-tablero' element={<GameBoard />}></Route>
-          <Route exact path='/crear-sim' element={<CreateSim />}></Route>
-          <Route path='/lobby' element={<Lobby />}></Route>
-          <Route exact path='/list-robots' element={<ListRobots />}></Route>
-          <Route exact path='/ganador' element={<Winner />}></Route>
-          <Route exact path='*' element={<NotFound />}></Route>
-          <Route path='/verify/:token' element={<Verify />}></Route>
+          <Route exact path='/registrarse' element={<RegisterForm />}></Route>
+          <Route element={<ProtectedRoutes />}>
+            <Route path='/home' element={<Home/>} />
+            <Route path='/listar-partidas' element={<ListPartidas/>}></Route>
+            <Route path='/crear-partida' element={<CreatePartida/>}></Route>
+            <Route path='/subir-bot' element={<UploadBotForm/>}></Route>
+            <Route path='/ver-tablero' element={<GameBoard />}></Route>
+            <Route path='/crear-sim' element={<CreateSim />}></Route>
+            <Route path='/lobby' element={<Lobby />}></Route>
+            <Route path='/list-robots' element={<ListRobots />}></Route>
+            <Route path='/ganador' element={<Winner />}></Route>
+            <Route path='/verify/:token' element={<Verify />}></Route>
+          </Route>
+          <Route path='*' element={<NotFound />}></Route>
         </Routes>
       </div>
     </Router>

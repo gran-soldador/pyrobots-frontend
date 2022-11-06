@@ -1,8 +1,13 @@
 import { rest } from 'msw'
+import {
+  BASE_URL,
+  API_ENDPOINT_WINNER,
+  API_ENDPOINT_LIST_ROBOTS
+} from '../components/ApiTypes'
 
 
 export const handlers = [
-    rest.get('http://localhost:8000/mostrar-resultados/' + localStorage.getItem('id_lobby'), (req, res, ctx) => {
+    rest.get(BASE_URL + API_ENDPOINT_WINNER + localStorage.getItem('id_lobby'), (req, res, ctx) => {
         return res(ctx.status(200),
             ctx.json([
                 {
@@ -13,7 +18,7 @@ export const handlers = [
             ])
         )
     }),
-    rest.get('http://localhost:8000/lista-robots', (req, res, ctx) => {
+    rest.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, (req, res, ctx) => {
         return res(ctx.status(200),
             ctx.json([
                 {
