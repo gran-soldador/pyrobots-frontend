@@ -4,7 +4,8 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 import {
   API_ENDPOINT_LEAVE_GAME, API_ENDPOINT_JOIN_GAME,
-  API_ENDPOINT_LIST_GAMES, API_ENDPOINT_START_GAME
+  API_ENDPOINT_LIST_GAMES, API_ENDPOINT_START_GAME,
+  BASE_URL
 } from "./ApiTypes";
 
 
