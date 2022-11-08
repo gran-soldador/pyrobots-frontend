@@ -21,11 +21,11 @@ const PostLogin = () => {
             <button className='btn btn-primary btn-lg'>Subir bot</button>
           </a>
           &nbsp;
-          <a href='/crear-sim'>
+          <a href='/crear-simulacion'>
             <button className='btn btn-primary btn-lg'>Crear Simulación</button>
           </a>
           &nbsp;
-          <a href='/list-robots'>
+          <a href='/listar-robots'>
             <button className='btn btn-primary btn-lg'>Listar Robots</button>
           </a>
       </div>

@@ -34,9 +34,9 @@ function App() {
             <Route path='/crear-partida' element={<CreateMatch/>}></Route>
             <Route path='/subir-bot' element={<UploadBotForm/>}></Route>
             <Route path='/ver-tablero' element={<GameBoard />}></Route>
-            <Route path='/crear-sim' element={<CreateSim />}></Route>
+            <Route path='/crear-simulacion' element={<CreateSim />}></Route>
             <Route path='/lobby' element={<Lobby />}></Route>
-            <Route path='/list-robots' element={<RobotsList />}></Route>
+            <Route path='/listar-robots' element={<RobotsList />}></Route>
             <Route path='/ganador' element={<Winner />}></Route>
             <Route path='/verify/:token' element={<Verify />}></Route>
           </Route>
