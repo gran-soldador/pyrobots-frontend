@@ -204,7 +204,7 @@ return (
             <MenuItem
               key={robot.id}
               value={robot.id}>
-              {robot.nombre}
+              {robot.name}
             </MenuItem>
           ))}
       </Select>
