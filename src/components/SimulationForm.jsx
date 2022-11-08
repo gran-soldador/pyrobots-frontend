@@ -8,7 +8,7 @@ import './css/SimulationForm.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { API_ENDPOINT_SIMULATION, BASE_URL } from './ApiTypes';
+import { API_ENDPOINT_LIST_ROBOTS, API_ENDPOINT_SIMULATION, BASE_URL } from './ApiTypes';
 
 
 const CreateSim = () => {
@@ -39,7 +39,7 @@ const CreateSim = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
