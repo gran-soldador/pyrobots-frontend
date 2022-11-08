@@ -216,7 +216,6 @@ const Lobby = () => {
   
   //Leer datos de robots
   useEffect(function () {
-    console.log(gameState)
     if(gameState === 'finish'){
       SetGameIsFinished(true);
     }
