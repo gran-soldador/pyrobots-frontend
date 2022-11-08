@@ -1,7 +1,7 @@
 import React from 'react'
 import mockAxios from "axios";
 import { render, screen } from '@testing-library/react'
-import RobotsList from './components/RobotsList';
+import RobotsList from '../components/RobotsList';
 import Card from '../components/Card'
 
 
