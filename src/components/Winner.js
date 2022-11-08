@@ -41,9 +41,9 @@ const MainPage = () => {
     <div className='winner-pyrobot'>
       <p id='winner'>
         Ganador
-      {!isEmptyList && result.map((user, id) => (
+      {!isEmptyList && result.map((u, id) => (
         <span className='center' key={id}>
-          {user.usuario}-{user.robot}
+          {u.user}-{u.robot}
           </span>
           ))}
         &mdash; PyRobots &mdash;

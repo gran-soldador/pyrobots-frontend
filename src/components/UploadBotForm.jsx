@@ -115,13 +115,13 @@ export function UploadBotForm() {
             const tokenDict = localStorage.getItem('user');
             const tokenValue = (JSON.parse(tokenDict)).accessToken;
 
-            formData.append('robotName', nameRobot);
+            formData.append('name', nameRobot);
 
             if(avatarRobot){
-                formData.append('robotAvatar', avatarRobot);
+                formData.append('avatar', avatarRobot);
             }
 
-            formData.append('robotCode', codeRobot);
+            formData.append('code', codeRobot);
             axios.post(BASE_URL + API_ENDPOINT_UPLOAD_BOT, formData, {
                 headers: {"Authorization" : `Bearer ${tokenValue}`}
                 })

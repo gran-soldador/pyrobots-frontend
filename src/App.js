@@ -1,8 +1,8 @@
 import React from 'react'
 
-import ListPartidas from './components/ListPartidas';
+import MatchList from './components/MatchList';
 import RegisterForm from './components/Register';
-import CreatePartida from './components/CreatePartida';
+import CreateMatch from './components/CreateMatch';
 import FormLogin from './components/FormLogin';
 import MainPage from './components/MainPage';
 import UploadBotForm from './components/UploadBotForm'
@@ -10,7 +10,7 @@ import GameBoard  from "./components/GameBoard"
 import Home from './components/Home';
 import CreateSim from './components/SimulationForm';
 import Lobby from './components/Lobby';
-import ListRobots from './components/Cards';
+import RobotsList from './components/RobotsList';
 import NotFound from './components/NotFound';
 import Winner from './components/Winner';
 import Verify from './components/Verify'
@@ -30,13 +30,13 @@ function App() {
           <Route exact path='/registrarse' element={<RegisterForm />}></Route>
           <Route element={<ProtectedRoutes />}>
             <Route path='/home' element={<Home/>} />
-            <Route path='/listar-partidas' element={<ListPartidas/>}></Route>
-            <Route path='/crear-partida' element={<CreatePartida/>}></Route>
+            <Route path='/listar-partidas' element={<MatchList/>}></Route>
+            <Route path='/crear-partida' element={<CreateMatch/>}></Route>
             <Route path='/subir-bot' element={<UploadBotForm/>}></Route>
             <Route path='/ver-tablero' element={<GameBoard />}></Route>
             <Route path='/crear-sim' element={<CreateSim />}></Route>
             <Route path='/lobby' element={<Lobby />}></Route>
-            <Route path='/list-robots' element={<ListRobots />}></Route>
+            <Route path='/list-robots' element={<RobotsList />}></Route>
             <Route path='/ganador' element={<Winner />}></Route>
             <Route path='/verify/:token' element={<Verify />}></Route>
           </Route>

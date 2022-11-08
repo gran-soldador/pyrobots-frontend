@@ -11,7 +11,7 @@ export const handlers = [
         return res(ctx.status(200),
             ctx.json([
                 {
-                  "usuario": "Kevin2",
+                  "user": "Kevin2",
                   "robot": "Viserys",
                   "id": 2
                 }

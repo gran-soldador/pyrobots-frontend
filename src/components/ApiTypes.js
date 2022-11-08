@@ -1,5 +1,5 @@
-export const BASE_URL       = 'http://192.168.125.55:8000'
-export const BASE_URL_LOBBY = 'ws://192.168.125.55:8000/ws/'
+export const BASE_URL       = 'http://localhost:8000'
+export const BASE_URL_LOBBY = 'ws://localhost:8000/ws/'
 
 // ENDPOINT APP
 

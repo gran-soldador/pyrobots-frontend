@@ -54,7 +54,7 @@ const ListPartidas = () => {
   // const [id, setId] = useState(0);
 
   function handleSubmit(partida) {
-    localStorage.setItem("id_lobby", partida.partida_id);
+    localStorage.setItem("id_lobby", partida.match_id);
     localStorage.setItem('mix_players', partida.minplayers);
     localStorage.setItem('max_players', partida.maxplayers); 
   }
@@ -64,14 +64,14 @@ const ListPartidas = () => {
       <tbody className='partidas-list'>
         {results.reverse().map((partida, id) => (
             <tr key={ id } className="Rows-List">
-              <td> { partida.partida_id } </td>
-              <td> { partida.namepartida } </td>
+              <td> { partida.match_id } </td>
+              <td> { partida.name } </td>
               <td> { partida.status } </td>
               <td> { partida.minplayers} a { partida.maxplayers } </td>
               <td> { partida.numgames } </td>
-              <td> { partida.numrondas } </td>
+              <td> { partida.numrounds } </td>
               <td> { partida.numcurrentplayers } </td>
-              <td> { partida.creador } </td>
+              <td> { partida.creator } </td>
               {
                 (!partida.password) ?
                   <td>

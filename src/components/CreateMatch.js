@@ -91,13 +91,13 @@ const CreatePartida = () => {
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('namepartida', namepartida);
+        formData.append('name', namepartida);
         formData.append('password', password);
         formData.append('numgames', numgames);
-        formData.append('numrondas', numrondas);
+        formData.append('numrounds', numrondas);
         formData.append('minplayers', minplayers);
         formData.append('maxplayers', maxplayers);
-        formData.append('idrobot', idrobot);
+        formData.append('robot_id', idrobot);
       
         try {
           const response = await axios.post(API, formData, {

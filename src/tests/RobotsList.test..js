@@ -1,23 +1,23 @@
 import React from 'react'
 import mockAxios from "axios";
 import { render, screen } from '@testing-library/react'
-import ListRobots from '../components/Cards'
+import RobotsList from './components/RobotsList';
 import Card from '../components/Card'
 
 
 test('Renderizar componentes', () => {
-  render(<ListRobots />);
+  render(<RobotsList />);
   expect(screen.getByText(/Lista de robots/i)).toBeInTheDocument()
 });
 
 test('button actualizar lista', () => {
-  render(<ListRobots />);
+  render(<RobotsList />);
   const buttonis = screen.getByRole('button', { name: /Actualizar Lista/i });
   expect(buttonis).toBeInTheDocument();
 });
 
 test('renders learn react link', async () => {
-  render(<ListRobots />);
+  render(<RobotsList/>);
   mockAxios.get.mockResolvedValueOnce(() =>
     Promise.resolve({
       data: [

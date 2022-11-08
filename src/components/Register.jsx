@@ -130,10 +130,10 @@ export function RegisterForm() {
 
       let formData = new FormData();
       formData.append('username', datos.username);
-      formData.append('useremail', datos.useremail);
+      formData.append('email', datos.useremail);
       formData.append('password', datos.password);
       if (userAvatar !== null) {
-        formData.append('userAvatar', userAvatar);
+        formData.append('avatar', userAvatar);
       }
       try {
         const response = await axios.post(BASE_URL + API_ENDPOINT_REGISTER, formData, { headers: 

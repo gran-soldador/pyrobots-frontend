@@ -1,10 +1,11 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import CreatePartida from '../components/CreatePartida'
+import CreateMatch from '../components/CreateMatch';
+
 
 //Verifico que se encuentren los campos predeterminados
 test('Estan los campos predeterminados?', () => {
-  render(<CreatePartida/>);
+  render(<CreateMatch/>);
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);
   const maxjugadores = screen.getByPlaceholderText(/Cantidad máxima de jugadores/i);
@@ -21,7 +22,7 @@ test('Estan los campos predeterminados?', () => {
 
 //
 test('Las entradas están vacias al inicio?', () => {
-  render(<CreatePartida/>);
+  render(<CreateMatch/>);
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);
   const maxjugadores = screen.getByPlaceholderText(/Cantidad máxima de jugadores/i);
@@ -38,7 +39,7 @@ test('Las entradas están vacias al inicio?', () => {
 
 // cambian los parámetros inválidos a válidos
 test('Si las entradas estan llenas en boton de crear tiene que estar activo', () => {
-  render(<CreatePartida/>);
+  render(<CreateMatch/>);
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);
   const maxjugadores = screen.getByPlaceholderText(/Cantidad máxima de jugadores/i);
@@ -68,7 +69,7 @@ test('Si las entradas estan llenas en boton de crear tiene que estar activo', ()
 })
 
 test('Crear envia datos?', () => {
-  render(<CreatePartida/>);
+  render(<CreateMatch/>);
   const buttonis = screen.getByText('Crear');
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);
@@ -97,7 +98,7 @@ test('Crear envia datos?', () => {
 })
 
 test('Renderizar componentes async?', async () => { 
-  render(<CreatePartida/>)
+  render(<CreateMatch/>)
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);
   const maxjugadores = screen.getByPlaceholderText(/Cantidad máxima de jugadores/i);
@@ -131,7 +132,7 @@ test('Renderizar componentes async?', async () => {
 })
 
 test('La carga se procesa bien?', async () => {
-  render(<CreatePartida />);
+  render(<CreateMatch />);
   const buttonEl = screen.getByText('Crear');
   const namepartida = screen.getByPlaceholderText(/Ingrese el nombre de la partida/i);
   const minjugadores = screen.getByPlaceholderText(/Cantidad mínima de jugadores/i);

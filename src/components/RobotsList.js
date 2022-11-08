@@ -27,7 +27,7 @@ const Cards = () => {
       .then((res) => {
         console.log(res)
         // setlistRobots(sort_lists('nombre', res.data))
-        setlistRobots(res.data.sort((a, b) => (a.nombre > b.nombre ? 1 : -1 )))
+        setlistRobots(res.data.sort((a, b) => (a.name > b.name ? 1 : -1 )))
       })
       .catch((err) => {
         console.log(err)
@@ -47,9 +47,9 @@ const Cards = () => {
     </div>
     <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row">
-        {listRobots.map(({ nombre, avatar, id }) => (
+        {listRobots.map(({ name, avatar, id }) => (
             <div className="col-md-4" key={id}>
-              <Card imageSource={avatar} title={nombre} /> &nbsp;
+              <Card imageSource={avatar} title={name} /> &nbsp;
             </div>
           )
         )}
