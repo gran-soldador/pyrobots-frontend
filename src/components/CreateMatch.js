@@ -10,10 +10,10 @@ import { API_ENDPOINT_CREATE_GAME, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './
 
 const CreatePartida = () => {
   //Datos partida
-  const [namepartida, setNamePartidas] = useState('');
+  const [namematch, setNameMatch] = useState('');
   const [password, setPassword] = useState('');
   const [numgames, setNumGames] = useState('');
-  const [numrondas, setNumRondas] = useState('');
+  const [numrounds, setNumRounds] = useState('');
   const [minplayers, setMinPlayers] = useState('');
   const [maxplayers, setMaxPlayers] = useState('');
 
@@ -25,7 +25,7 @@ const CreatePartida = () => {
   const [nameErr, setNameErr] = useState("");
 
   // Referencias a los inputField.
-  const namepartidaRef = useRef();
+  const nameMatchRef = useRef();
   const passwordRef = useRef();
   const numgamesRef = useRef();
   const numrondasRef = useRef();
@@ -49,7 +49,7 @@ const CreatePartida = () => {
   // setear todos los campos
   const handleCloseModal = () => {
     setSuccessUpload(false);
-    namepartidaRef.current.value = '';
+    nameMatchRef.current.value = '';
     passwordRef.current.value = '';
     numgamesRef.current.value = '';
     numrondasRef.current.value = '';
@@ -91,10 +91,10 @@ const CreatePartida = () => {
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('name', namepartida);
+        formData.append('name', namematch);
         formData.append('password', password);
         formData.append('numgames', numgames);
-        formData.append('numrounds', numrondas);
+        formData.append('numrounds', numrounds);
         formData.append('minplayers', minplayers);
         formData.append('maxplayers', maxplayers);
         formData.append('robot_id', idrobot);
@@ -138,7 +138,7 @@ const CreatePartida = () => {
             <Modal.Title>Tu partida se creo correctamente! </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span>{namepartida}</span> se añadió a la lista de partidas.
+            <span>{namematch}</span> se añadió a la lista de partidas.
           </Modal.Body>
           <Modal.Footer>
             <a href='/home'>
@@ -191,10 +191,10 @@ const CreatePartida = () => {
           type='text'
           placeholder='Ingrese el nombre de la partida'
           required
-          ref={namepartidaRef}
+          ref={nameMatchRef}
           minLength={4}
           maxLength={16}
-          onChange={event => setNamePartidas(event.target.value)} />
+          onChange={event => setNameMatch(event.target.value)} />
           <span style={{ color: "red" }}>{nameErr}</span>
       </Form.Group>
 
@@ -246,7 +246,7 @@ const CreatePartida = () => {
           ref={numrondasRef}
           min={1}
           max={10000}
-          onChange={event => setNumRondas(event.target.value)} />
+          onChange={event => setNumRounds(event.target.value)} />
       </Form.Group>
 
       <Form.Group className='form-group'>
@@ -275,7 +275,7 @@ const CreatePartida = () => {
           onChange={event => { setIdRobot(event.target.value) }}>
           {
             datosRobot.map((robot) => (
-              <option value={robot.id} key={robot.id}>{robot.nombre}</option>
+              <option value={robot.id} key={robot.id}>{robot.name}</option>
               )
               )
             }
@@ -286,7 +286,7 @@ const CreatePartida = () => {
         <Button
           variant='success'
           type='submit'
-          disabled={!namepartida || !numgames || !numrondas || !minplayers || !maxplayers || !idrobot}
+          disabled={!namematch || !numgames || !numrounds || !minplayers || !maxplayers || !idrobot}
           size='lg'>
           Crear
         </Button>
