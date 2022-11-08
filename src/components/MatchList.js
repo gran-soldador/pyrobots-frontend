@@ -16,7 +16,7 @@ const ListPartidas = () => {
 
   //buscar en table
   const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
-  dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
+  dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
 
   const searcher = (e) => {
     setSearch(e.target.value)
