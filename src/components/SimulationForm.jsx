@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from 'axios';
 import NavBar from './NavBar_2';
 import './css/SimulationForm.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import { API_ENDPOINT_LIST_ROBOTS, API_ENDPOINT_SIMULATION, BASE_URL } from './ApiTypes';
 
 
 const CreateSim = () => {
@@ -38,7 +39,7 @@ const CreateSim = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
@@ -73,7 +74,6 @@ const CreateSim = () => {
     event.preventDefault()
     if (handleValidation()) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8000/create_simulation';
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');
@@ -87,7 +87,7 @@ const CreateSim = () => {
         setSuccessUpload(true);
       
         try {
-          const response = await axios.post(API, formData, {
+          const response = await axios.post(BASE_URL + API_ENDPOINT_SIMULATION, formData, {
             headers: { 'Authorization': `Bearer ${tokenValue}` }
           });
           console.log(response);
@@ -204,7 +204,7 @@ return (
             <MenuItem
               key={robot.id}
               value={robot.id}>
-              {robot.nombre}
+              {robot.name}
             </MenuItem>
           ))}
       </Select>

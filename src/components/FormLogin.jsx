@@ -3,16 +3,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.css'
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import './css/FormLogin.css';
 import NavBar from './NavBar_1';
 import Modal from 'react-bootstrap/Modal';
-
-
 import axios from "axios";
-  const baseURL = "http://127.0.0.1:8000/login";
+import { API_ENDPOINT_LOGIN, BASE_URL } from './ApiTypes';
 
 
 // Función Formulario de Login.
@@ -41,7 +38,7 @@ const FormLogin = () => {
     formData.append('username', username);
     formData.append('password', password);
     try {
-      const response = await axios.post(baseURL, formData)
+      const response = await axios.post(BASE_URL + API_ENDPOINT_LOGIN, formData)
       if (response?.data?.accessToken) {
         setSuccessLogin(true);
         localStorage.setItem("user", JSON.stringify(response.data));
@@ -156,22 +153,18 @@ const FormLogin = () => {
           Formulario de Login
         </Form.Text>
         <hr></hr>
-        <Form.Group as={Row} className="mb-3" controlId="formBasicUsuario">
-          <Form.Label column sm={2}>Usuario</Form.Label>
-          <Col sm={10}>
+        <Form.Group className="mb-3" controlId="formBasicUsuario">
+          <Form.Label>Usuario</Form.Label>
             <Form.Control type="text" placeholder="Ingrese nombre de usuario" 
               value={username} minLength={1} maxLength={32}
               required onChange={ev => setUsername(ev.target.value)}/>
           <span style={{ color: "red" }}> {usernameErr} </span>
-          </Col>
         </Form.Group>
-        <Form.Group as={Row} className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label column sm={2}>Contraseña </Form.Label>
-          <Col sm={10}>
           <Form.Control type="password" placeholder="Ingrese una contraseña" minLength={8} 
             maxLength={32} required onChange={ev => setPassword(ev.target.value)}/>
           <span style={{ color: "red" }}> {passwordErr} </span>
-          </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
           <Button disabled={!password ||!username } type="submit">Iniciar sesion</Button>

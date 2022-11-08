@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import './css/Verify.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from "axios";
 
 const Verify = () => {

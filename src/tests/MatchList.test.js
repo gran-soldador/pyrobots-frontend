@@ -1,9 +1,10 @@
-import React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
-import ListPartidas from '../components/ListPartidas'
+import React from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
+import MatchList from '../components/MatchList';
+
 
 test('Renderizar componentes', () => {
-  render(<ListPartidas />)
+  render(<MatchList />)
   
   expect(screen.getByText(/Lista de partidas/i)).toBeInTheDocument()
   expect(screen.getByText('#')).toBeInTheDocument()
@@ -18,6 +19,6 @@ test('Renderizar componentes', () => {
 })
 
 test('Render emptylist', () => { 
-  render(<ListPartidas />)
+  render(<MatchList />)
   expect(screen.getByText("No hay partidas disponibles")).toBeInTheDocument()
 })

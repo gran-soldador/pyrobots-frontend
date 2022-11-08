@@ -7,10 +7,11 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NavBar from './NavBar_1';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 
 import React, { useState } from 'react';
 import axios from "axios";
+import { API_ENDPOINT_REGISTER, BASE_URL } from './ApiTypes';
 
 export function RegisterForm() {
 
@@ -129,17 +130,13 @@ export function RegisterForm() {
 
       let formData = new FormData();
       formData.append('username', datos.username);
-      formData.append('useremail', datos.useremail);
+      formData.append('email', datos.useremail);
       formData.append('password', datos.password);
       if (userAvatar !== null) {
-        formData.append('userAvatar', userAvatar);
+        formData.append('avatar', userAvatar);
       }
-
-      const API = 'user/registro_de_usuario/'
-      const URL = "http://127.0.0.1:8000/" + API
-
       try {
-        const response = await axios.post(URL, formData, { headers: 
+        const response = await axios.post(BASE_URL + API_ENDPOINT_REGISTER, formData, { headers: 
           { 'Content-Type': 'multipart/form-data' } });
         if (response?.data) {
           setWait(false);
