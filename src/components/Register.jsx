@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import NavBar from './NavBar_1';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 
 import React, { useState } from 'react';
 import axios from "axios";

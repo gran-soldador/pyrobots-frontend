@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from 'axios';
 import NavBar from './NavBar_2';
 import './css/SimulationForm.css';

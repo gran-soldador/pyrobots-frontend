@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import 'bootstrap/dist/css/bootstrap.css'
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import './css/FormLogin.css';
 import NavBar from './NavBar_1';
 import Modal from 'react-bootstrap/Modal';
