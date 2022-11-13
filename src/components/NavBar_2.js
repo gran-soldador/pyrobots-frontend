@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Button } from 'react-bootstrap';
-import { Sidebar } from 'primereact/sidebar';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
+import { BiLogOut } from 'react-icons/bi';
+import { Sidebar } from 'primereact/sidebar';
 import { BASE_URL, API_ENDPOINT_USER_DATA } from './ApiTypes';
 import axios from 'axios';
 
@@ -77,7 +78,7 @@ const NavBar_2 = () => {
               <Button
                 onClick={removeStorage}
                 href='/'>
-                  Cerrar sesión
+                  Cerrar sesión <BiLogOut/>
               </Button>
             </center>
           </Sidebar>
