@@ -3,6 +3,7 @@ import NavBar from './NavBar_2';
 import axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { API_ENDPOINT_EDIT_ROBOT, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
+import { GoCloudDownload, GoCloudUpload } from 'react-icons/go';
 
 
 const Cards = () => {
@@ -98,80 +99,81 @@ const Cards = () => {
               <div className='card-body text-light'>
                 <h3 className='card-title'>{robot.name}</h3>
               </div>
-              <Button variant='primary mr-1' onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> Cambiar código </Button>
-              <Modal
-                className='modal-joinGame'
-                show={show}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}>
+              <div class="col-sm-12 col-xs-12">
+                <Button variant='primary mr-1' onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> Editar <GoCloudUpload /> </Button> &nbsp;
+                <Button> Descargar<GoCloudDownload /> </Button>
+              </div>
+                <Modal
+                  className='modal-joinGame'
+                  show={show}
+                  onHide={handleClose}
+                  backdrop="static"
+                  keyboard={false}>
+                    <Modal.Header closeButton>
+                      <Form.Text>
+                        <h1>Nuevo Código</h1>
+                      </Form.Text>
+                    </Modal.Header>
+                    <Modal.Body>
 
+                    <Form onSubmit={handleSubmitEdit}>
+                      <Form.Group className="mb-3">
+                        <Form.Label> Subir nuevo código del Robot: </Form.Label>
+                        <Form.Control
+                            type="file"
+                            className='form-control'
+                            required
+                            onChange={ (e) => {setCodeRobot(e.target.files[0]) }}
+                            // ref={codeRobotInput}
+                            data-testid="test-file-py" />
+                        {/* <span style={{ color: "red" }}> {codeErr} </span> */}
+                      </Form.Group>
+
+                      <br/>
+                      
+                      <Form.Group className='mb-3'>
+                        <Button
+                          variant='success'
+                          type='submit'
+                          size='lg'
+                          data-testid='modal-unirme'
+                          >
+                          Aceptar
+                        </Button>
+                        &nbsp;
+                        <Button
+                          variant='secondary'
+                          type='reset'
+                          size='lg'
+                          onClick={handleClose}>
+                          Cancelar
+                        </Button>
+                      </Form.Group>
+                    </Form>
+                  </Modal.Body>
+                </Modal>
+
+                <Modal
+                  className='modal-errorForm'
+                  show={errorShow}
+                  onHide={handleClose}
+                  backdrop="static"
+                  keyboard={false}>
                   <Modal.Header closeButton>
-                    <Form.Text>
-                      <h1>Editar código</h1>
-                    </Form.Text>
+                    <Modal.Title>Ha ocurrido un error</Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
-
-                  <Form onSubmit={handleSubmitEdit}>
-                    <Form.Group className="mb-3">
-                      <Form.Label> Subir nuevo código del Robot: </Form.Label>
-                      <Form.Control
-                          type="file"
-                          className='form-control'
-                          required
-                          onChange={ (e) => {setCodeRobot(e.target.files[0]) }}
-                          // ref={codeRobotInput}
-                          data-testid="test-file-py" />
-                      {/* <span style={{ color: "red" }}> {codeErr} </span> */}
-                    </Form.Group>
-
-                    <br/>
-                    
-                    <Form.Group className='mb-3'>
-                      <Button
-                        variant='success'
-                        type='submit'
-                        size='lg'
-                        data-testid='modal-unirme'
-                        >
-                        Aceptar
-                      </Button>
-                      &nbsp;
-                      <Button
-                        variant='secondary'
-                        type='reset'
-                        size='lg'
-                        onClick={handleClose}>
-                        Cancelar
-                      </Button>
-                    </Form.Group>
-                  </Form>
-                </Modal.Body>
-              </Modal>
-
-              <Modal
-                className='modal-errorForm'
-                show={errorShow}
-                onHide={handleClose}
-                backdrop="static"
-                keyboard={false}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Ha ocurrido un error</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  {errorMsg}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="primary"
-                    onClick={handleClose}
-                    className='buttonModal'>
-                    Aceptar
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-              <Button> Editar código </Button>
+                    {errorMsg}
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      variant="primary"
+                      onClick={handleClose}
+                      className='buttonModal'>
+                      Aceptar
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </div> &nbsp;
             </div> 
           )
