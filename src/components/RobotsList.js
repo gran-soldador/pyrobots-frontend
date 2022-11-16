@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Card from './Card';
 import NavBar from './NavBar_2';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
@@ -48,9 +47,16 @@ const Cards = () => {
     <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row">
         {listRobots.map(({ name, avatar, id }) => (
-            <div className="col-md-4" key={id}>
-              <Card imageSource={avatar} title={name} /> &nbsp;
-            </div>
+          <div className="col-md-4" key={id}>
+            <div className='card text-center bg-dark animate__animated animate__fadeInUp'>
+              <div className='overflow'>
+                <img src={avatar} alt='a wallpaper' className='card-img-top'/>
+              </div>
+              <div className='card-body text-light'>
+                <h3 className='card-title'>{name}</h3>
+              </div>
+              </div> &nbsp;
+            </div> 
           )
         )}
       </div>

@@ -2,7 +2,6 @@ import React from 'react'
 import mockAxios from "axios";
 import { render, screen } from '@testing-library/react'
 import RobotsList from '../components/RobotsList';
-import Card from '../components/Card'
 
 
 test('Renderizar componentes', () => {
@@ -34,16 +33,4 @@ test('renders learn react link', async () => {
     })
   )
   expect(mockAxios.get).toHaveBeenCalledTimes(0);
-});
-
-test('img?', () => {
-  render(<Card />);
-  const winner = screen.getAllByRole('img');
-  expect(winner).toHaveLength(1);
-});
-
-test('name?', () => {
-  render(<Card />);
-  const winner = screen.getAllByRole('heading');
-  expect(winner).toHaveLength(1);
 });
