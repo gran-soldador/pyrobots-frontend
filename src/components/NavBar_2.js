@@ -60,9 +60,8 @@ const NavBar_2 = () => {
       <div>
         <div className="card">
           <Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)}> 
-            <center>
               <img
-                class="circular--square"
+                className="circular--square"
                 style={{ width: 220, height: 220, marginBottom: 25 }}
                 src={userData.avatar}
                 alt='Avatar'
@@ -76,7 +75,7 @@ const NavBar_2 = () => {
                <Button
                 onClick={removeStorage}
                 href='/'>
-                  Cambiar imagen de Pefil
+                  Cambiar imagen de Perfil
               </Button>
               <br /> <br />
               <Button href='/cambiar-contrasena'>
@@ -88,7 +87,6 @@ const NavBar_2 = () => {
                 href='/'>
                   Cerrar sesión <BiLogOut/>
               </Button>
-            </center>
           </Sidebar>
         </div>
       </div>
