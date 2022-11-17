@@ -45,7 +45,7 @@ const FormLogin = () => {
     try {
       const response = await axios.post(BASE_URL + API_ENDPOINT_RECOVER_PASSWORD, formData);
       console.log(response)
-      if (response.data.detail === 'Checkout your email for password recover.') {
+      if (response?.data?.detail === 'Checkout your email for password recover.') {
         setErrorShow(true);
         setMessage(true);
         setErrorMsg('Revisa tu correo para recuperar tu contraseña.');
@@ -53,7 +53,7 @@ const FormLogin = () => {
     } catch (e) {
       console.log(e)
       setErrorMsg('');
-      if (e.response.data.detail === "Email doesn't exist in database") {
+      if (e.response?.data?.detail === "Email doesn't exist in database") {
         setErrorShow(true);
         setMessage(true);
         setErrorMsg('El email ingresado no se encuentra registrado.');
@@ -85,10 +85,8 @@ const FormLogin = () => {
       }
       else if (error?.response?.status === 401) {
         if (error?.response?.data?.detail === "Wrong Password.") {
-          console.log("detail error:", error?.response?.data?.detail);
           setPasswordErr("Contraseña Incorrecta");
         } else if (error?.response?.data?.detail === "User isn't verified yet. Please verify your account."){
-          console.log("detail error:", error?.response?.data?.detail);
           setUserNotVerified(true);
         }
       } 
@@ -215,12 +213,14 @@ const FormLogin = () => {
         <Form.Group
           className="mb-3"
           controlId="formBasic">
+          <center>
           <Button
             disabled={!password || !username}
             type="submit">
             Iniciar sesion
-            </Button>
-            </Form.Group>
+          </Button>
+          </center>
+          </Form.Group>
           </Form>
           <Button
             variant='link'
@@ -250,12 +250,13 @@ const FormLogin = () => {
               <Form.Group className='mb-3'>
                 <Form.Label> Ingresa tu email: </Form.Label>
                 <Form.Control
-                    className='form-control'
-                    required
-                    type='email'
-                    placeholder='Ingrese su email'
-                    onChange={ (e) => {setEmailReq(e.target.value) }}
-                    />
+                  className='form-control'
+                  id='inputemail'
+                  required
+                  type='email'
+                  placeholder='Ingrese su email'
+                  onChange={ (e) => {setEmailReq(e.target.value) }}
+                  />
               </Form.Group>
               <br/>
               <Form.Group className='mb-3'>
