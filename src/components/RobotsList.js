@@ -6,11 +6,11 @@ import { API_ENDPOINT_DOWNLOAD_ROBOT_CODE, API_ENDPOINT_EDIT_ROBOT, API_ENDPOINT
 import { GoCloudDownload, GoCloudUpload } from 'react-icons/go';
 import './css/Card.css';
 
+
 const Cards = () => {
   //Datos de la partida
   const [listRobots, setlistRobots] = useState([]);
   const [codeRobot, setCodeRobot] = useState(null);
-  const [codeDownload, setCodeDownload] = useState([]);
 
   // Modal:
   const [show, setShow] = useState(false);
@@ -59,7 +59,22 @@ const Cards = () => {
       })
       .then((res) => {
         console.log(res.data)
-        setCodeDownload(res.data)
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${localStorage.getItem('name_robot')}` + '.py');
+        document.body.appendChild(link);
+        link.click();
+        if (res.data.detail === 'El robot no existe') {
+         setErrorShow(true);
+          setMessage(true);
+          setErrorMsg('El robot no existe');
+        }
+        if (res.data.detail === 'El robot no pertenece al usuario') {
+          setErrorShow(true);
+          setMessage(true);
+          setErrorMsg('El robot no pertenece al usuario');
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -87,6 +102,7 @@ const Cards = () => {
           setErrorMsg('El código del robot se ha cambiado correctamente.');
         }
       } catch (e) {
+        console.log(e)
         setErrorMsg('');
         if (e.response.data.detail === 'File must be a .py') {
           setErrorShow(true);
@@ -99,6 +115,7 @@ const Cards = () => {
 
   function handleSubmitIdRobot(robot) {
     localStorage.setItem("id_robot", robot.id);
+    localStorage.setItem("name_robot", robot.name);
   }
 
   return (
