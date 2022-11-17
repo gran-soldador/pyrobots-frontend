@@ -8,7 +8,6 @@ import { API_ENDPOINT_LOGIN, API_ENDPOINT_RECOVER_PASSWORD, BASE_URL } from './A
 import './css/FormLogin.css';
 
 
-// Función Formulario de Login.
 const FormLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,28 +15,29 @@ const FormLogin = () => {
   const [userNotVerified, setUserNotVerified] = useState(false);
   const [emailReq, setEmailReq] = useState('');
 
-  //handle del modal
+  //handle modal
   const handleCloseModal1 = () => setSuccessLogin(false);
   const handleCloseModal2 = () => setUserNotVerified(false);
-  // Mostar Modal de error, si no logro loguearse correctamente.
+  // Show Error Modal, if I can't log in correctly.
   const [validForm, setValidForm] = useState(false);
   const hideErrorForm = () => setValidForm(false);
 
-  // Mensajes de entradas no validas.
+  // Invalid input messages.
   const [usernameErr, setUsernameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
 
-  // Modal recuperar contraseña
+  // Modal recover password
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
     setErrorShow(false);
   }
-
+  // Modal error recover password
   const [errorShow, setErrorShow] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [message, setMessage] = useState(false);
 
+  // Submit email, recover password
   async function handleSubmitEmail(event) {
     event.preventDefault()
     let formData = new FormData();
@@ -61,6 +61,7 @@ const FormLogin = () => {
     }
   }
 
+  // Submit login
   async function handleSubmit(e){
     setUsernameErr("");
     setPasswordErr("");
@@ -115,7 +116,7 @@ const FormLogin = () => {
           </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              <span style={{ color: "green" }}>Bienvenido/a {username}.</span>
+            <span style={{ color: "green" }}>Bienvenido/a {username}.</span>
           </Modal.Body>
           <Modal.Footer>
             <a href='/home'>
