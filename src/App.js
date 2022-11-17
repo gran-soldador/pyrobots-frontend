@@ -15,6 +15,7 @@ import NotFound from './components/NotFound';
 import Winner from './components/Winner';
 import Verify from './components/Verify'
 import ProtectedRoutes from './components/router/ProtectedRoutes';
+import ChangePassword from './components/ChangePassword';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -39,6 +40,7 @@ function App() {
             <Route path='/listar-robots' element={<RobotsList />}></Route>
             <Route path='/ganador' element={<Winner />}></Route>
             <Route path='/verify/:token' element={<Verify />}></Route>
+            <Route path='cambiar-contrasena' element={<ChangePassword />}></Route>
           </Route>
           <Route path='*' element={<NotFound />}></Route>
         </Routes>

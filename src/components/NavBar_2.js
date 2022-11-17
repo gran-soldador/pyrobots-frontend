@@ -71,7 +71,7 @@ const NavBar_2 = () => {
               <p>
                 {userData.mail}
               </p>
-              <Button>
+              <Button href='/cambiar-contrasena'>
                 Cambiar contraseña
               </Button>
               <br /> <br />
