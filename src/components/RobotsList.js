@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar_2';
 import axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { API_ENDPOINT_EDIT_ROBOT, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
+import { API_ENDPOINT_DOWNLOAD_ROBOT_CODE, API_ENDPOINT_EDIT_ROBOT, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
 import { GoCloudDownload, GoCloudUpload } from 'react-icons/go';
-
+import './css/Card.css';
 
 const Cards = () => {
   //Datos de la partida
   const [listRobots, setlistRobots] = useState([]);
-  const [roborId, setRobotId] = useState(0);
   const [codeRobot, setCodeRobot] = useState(null);
-
+  const [codeDownload, setCodeDownload] = useState([]);
   // Modal:
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -47,15 +46,30 @@ const Cards = () => {
       });
     }
   }
-  const handleCodeRobot = (event) => {
-    
+
+  //Descargar codigo
+  const handleSubmitDownload = () => {
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      axios.get(BASE_URL + API_ENDPOINT_DOWNLOAD_ROBOT_CODE + localStorage.getItem('id_robot'), {
+        headers: { 'Authorization': `Bearer ${tokenValue}` }
+      })
+      .then((res) => {
+        console.log(res.data)
+        setCodeDownload(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+    }
   }
 
+  //Editar codigo
   async function handleSubmitEdit(event) {
     event.preventDefault()
     // if (handleValidation()) {
     let formData = new FormData();
-
     const tokenDict = localStorage.getItem('user');
     const tokenValue = (JSON.parse(tokenDict)).accessToken;
     formData.append('robot_id', localStorage.getItem('id_robot'));
@@ -71,7 +85,7 @@ const Cards = () => {
 // }
     //     else {
     //         setValidForm(true);
-		// }
+    // }
   }
 
   function handleSubmitIdRobot(robot) {
@@ -99,9 +113,9 @@ const Cards = () => {
               <div className='card-body text-light'>
                 <h3 className='card-title'>{robot.name}</h3>
               </div>
-              <div class="col-sm-12 col-xs-12">
-                <Button variant='primary mr-1' onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> Editar <GoCloudUpload /> </Button> &nbsp;
-                <Button> Descargar<GoCloudDownload /> </Button>
+              <div className="col-sm-12 col-xs-12">
+                <Button variant='primary mr-1' onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> <GoCloudUpload /> </Button> &nbsp;
+                <Button variant='primary mr-1' onClick={() => { handleSubmitIdRobot(robot); handleSubmitDownload() }}> <GoCloudDownload /> </Button>
               </div>
                 <Modal
                   className='modal-joinGame'
