@@ -119,7 +119,7 @@ const Cards = () => {
 
   //data I store in localstorage
   function handleSubmitIdRobot(robot) {
-    localStorage.setItem('id_robo', robot.id);
+    localStorage.setItem('id_robot', robot.id);
     localStorage.setItem('name_robot', robot.name);
   }
 
