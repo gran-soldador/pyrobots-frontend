@@ -114,7 +114,7 @@ const Cards = () => {
     <div className="container d-flex justify-content-center align-items-center h-100">
       <div className="row">
         {listRobots.map(( robot, id ) => (
-          <div className="col-md-4" key={id}>
+          <div className="col-md-6" key={id}>
             <div className='card text-center bg-dark animate__animated animate__fadeInUp'>
               <div className='overflow'>
                 <img src={robot.avatar} alt='a wallpaper' className='card-img-top'/>
