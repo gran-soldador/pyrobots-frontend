@@ -8,29 +8,29 @@ import './css/Card.css';
 
 
 const Cards = () => {
-  //Datos de la partida
+  //game data
   const [listRobots, setlistRobots] = useState([]);
   const [codeRobot, setCodeRobot] = useState(null);
 
-  // Modal:
+  //modal
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
     setErrorShow(false);
   }
 
-  //errores
+  //error handling
   const [errorShow, setErrorShow] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [message, setMessage] = useState(false);
 
-  //Actualizar lista
+  //update robots list
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
 
-  //Leer datos de robots
+  //enpoint robot data
   const handleGames = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
@@ -49,7 +49,7 @@ const Cards = () => {
     }
   }
   
-  //Descargar codigo
+  //download robot code
   const handleSubmitDownload = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
@@ -82,7 +82,7 @@ const Cards = () => {
     }
   }
 
-  //Enviar datos a la API
+  //post to edit implementation
   async function handleSubmitEdit(event) {
     event.preventDefault()
     let formData = new FormData();
@@ -113,6 +113,7 @@ const Cards = () => {
     }
   }
 
+  //data I store in localstorage
   function handleSubmitIdRobot(robot) {
     localStorage.setItem("id_robot", robot.id);
     localStorage.setItem("name_robot", robot.name);
