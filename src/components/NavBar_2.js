@@ -6,6 +6,7 @@ import { BiLogOut } from 'react-icons/bi';
 import { Sidebar } from 'primereact/sidebar';
 import { BASE_URL, API_ENDPOINT_USER_DATA } from './ApiTypes';
 import axios from 'axios';
+import './css/NavBar_2.css';
 
 
 const NavBar_2 = () => {
@@ -61,9 +62,10 @@ const NavBar_2 = () => {
           <Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)}> 
             <center>
               <img
+                class="circular--square"
                 style={{ width: 220, height: 220, marginBottom: 25 }}
                 src={userData.avatar}
-                alt="Avatar"
+                alt='Avatar'
               />
               <h2>
                 {userData.username}
@@ -71,6 +73,12 @@ const NavBar_2 = () => {
               <p>
                 {userData.mail}
               </p>
+               <Button
+                onClick={removeStorage}
+                href='/'>
+                  Cambiar imagen de Pefil
+              </Button>
+              <br /> <br />
               <Button href='/cambiar-contrasena'>
                 Cambiar contraseña
               </Button>
