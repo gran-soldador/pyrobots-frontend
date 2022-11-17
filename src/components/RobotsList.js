@@ -11,6 +11,7 @@ const Cards = () => {
   const [listRobots, setlistRobots] = useState([]);
   const [codeRobot, setCodeRobot] = useState(null);
   const [codeDownload, setCodeDownload] = useState([]);
+
   // Modal:
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -18,9 +19,10 @@ const Cards = () => {
     setErrorShow(false);
   }
 
-    //errores
+  //errores
   const [errorShow, setErrorShow] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [message, setMessage] = useState(false);
 
   //Actualizar lista
   useEffect(() => {
@@ -46,7 +48,7 @@ const Cards = () => {
       });
     }
   }
-
+  
   //Descargar codigo
   const handleSubmitDownload = () => {
     const tokenDict = localStorage.getItem('user');
@@ -65,27 +67,34 @@ const Cards = () => {
     }
   }
 
-  //Editar codigo
+  //Enviar datos a la API
   async function handleSubmitEdit(event) {
     event.preventDefault()
-    // if (handleValidation()) {
     let formData = new FormData();
     const tokenDict = localStorage.getItem('user');
-    const tokenValue = (JSON.parse(tokenDict)).accessToken;
-    formData.append('robot_id', localStorage.getItem('id_robot'));
-    formData.append('new_code', codeRobot);
-    axios.post(BASE_URL + API_ENDPOINT_EDIT_ROBOT, formData, {
-        headers: {"Authorization" : `Bearer ${tokenValue}`}
-        })
-    .then((res) => {
-    }) 
-    .catch((err) => {
-        console.log(err)
-    });
-// }
-    //     else {
-    //         setValidForm(true);
-    // }
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      formData.append('robot_id', localStorage.getItem('id_robot'));
+      formData.append('new_code', codeRobot);
+      try {
+        const response = await axios.post(BASE_URL + API_ENDPOINT_EDIT_ROBOT, formData, {
+          headers: { 'Authorization': `Bearer ${tokenValue}` }
+        });
+        console.log(response)
+        if (response.data.detail === 'Robot code succesfully changed.') {
+          setErrorShow(true);
+          setMessage(true);
+          setErrorMsg('El código del robot se ha cambiado correctamente.');
+        }
+      } catch (e) {
+        setErrorMsg('');
+        if (e.response.data.detail === 'File must be a .py') {
+          setErrorShow(true);
+          setMessage(false);
+          setErrorMsg('Solo se permiten archivos con extensión .py');
+        }
+      }
+    }
   }
 
   function handleSubmitIdRobot(robot) {
@@ -125,7 +134,7 @@ const Cards = () => {
                   keyboard={false}>
                     <Modal.Header closeButton>
                       <Form.Text>
-                        <h1>Nuevo Código</h1>
+                        <h1>Subir Nuevo Código</h1>
                       </Form.Text>
                     </Modal.Header>
                     <Modal.Body>
@@ -140,7 +149,6 @@ const Cards = () => {
                             onChange={ (e) => {setCodeRobot(e.target.files[0]) }}
                             // ref={codeRobotInput}
                             data-testid="test-file-py" />
-                        {/* <span style={{ color: "red" }}> {codeErr} </span> */}
                       </Form.Group>
 
                       <br/>
@@ -151,6 +159,7 @@ const Cards = () => {
                           type='submit'
                           size='lg'
                           data-testid='modal-unirme'
+                          onClick={handleClose}
                           >
                           Aceptar
                         </Button>
@@ -174,7 +183,7 @@ const Cards = () => {
                   backdrop="static"
                   keyboard={false}>
                   <Modal.Header closeButton>
-                    <Modal.Title>Ha ocurrido un error</Modal.Title>
+                    <Modal.Title> {message ? 'Subir nuevo código del Robot:' : 'Ha ocurrido un error'} </Modal.Title>
                   </Modal.Header>
                   <Modal.Body>
                     {errorMsg}
