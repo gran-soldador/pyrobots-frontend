@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar_2';
 import axios from 'axios';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { API_ENDPOINT_DOWNLOAD_ROBOT_CODE, API_ENDPOINT_EDIT_ROBOT, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
+import {
+  API_ENDPOINT_DOWNLOAD_ROBOT_CODE,
+  API_ENDPOINT_EDIT_ROBOT,
+  API_ENDPOINT_LIST_ROBOTS,
+  BASE_URL
+} from './ApiTypes';
 import { GoCloudDownload, GoCloudUpload } from 'react-icons/go';
 import './css/Card.css';
 
@@ -40,7 +45,6 @@ const Cards = () => {
       })
       .then((res) => {
         console.log(res)
-        // setlistRobots(sort_lists('nombre', res.data))
         setlistRobots(res.data.sort((a, b) => (a.name > b.name ? 1 : -1 )))
       })
       .catch((err) => {
@@ -115,8 +119,8 @@ const Cards = () => {
 
   //data I store in localstorage
   function handleSubmitIdRobot(robot) {
-    localStorage.setItem("id_robot", robot.id);
-    localStorage.setItem("name_robot", robot.name);
+    localStorage.setItem('id_robo', robot.id);
+    localStorage.setItem('name_robot', robot.name);
   }
 
   return (
@@ -129,10 +133,10 @@ const Cards = () => {
        <Button onClick={handleGames}>Actualizar Lista</Button>
       </p>
     </div>
-    <div className="container d-flex justify-content-center align-items-center h-100">
-      <div className="row">
+    <div className='container d-flex justify-content-center align-items-center h-100'>
+      <div className='row'>
         {listRobots.map(( robot, id ) => (
-          <div className="col-md-6" key={id}>
+          <div className='col-md-6' key={id}>
             <div className='card text-center bg-dark animate__animated animate__fadeInUp'>
               <div className='overflow'>
                 <img src={robot.avatar} alt='a wallpaper' className='card-img-top'/>
@@ -158,19 +162,16 @@ const Cards = () => {
                     <Modal.Body>
 
                     <Form onSubmit={handleSubmitEdit}>
-                      <Form.Group className="mb-3">
+                      <Form.Group className='mb-3'>
                         <Form.Label> Subir nuevo código del Robot: </Form.Label>
                         <Form.Control
-                            type="file"
+                            type='file'
                             className='form-control'
                             required
                             onChange={ (e) => {setCodeRobot(e.target.files[0]) }}
-                            // ref={codeRobotInput}
-                            data-testid="test-file-py" />
+                            data-testid='test-file-py' />
                       </Form.Group>
-
                       <br/>
-                      
                       <Form.Group className='mb-3'>
                         <Button
                           variant='success'
@@ -198,7 +199,7 @@ const Cards = () => {
                   className='modal-errorForm'
                   show={errorShow}
                   onHide={handleClose}
-                  backdrop="static"
+                  backdrop='static'
                   keyboard={false}>
                   <Modal.Header closeButton>
                     <Modal.Title> {message ? 'Subir nuevo código del Robot:' : 'Ha ocurrido un error'} </Modal.Title>
@@ -208,7 +209,7 @@ const Cards = () => {
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
-                      variant="primary"
+                      variant='primary'
                       onClick={handleClose}
                       className='buttonModal'>
                       Aceptar
