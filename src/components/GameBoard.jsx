@@ -44,15 +44,13 @@ export function GameBoard() {
    
     const drawingIncanvas = (dataSimulation) => {
         
+        // cargamos las imagenes de los robots.
         const yellowRobot = new Image();
         yellowRobot.src = yellowRobotImage;
-        
         const redRobot = new Image();
         redRobot.src = redRobotImage;
-        
         const blueRobot = new Image();
         blueRobot.src = blueRobotImage;
-        
         const greenRobot = new Image();
         greenRobot.src = greenRobotImage;
         
@@ -77,6 +75,32 @@ export function GameBoard() {
         missileBurst.src = missileBurstImage;
 
         const fps = 30; //velocidad de la simulación
+        
+        function drawScanner(canvas, color, x_position, y_position, i, robotSize){
+            const ctxScanner = canvas.getContext("2d"); //retorna un contexto de dibujo en el lienzo.
+            ctxScanner.save(); 
+
+            var angle = -dataSimulation.rounds[index].robots[i].scanner.angle; 
+            var amp = dataSimulation.rounds[index].robots[i].scanner.amplitude;
+            
+            var x2 = (x_position+robotSize/2) + Math.cos((angle-amp/2)) * 1300;
+            var y2 = (y_position+robotSize/2) + Math.sin((angle-amp/2)) * 1300;
+
+            var x3 = (x_position+robotSize/2) + Math.cos((angle+amp/2)) * 1300;
+            var y3 = (y_position+robotSize/2) + Math.sin((angle+amp/2)) * 1300;
+
+            ctxScanner.beginPath();
+            ctxScanner.fillStyle = color;
+            ctxScanner.moveTo(x_position+robotSize/2, y_position+robotSize/2);
+
+            ctxScanner.lineTo(x2, y2);
+            ctxScanner.lineTo(x3, y3);
+
+            ctxScanner.fill();
+            ctxScanner.closePath();
+            
+            ctxScanner.restore(); //Restaura el estado de lienzo más recientemente salvado.
+        }
 
         const render = () => {
             const canvas = canvasRef.current;
@@ -88,19 +112,30 @@ export function GameBoard() {
             const robotSize = 50;
             const missilSize = 40;
             const missileBurstSize = 60;
-
+            
             const robotList = [yellowRobot, redRobot, blueRobot, greenRobot];
-
+            const scannerColor = ["rgba(255, 240, 0, 0.3)", "rgba(255, 99, 71, 0.3)", "rgba(11, 127, 171, 0.3)","rgba(0, 230, 64, 0.3)"]
+            
             const missilList = [yellowMissile, redMissile, blueMissile, greenMissile];
-
+            
             setProgressBar(createDamageBar());
             ctx.clearRect(0, 0, width, height);
-
-            // muestra los robots en la simulación
+                        
             for (let i = 0; i < dataSimulation.players.length; i++) {
                 if (dataSimulation.rounds[index].robots[i].damage < 100 ) {
-                    ctx.drawImage(robotList[i], dataSimulation.rounds[index].robots[i].x-robotSize/2,
-                        1000 - dataSimulation.rounds[index].robots[i].y-robotSize/2, robotSize, robotSize);
+                    const x_position = dataSimulation.rounds[index].robots[i].x-robotSize/2;
+                    const y_position = 1000 - dataSimulation.rounds[index].robots[i].y-robotSize/2;
+                    if(dataSimulation.rounds[index].robots[i].scanner.used){
+                        drawScanner(canvas, scannerColor[i], x_position, y_position, i, robotSize);
+                    }
+                }
+            }
+
+            for (let i = 0; i < dataSimulation.players.length; i++) {
+                if (dataSimulation.rounds[index].robots[i].damage < 100 ) {                   
+                    const x_position = dataSimulation.rounds[index].robots[i].x-robotSize/2;
+                    const y_position = 1000 - dataSimulation.rounds[index].robots[i].y-robotSize/2;                    
+                    ctx.drawImage(robotList[i], x_position, y_position, robotSize, robotSize);
                 }
             }
                     
