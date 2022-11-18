@@ -130,9 +130,10 @@ const Cards = () => {
     <div className='partidas-header'>
       <h1 className='partida-title'> Lista de robots</h1>
       <p className='-count'>
-       <Button onClick={handleGames}>Actualizar Lista</Button>
+        <Button onClick={handleGames}>Actualizar Lista</Button>
       </p>
     </div>
+    {/* cartas   */}
     <div className='container d-flex justify-content-center align-items-center h-100'>
       <div className='row'>
         {listRobots.map(( robot, id ) => (
@@ -145,8 +146,16 @@ const Cards = () => {
                 <h3 className='card-title'>{robot.name}</h3>
               </div>
               <div className="col-sm-12 col-xs-12">
-                <Button variant='primary mr-1' onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> <GoCloudUpload /> </Button> &nbsp;
-                <Button variant='primary mr-1' onClick={() => { handleSubmitIdRobot(robot); handleSubmitDownload() }}> <GoCloudDownload /> </Button>
+                <Button
+                  variant='primary mr-1'
+                  onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}>
+                    <GoCloudUpload />
+                </Button> &nbsp;
+                <Button
+                  variant='primary mr-1'
+                  onClick={() => { handleSubmitIdRobot(robot); handleSubmitDownload() }}>
+                  <GoCloudDownload />
+                </Button>
               </div>
                 <Modal
                   className='modal-joinGame'
@@ -160,7 +169,7 @@ const Cards = () => {
                       </Form.Text>
                     </Modal.Header>
                     <Modal.Body>
-
+                    {/* Form modal */}
                     <Form onSubmit={handleSubmitEdit}>
                       <Form.Group className='mb-3'>
                         <Form.Label> Subir nuevo código del Robot: </Form.Label>
@@ -194,7 +203,7 @@ const Cards = () => {
                     </Form>
                   </Modal.Body>
                 </Modal>
-
+                {/* erros modal */}
                 <Modal
                   className='modal-errorForm'
                   show={errorShow}
