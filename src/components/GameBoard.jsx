@@ -27,6 +27,14 @@ export function GameBoard() {
     const [showError, setShowError] = useState(false);
     const [isRunning, setIsRunning] = useState(false);
 
+    const [lastIndexValue, setLIValue] = useState(0);
+
+    const [rounds, setRounds] = useState(1);
+    const [indexRange, setIndexRange] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    
+    const [requestID, setRequestID] = useState("");
+
     const [showWinner, setShowWinner] = useState(false);
     const [showTied, setShowTied] = useState(false);
     const [showAllLosers, setShowAllLosers] = useState(false);
@@ -39,9 +47,18 @@ export function GameBoard() {
     const [winners, setWinners] = useState([]);
 
     const [progressBar, setProgressBar] = useState("");
+
     // inicializo el index
     var index = 0;
-   
+
+    function pauseGame(value){
+        setIsPlaying(false);
+        console.log("last value " , indexRange);
+        setLIValue(indexRange);
+        cancelAnimationFrame(requestID);
+    }
+       
+
     const drawingIncanvas = (dataSimulation) => {
         
         // cargamos las imagenes de los robots.
@@ -69,7 +86,7 @@ export function GameBoard() {
         blueMissile.src = blueMissileImage;
         const greenMissile = new Image();
         greenMissile.src = greenMissileImage;
-
+        
         // Estallido de missil
         const missileBurst = new Image();
         missileBurst.src = missileBurstImage;
@@ -103,6 +120,7 @@ export function GameBoard() {
         }
 
         const render = () => {
+            console.log("index: ", index);
             const canvas = canvasRef.current;
             const ctx = canvas.getContext("2d");
             const ctxMisil = canvas.getContext("2d"); //retorna un contexto de dibujo en el lienzo.
@@ -163,6 +181,7 @@ export function GameBoard() {
 
             if(index < dataSimulation.rounds_played){
                 index++;
+                setIndexRange(index);
             }
             else {
                 const winnersTemp = [];
@@ -184,9 +203,10 @@ export function GameBoard() {
                 return;
             }
             
-            setTimeout(() => {
-                requestAnimationFrame(render);
-            }, 1000/fps)
+            // setTimeout(() => {
+                setRequestID(requestAnimationFrame(render));
+            // console.log(requestID);
+            // }, 1000/fps)
         }
     }
     
@@ -197,6 +217,7 @@ export function GameBoard() {
                 const simValue = (JSON.parse(sim));
                 setDataSimulation(simValue);
                 setDataLoaded(true);
+                setRounds(simValue.rounds_played)
                 localStorage.removeItem('sim');
             } else {
                 if (!dataLoaded) {
@@ -244,6 +265,9 @@ export function GameBoard() {
     };
     
     function runAnimation (){
+        setIsPlaying(true);
+        console.log("last index: " ,lastIndexValue);
+        index = lastIndexValue;
         if (!invalidSim) {
             setIsRunning(true);
             drawingIncanvas(dataSimulation);
@@ -251,6 +275,7 @@ export function GameBoard() {
             setShowError(true);
         }
     }
+
 
     return (
         <>
@@ -354,11 +379,43 @@ export function GameBoard() {
 
             <canvas id='canvas' width={1000} height={1000} ref={canvasRef}/>
             <br></br>
-            <button
-                type="button"
-                className="btn btn-success"
-                disabled={isRunning}
-                onClick={runAnimation}>Simular</button>
+
+            <Button className="btn-playgame">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                </svg>          
+            </Button>
+            {" "}
+
+            <Button className="btn-playgame" onClick={runAnimation} disabled={!isPlaying.toString()}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                </svg>  
+            </Button>
+            {" "}
+            <Button className="btn-playgame" onClick={pauseGame} id='stopAnimating' disabled={!isPlaying.toString()}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pause-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
+                </svg>           
+            </Button>  
+        
+            {" "}
+            <Button className="btn-playgame">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                </svg>         
+            </Button>
+            
+
+            <input type="range" className="form-range" min="0" max={rounds} step="1" value={indexRange} />
+            <label htmlFor="customRange" className="form-label">
+                Ronda actual: 
+                <span> {indexRange} </span> 
+            </label>
+            <br></br>
+            
         </div>
         </>
     );
