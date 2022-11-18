@@ -60,33 +60,35 @@ const NavBar_2 = () => {
       <div>
         <div className="card">
           <Sidebar visible={visibleLeft} onHide={() => setVisibleLeft(false)}> 
-              <img
-                className="circular--square"
-                style={{ width: 220, height: 220, marginBottom: 25 }}
-                src={userData.avatar}
-                alt='Avatar'
-              />
-              <h2>
-                {userData.username}
-              </h2>
-              <p>
-                {userData.mail}
-              </p>
-               <Button
-                onClick={removeStorage}
-                href='/'>
-                  Cambiar imagen de Perfil
-              </Button>
-              <br /> <br />
-              <Button href='/cambiar-contrasena'>
-                Cambiar contraseña
-              </Button>
-              <br /> <br />
-              <Button
-                onClick={removeStorage}
-                href='/'>
-                  Cerrar sesión <BiLogOut/>
-              </Button>
+              <center>
+                <img
+                  className="circular--square"
+                  style={{ width: 220, height: 220, marginBottom: 25 }}
+                  src={userData.avatar}
+                  alt='Avatar'
+                />
+                <h2>
+                  {userData.username}
+                </h2>
+                <p>
+                  {userData.mail}
+                </p>
+                <Button
+                  onClick={removeStorage}
+                  href='/'>
+                    Cambiar imagen de Perfil
+                </Button>
+                <br /> <br />
+                <Button href='/cambiar-contrasena'>
+                  Cambiar contraseña
+                </Button>
+                <br /> <br />
+                <Button
+                  onClick={removeStorage}
+                  href='/'>
+                    Cerrar sesión <BiLogOut/>
+                </Button>
+              </center>
           </Sidebar>
         </div>
       </div>
