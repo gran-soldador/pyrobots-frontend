@@ -16,4 +16,5 @@ export const API_ENDPOINT_START_GAME  = '/match/start'
 export const API_ENDPOINT_JOIN_GAME   = '/match/join'
 export const API_ENDPOINT_VERIFY      = '/verify/'
 export const API_ENDPOINT_USER_DATA   = '/user/profile'
+export const API_ENDPOINT_CHANGE_PASSWORD = '/user/edit/password'
 
