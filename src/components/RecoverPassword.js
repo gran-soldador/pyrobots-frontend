@@ -55,8 +55,10 @@ const ResetPassword = () => {
       let formData = new FormData();
       formData.append('password', password);
       try {
-        await axios.post(BASE_URL + API_ENDPOINT_PASSWORD_RECOVER + `/${token}`, formData)
-        setSuccessResetPassword(true);
+        const response = await axios.post(BASE_URL + API_ENDPOINT_PASSWORD_RECOVER + `/${token}`, formData);
+        if (response?.data) {
+          setSuccessResetPassword(true);
+        }
       } catch(error) {
         setInvalidToken(true);
       }
@@ -153,7 +155,7 @@ const ResetPassword = () => {
           <Form.Label>Contraseña </Form.Label>
           <Form.Control 
             type="password" 
-            placeholder="Ingrese una contraseña" 
+            placeholder="Ingrese una nueva contraseña" 
             minLength={8}
             required onChange={ev => setPassword(ev.target.value)}/>
           <span style={{ color: "red" }}> {passwordErr} </span>
@@ -169,7 +171,12 @@ const ResetPassword = () => {
           <span style={{ color: "red" }}> {passwordConfErr} </span>
         </Form.Group>
         <Form.Group as={Row} className="mb-3" controlId="formBasic">
-            <Button disabled={!password ||!passwordConf } type="submit">Cambiar Contraseña</Button>
+            <Button 
+              disabled={!password ||!passwordConf }
+              data-testid="test-button-recover"
+              type="submit">
+                Cambiar Contraseña
+            </Button>
         </Form.Group>
       </Form>
       </>
