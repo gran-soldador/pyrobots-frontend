@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
 import NavBar from './NavBar_1';
 import axios from "axios";
-import { API_ENDPOINT_LOGIN, API_ENDPOINT_RECOVER_PASSWORD, BASE_URL } from './ApiTypes';
+import { API_ENDPOINT_LOGIN, API_ENDPOINT_SEND_RECOVER_EMAIL , BASE_URL } from './ApiTypes';
 import './css/FormLogin.css';
 
 
@@ -43,7 +43,7 @@ const FormLogin = () => {
     let formData = new FormData();
     formData.append('email', emailReq);
     try {
-      const response = await axios.post(BASE_URL + API_ENDPOINT_RECOVER_PASSWORD, formData);
+      const response = await axios.post(BASE_URL + API_ENDPOINT_SEND_RECOVER_EMAIL , formData);
       console.log(response)
       if (response?.data?.detail === 'Checkout your email for password recover.') {
         setErrorShow(true);
@@ -205,8 +205,7 @@ const FormLogin = () => {
           <Form.Control
             type="password"
             placeholder="Ingrese una contraseña"
-            minLength={8} 
-            maxLength={32}
+            minLength={8}
             required onChange={ev => setPassword(ev.target.value)} />
           <span style={{ color: "red" }}> {passwordErr} </span>
         </Form.Group>
