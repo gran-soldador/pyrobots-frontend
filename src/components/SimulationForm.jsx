@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../media/azul.svg';
@@ -20,6 +20,8 @@ const CreateSim = () => {
   const [errorString, setErrorString] = useState('');
   const hideErrorForm = () => setInvalidForm(false);
   const [invalidAmountR, setInvalidAmountR] = useState(false);
+
+  const roundForm = useRef();
  
   const [isLoading, setLoading] = useState(true);
 
@@ -27,6 +29,7 @@ const CreateSim = () => {
   const [successUpload, setSuccessUpload] = useState(false);
 
   const handleCloseModal = () => {
+    roundForm.current.value = "";
     setSuccessUpload(false);
   }
 
@@ -182,6 +185,7 @@ return (
       </Form.Label>
       <Form.Control
         type='number'
+        ref={roundForm}
         placeholder='Ingrese la cantidad de rondas'
         required
         min={1}
