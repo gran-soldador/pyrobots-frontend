@@ -70,7 +70,7 @@ const Cards = () => {
         document.body.appendChild(link);
         link.click();
         if (res.data.detail === 'El robot no existe') {
-         setErrorShow(true);
+          setErrorShow(true);
           setMessage(true);
           setErrorMsg('El robot no existe');
         }
@@ -144,18 +144,21 @@ const Cards = () => {
               </div>
               <div className='card-body text-light'>
                 <h3 className='card-title'>{robot.name}</h3>
+                Partidas Jugadas: {robot.played}
+                <br />
+                Partidas Ganadas: {robot.won}
+                <br />
+                Promedio de rondas para ganar: {robot.avg_rounds}
               </div>
               <div className="col-sm-12 col-xs-12">
                 <Button
-                  variant='primary mr-1'
-                  onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}>
-                    <GoCloudUpload />
-                </Button> &nbsp;
-                <Button
-                  variant='primary mr-1'
-                  onClick={() => { handleSubmitIdRobot(robot); handleSubmitDownload() }}>
-                  <GoCloudDownload />
-                </Button>
+                  variant='primary mr-1' 
+                  title="Subir Código" 
+                  onClick={() => { setShow(true); handleSubmitIdRobot(robot) }}> <GoCloudUpload /> </Button> &nbsp;
+                <Button 
+                  variant='primary mr-1' 
+                  title="Descargar Código"
+                  onClick={() => { handleSubmitIdRobot(robot); handleSubmitDownload() }}> <GoCloudDownload /> </Button>
               </div>
                 <Modal
                   className='modal-joinGame'
@@ -226,6 +229,7 @@ const Cards = () => {
                   </Modal.Footer>
                 </Modal>
               </div> &nbsp;
+              <br />
             </div> 
           )
         )}
