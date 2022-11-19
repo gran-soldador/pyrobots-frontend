@@ -4,23 +4,22 @@
 }
 
 .card-body {
-  padding: 0.5rem 0 !important;
+  padding: 0.9rem 0 !important;
 }
 
 .card-text {
-  padding: 0.4rem 1rem;
+  padding: 0.3rem 1rem;
   font-size: 1rem;
 }
 
 .overflow {
-  overflow: hidden;
+  overflow: clip; 
 }
 
 .card-img-top {
   transform: scale(1);
   transition: all 0.2s ease-in-out;
-  height: 300px;
-  width: 300;
+  height: 330px;
 }
 
 .card-img-top:hover {
