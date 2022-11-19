@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 
 import './css/GameBoard.css';
 import 'bootstrap/dist/css/bootstrap.css';

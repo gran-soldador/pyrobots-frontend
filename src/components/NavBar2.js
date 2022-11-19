@@ -8,7 +8,7 @@ import { BASE_URL, API_ENDPOINT_USER_DATA, API_ENDPOINT_CHANGE_AVATAR } from './
 import axios from 'axios';
 import './css/NavBar_2.css'
 
-const NavBar_2 = () => {
+const NavBar2 = () => {
   const [visibleLeft, setVisibleLeft] = useState(false);
   const [userData, setUserData] = useState([]);
   const [newAvatar, setNewAvatar] = useState(null);
@@ -213,4 +213,4 @@ const NavBar_2 = () => {
   );
 }
 
-export default NavBar_2;
+export default NavBar2;

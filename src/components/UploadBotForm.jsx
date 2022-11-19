@@ -10,7 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import './css/UploadBotForm.css';
 import logo from '../media/azul.svg';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import { API_ENDPOINT_UPLOAD_BOT, BASE_URL } from './ApiTypes';
 
 

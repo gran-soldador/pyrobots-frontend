@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from './NavBar_1';
+import NavBar from './NavBar1';
 import './css/MainPage.css';
 
 import redRobotImage from '../media/rojo.svg';

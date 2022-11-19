@@ -1,10 +1,10 @@
 import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import NavBar_2 from '../components/NavBar_2';
+import NavBar2 from '../components/NavBar2';
 import mockAxios from 'axios';
 
 beforeEach(() => {
-    render(<NavBar_2 />);
+    render(<NavBar2 />);
 })
 
 describe('Tests componente NavBar_2', () => {
@@ -25,7 +25,7 @@ describe('Tests componente NavBar_2', () => {
         const linkElement = screen.getByText(/Ver perfil/i);
         expect(linkElement).toBeInTheDocument();
         fireEvent.click(linkElement);
-        const linkElement1 = screen.getByText(/Cambiar imagen de Perfil/i);
+        const linkElement1 = screen.getByText(/Cambiar avatar/i);
         expect(linkElement1).toBeInTheDocument();
         const linkElement2 = screen.getByText(/Cambiar contraseña/i);
         expect(linkElement2).toBeInTheDocument();
@@ -37,10 +37,10 @@ describe('Tests componente NavBar_2', () => {
         const linkElement = screen.getByText(/Ver perfil/i);
         expect(linkElement).toBeInTheDocument();
         fireEvent.click(linkElement);
-        const linkElement1 = screen.getByText(/Cambiar imagen de Perfil/i);
+        const linkElement1 = screen.getByText(/Cambiar avatar/i);
         expect(linkElement1).toBeInTheDocument();
         fireEvent.click(linkElement1);
-        const linkElement2 = screen.getByText(/Cambiar Avatar/i);
+        const linkElement2 = screen.getByText(/Cambiar Avatar:/i);
         expect(linkElement2).toBeInTheDocument();
         const linkElement3 = screen.getByText(/Cancelar/i);
         expect(linkElement3).toBeInTheDocument();

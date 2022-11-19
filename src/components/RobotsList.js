@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 import { API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';

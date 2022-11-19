@@ -3,7 +3,7 @@ import { Form, Button, Modal, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
 import './css/ChangePassword.css';
-import NavBar_2 from './NavBar_2';
+import NavBar2 from './NavBar2';
 
 import axios from "axios";
 import { API_ENDPOINT_CHANGE_PASSWORD, BASE_URL } from './ApiTypes';
@@ -93,7 +93,7 @@ async function handleSubmit(event){
 
   return (
     <>
-      <NavBar_2 />
+      <NavBar2 />
       <br/>
       <Form className='form_change_password' onSubmit={handleSubmit}>
         <Modal

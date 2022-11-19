@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
 import './css/FormLogin.css';
-import NavBar from './NavBar_1';
+import NavBar from './NavBar1';
 import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import { API_ENDPOINT_LOGIN, BASE_URL } from './ApiTypes';
