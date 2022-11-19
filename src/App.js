@@ -13,8 +13,9 @@ import Lobby from './components/Lobby';
 import RobotsList from './components/RobotsList';
 import NotFound from './components/NotFound';
 import Winner from './components/Winner';
-import Verify from './components/Verify'
+import Verify from './components/Verify';
 import ProtectedRoutes from './components/router/ProtectedRoutes';
+import Recover from './components/RecoverPassword';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -40,6 +41,7 @@ function App() {
             <Route path='/ganador' element={<Winner />}></Route>
           </Route>
           <Route path='/verify/:token' element={<Verify />}></Route>
+          <Route path='/recover/:token' element={<Recover />}></Route>
           <Route path='*' element={<NotFound />}></Route>
         </Routes>
       </div>
