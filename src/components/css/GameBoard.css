@@ -19,6 +19,9 @@
     margin: auto;
   }
   
+  .form-range{
+    width: 520px;
+  }
 
 
   .container-progressbar p{
@@ -31,7 +34,15 @@
   header{
     height: 40px;
   }
+
+  .div-inline{
+    display: inline-block;
+  }
   
+  .inputdropw{
+    width: 90%;
+  }
+
   header h1{
     text-align: center;
     font-size: 25px !important;

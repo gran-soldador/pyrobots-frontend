@@ -3,6 +3,9 @@ import NavBar from './NavBar_2';
 
 import './css/GameBoard.css';
 import 'bootstrap/dist/css/bootstrap.css';
+
+import Dropdown from 'react-bootstrap/Dropdown';
+
 import { Button, Modal } from 'react-bootstrap';
 
 import yellowRobotImage from '../media/amarillo.svg';
@@ -31,6 +34,8 @@ export function GameBoard() {
     const [index, setIndex] = useState(0);
 
     const [rounds, setRounds] = useState(1);
+
+    const [speed, setSpeed] = useState(1);
 
     const [showWinner, setShowWinner] = useState(false);
     const [showTied, setShowTied] = useState(false);
@@ -179,7 +184,6 @@ export function GameBoard() {
     }
 
     function pauseGame(){
-
         cancelAnimationFrame(requestID);
         setGamePaused(true);
     }
@@ -194,17 +198,22 @@ export function GameBoard() {
     }
     
     function backStep(){
-        if(index > 0){
+        if(index > 0 && gamePaused){
             setIndex(index-1);
+            drawCanvas();
         }
-        drawCanvas();
     }
     
     function nextStep(){
-        if(index < rounds){
+        if(index < rounds && gamePaused){
             setIndex(index+1)
+            drawCanvas();
         }
-        drawCanvas();
+    }
+
+    function handleSpeed(event){
+        const speedVelocity = parseFloat(event.target.text);
+        setSpeed(speedVelocity);
     }
 
 
@@ -214,7 +223,7 @@ export function GameBoard() {
             drawCanvas();
             if(index < rounds){
                 setIndex(index + 1);
-                setRequestID(requestAnimationFrame(drawCanvas));
+                // setRequestID(requestAnimationFrame(drawCanvas));
             }
             else{
                 const winnersTemp = [];
@@ -229,7 +238,7 @@ export function GameBoard() {
                 } else {
                     setShowAllLosers(true);
                 }
-                setIndex(0);
+                // setIndex(0);
                 setGamePaused(true);
                 return;
             }            
@@ -248,7 +257,23 @@ export function GameBoard() {
         };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index, gamePaused]);
+    }, [dataLoaded]);
+
+    useEffect(function () {
+        render();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [gamePaused]);
+
+    const fps = 24;
+    useEffect(function () {
+        
+        setTimeout(() => {
+            setRequestID(requestAnimationFrame(render));
+        }, 1000/(fps*speed))
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index, speed]);
 
     useEffect(function () {
         const getDataSimulation = () => {
@@ -257,7 +282,7 @@ export function GameBoard() {
                 const simValue = (JSON.parse(sim));
                 setDataSimulation(simValue);
                 setDataLoaded(true);
-                setRounds(simValue.rounds_played)
+                setRounds(simValue.rounds_played);
                 localStorage.removeItem('sim');
             } else {
                 if (!dataLoaded) {
@@ -267,8 +292,6 @@ export function GameBoard() {
         }
         getDataSimulation();
     }, [dataLoaded]);
-
-
 
     return(
         <>  
@@ -370,36 +393,58 @@ export function GameBoard() {
                 </div>
                 <canvas id='canvas' width={1000} height={1000}/>
                 <br></br>
+            
+            <div className="panel-multimedia">
 
-            <Button className="btn-playgame" onClick={ backStep } >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-                </svg>
-            </Button>
-            {" "}
-  
-            <Button className="btn-playgame" onClick={ resumeGame }>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
-                </svg>  
-            </Button>
-            {" "}
+                <Button className="btn-playgame" onClick={ backStep } disabled={!gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                    </svg>
+                </Button>
+                {" "}
+    
+                <Button className="btn-playgame" onClick={ resumeGame } disabled={!gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                    </svg>  
+                </Button>
+                {" "}
 
-            <Button className="btn-playgame" onClick={ pauseGame } id='stopAnimating'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pause-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
-                </svg>           
-            </Button> 
-            {" "}
+                <Button className="btn-playgame" onClick={ pauseGame } disabled={gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pause-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
+                    </svg>           
+                </Button> 
+                {" "}
+                
+                <Button className="btn-playgame" onClick={ nextStep } disabled={!gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                    </svg>          
+                </Button>  
+                {" "}
 
-            <Button className="btn-playgame" onClick={ nextStep }  id='stopAnimating'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                    <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
-                </svg>          
-            </Button>  
-            {correctRange()}
+                <Dropdown className="div-inline">
+                    <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                        {speed}x 
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={ handleSpeed }> 0.25 </Dropdown.Item>
+                        <Dropdown.Item onClick={ handleSpeed }> 0.50 </Dropdown.Item>
+                        <Dropdown.Item onClick={ handleSpeed }> 1.00 </Dropdown.Item>
+                        <Dropdown.Item onClick={ handleSpeed }> 1.25 </Dropdown.Item>
+                        <Dropdown.Item onClick={ handleSpeed }> 1.50 </Dropdown.Item>
+                        <Dropdown.Item onClick={ handleSpeed }> 2.00 </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+                {correctRange()}
+            
+            </div>
+
         </div>
 
         </>
@@ -409,7 +454,6 @@ export function GameBoard() {
         event.preventDefault();
         const roundrange = parseInt(event.target.value);
         setIndex(roundrange);
-        console.log(typeof roundrange)
         drawCanvas();
     }
 
@@ -423,22 +467,24 @@ export function GameBoard() {
                         max={rounds} 
                         step={1}
                         onChange={handleRange} 
-                        defaultValue={index} />
+                        value={index} />
+
                     <label htmlFor="customRange" className="form-label">
                         Ronda actual:
                         <span> {index} </span> 
-                    </label>
+                    </label>  
                 </>
             )
         }
         else{
             return(
                 <>
-                    <input type="range" className="form-range" min={0} max={rounds} step={1} value={index} onChange={console.log("Nashe")} />
+                    <input type="range" className="form-range" min={0} max={rounds} step={1} value={index} readOnly={true}/>
                     <label htmlFor="customRange" className="form-label">
                         Ronda actual:
                         <span> {index} </span> 
                     </label>
+
                 </>
             )
         }
