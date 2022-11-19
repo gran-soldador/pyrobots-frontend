@@ -39,9 +39,9 @@ function App() {
             <Route path='/lobby' element={<Lobby />}></Route>
             <Route path='/listar-robots' element={<RobotsList />}></Route>
             <Route path='/ganador' element={<Winner />}></Route>
-            <Route path='/verify/:token' element={<Verify />}></Route>
             <Route path='cambiar-contrasena' element={<ChangePassword />}></Route>
           </Route>
+          <Route path='/verify/:token' element={<Verify />}></Route>
           <Route path='*' element={<NotFound />}></Route>
         </Routes>
       </div>

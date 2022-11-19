@@ -95,7 +95,6 @@ const NavBar_2 = () => {
               <Nav.Link href='/crear-simulacion'>Crear Simulación</Nav.Link>
               <Nav.Link href='/crear-partida'>Crear Partida</Nav.Link>
               <Nav.Link href='/listar-partidas'>Listar Partidas</Nav.Link> 
-              <Nav.Link href='/listar-robots'>Listar Robots</Nav.Link>
               <Button onClick={() => setVisibleLeft(true) }> Ver perfil </Button>
             </Nav>
         </Container>
@@ -116,17 +115,22 @@ const NavBar_2 = () => {
                 <p>
                   {userData.mail}
                 </p>
-                <Button
-                  onClick={() => { setShow(true)}}
-                >
-                    Cambiar imagen de Perfil
-                </Button>
-                <br /> <br />
                 <Button href='/cambiar-contrasena'>
                   Cambiar contraseña
                 </Button>
                 <br /> <br />
                 <Button
+                  onClick={() => { setShow(true)}}
+                >
+                    Cambiar avatar
+                </Button>
+                <br /> <br />
+                <Button href='/listar-robots'>
+                Mis robots
+                </Button>
+                <br /> <br />
+                <Button
+                  style={{marginTop: 250}}
                   onClick={removeStorage}
                   href='/'>
                     Cerrar sesión <BiLogOut/>

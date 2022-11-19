@@ -17,8 +17,6 @@ describe('Tests componente NavBar_2', () => {
         expect(linkElement3).toBeInTheDocument();
         const linkElement4 = screen.getByText(/Listar Partidas/i);
         expect(linkElement4).toBeInTheDocument();
-        const linkElement5 = screen.getByText(/Listar Robots/i);
-        expect(linkElement5).toBeInTheDocument();
         const linkElement6 = screen.getByText(/Ver perfil/i);
         expect(linkElement6).toBeInTheDocument();
     });
