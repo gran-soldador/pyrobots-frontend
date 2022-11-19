@@ -3,11 +3,10 @@ import { Form, Button, Modal, Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
 import './css/ChangePassword.css';
-// import NavBar_2 from './NavBar_2';
+import NavBar_2 from './NavBar_2';
 
 import axios from "axios";
 import { API_ENDPOINT_CHANGE_PASSWORD, BASE_URL } from './ApiTypes';
-
 
 // Función Formulario de Login.
 const ChangePassword = () => {
@@ -49,20 +48,27 @@ async function handleSubmit(event){
 
   if(checkEqualPassword()){
     const tokenDict = localStorage.getItem('user');
-    const tokenValue = (JSON.parse(tokenDict)).accessToken;
+    var tokenValue;
+
+    if(tokenDict != null){
+      tokenValue = (JSON.parse(tokenDict)).accessToken;
+    }
     
     let formData = new FormData();
     formData.append('old_password', password);
     formData.append('new_password', new_password);
-  
-    axios.post(BASE_URL + API_ENDPOINT_CHANGE_PASSWORD, formData, {
+    try{
+
+      const response = await axios.post(BASE_URL + API_ENDPOINT_CHANGE_PASSWORD, formData, {
         headers: {"Authorization" : `Bearer ${tokenValue}`}
       })
-    .then((res) => {
-      setSuccessLogin(true);
-    }) 
-    .catch((err) => {
-      const error_axios = err.response.data.detail;
+      if(response?.status === 200) {
+        setSuccessLogin(true);
+      }
+    }
+    catch(error){
+      // console.log(error)
+      const error_axios = error.response.data.detail;
       if(error_axios === "contraseña incorrecta"){
         setCurrentPassNoValid("La contraseña ingresada es incorrecta.")
       }
@@ -76,19 +82,18 @@ async function handleSubmit(event){
         setPassNotValid("Debe contener minimo 1 Mayúscula, 1 Minúscula, 1 Número y 1 Caracter especial de los siguientes: !@#$%^&*-");
       }
       else{
-        console.log(err)
+        // console.log(error)
       }
-    });
+    }
   }
   else{
-    console.log("No se pudo modficar la contraseña.")
+    // console.log("No se pudo modficar la contraseña.")
   }
 }
 
-
   return (
     <>
-      {/* <NavBar_2 /> */}
+      <NavBar_2 />
       <br/>
       <Form className='form_change_password' onSubmit={handleSubmit}>
         <Modal
@@ -166,7 +171,7 @@ async function handleSubmit(event){
           </Form.Label>
           <Form.Control
             type="password"
-            placeholder="Confirmación de contraseña"
+            placeholder="Ingrese la nueva contraseña"
             minLength={8} 
             maxLength={32}
             required onChange={e => setNewPassword(e.target.value)} />
@@ -189,6 +194,7 @@ async function handleSubmit(event){
           <Button
             variant='success'
             type='submit'
+            data-testid="accept-button"
             size='lg'>
             Aceptar
           </Button>
@@ -197,6 +203,8 @@ async function handleSubmit(event){
             variant='secondary'
             type='reset'
             href='/home'
+            data-testid="cancel-button"
+
             size='lg'>
               Cancelar
           </Button>
