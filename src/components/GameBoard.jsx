@@ -29,7 +29,7 @@ export function GameBoard() {
     const [dataLoaded, setDataLoaded] = useState(false);
     const [showError, setShowError] = useState(false);
     
-    const [gamePaused, setGamePaused] = useState(false);
+    const [gamePaused, setGamePaused] = useState(true);
 
     const [index, setIndex] = useState(0);
 
