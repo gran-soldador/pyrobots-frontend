@@ -3,7 +3,7 @@ import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../media/azul.svg';
 import axios from 'axios';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import './css/SimulationForm.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';

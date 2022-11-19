@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import NavBar from './NavBar_1';
+import NavBar from './NavBar1';
 import logo from '../media/azul.svg';
 
 import React, { useState } from 'react';
@@ -319,20 +319,20 @@ export function RegisterForm() {
         </Form.Group>
 
         <button
-          type="reset"
-          className="btn btn-block mb-4 btn-dark"
-          onClick={resetForm}
-          >
-          Cancelar
-        </button>
-        &nbsp;
-        <button
           type="submit"
           data-testid="test-button"
           disabled={wait}
           className="btn btn-block mb-4 btn-success"
           >
           Registrarte
+        </button>
+        &nbsp;
+        <button
+          type="reset"
+          className="btn btn-block mb-4 btn-dark"
+          onClick={resetForm}
+          >
+          Cancelar
         </button>
       </form>
     </>

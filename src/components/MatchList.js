@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import { Button } from 'react-bootstrap';
 import { API_ENDPOINT_LIST_GAMES, BASE_URL } from './ApiTypes';
 

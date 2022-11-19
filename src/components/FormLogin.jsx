@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Form, Button, Image, Modal } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
-import NavBar from './NavBar_1';
-import axios from "axios";
+import './css/FormLogin.css';
+import NavBar from './NavBar1';
 import { API_ENDPOINT_LOGIN, API_ENDPOINT_SEND_RECOVER_EMAIL , BASE_URL } from './ApiTypes';
 import './css/FormLogin.css';
+import axios from 'axios';
 
 
 const FormLogin = () => {

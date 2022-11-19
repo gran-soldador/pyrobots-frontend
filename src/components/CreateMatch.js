@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import logo from '../media/azul.svg';
 import axios from 'axios';
 import './css/CreatePartida.css';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import { API_ENDPOINT_CREATE_GAME, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
 
 

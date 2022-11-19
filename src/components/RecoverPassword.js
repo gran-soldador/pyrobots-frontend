@@ -3,7 +3,7 @@ import {Form, Button, Image, Row , Modal} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css'
 import logo from '../media/azul.svg';
 import './css/RecoverPassword.css';
-import NavBar from './NavBar_1';
+import NavBar from './NavBar1';
 import axios from "axios";
 import { API_ENDPOINT_PASSWORD_RECOVER, BASE_URL } from './ApiTypes';
 
