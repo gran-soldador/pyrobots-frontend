@@ -14,5 +14,7 @@ export const API_ENDPOINT_WINNER      = '/match/results/'
 export const API_ENDPOINT_LEAVE_GAME  = '/match/exit'
 export const API_ENDPOINT_START_GAME  = '/match/start'
 export const API_ENDPOINT_JOIN_GAME   = '/match/join'
-export const API_ENDPOINT_VERIFY      = '/verify/'
+export const API_ENDPOINT_VERIFY = '/verify/'
+export const API_ENDPOINT_EDIT_ROBOT = '/robot/edit_implementation'
+export const API_ENDPOINT_DOWNLOAD_ROBOT_CODE = '/robot/code/'
 
