@@ -50,8 +50,6 @@ const NavBar_2 = () => {
   }
 
   //new avatar
-
-  //post to edit implementation
   async function submitAvatar(event) {
     event.preventDefault()
     let formData = new FormData();
@@ -165,7 +163,8 @@ const NavBar_2 = () => {
                       variant='success'
                       type='submit'
                       size='lg'
-                      data-testid='modal-unirme'
+                      disabled={!newAvatar}
+                      data-testid='test-file-py'
                       onClick={handleClose}
                       >
                       Aceptar
@@ -190,10 +189,10 @@ const NavBar_2 = () => {
               backdrop='static'
               keyboard={false}>
               <Modal.Header closeButton>
-                <Modal.Title> {message ? 'Subir nuevo código del Robot:' : 'Ha ocurrido un error'} </Modal.Title>
+                <Modal.Title> {message ? 'Subir Nuevo Avatar:' : 'Ha ocurrido un error'} </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {errorMsg}
+                <span style={{ color: "red" }}> {errorMsg} </span>
               </Modal.Body>
               <Modal.Footer>
                 <Button
