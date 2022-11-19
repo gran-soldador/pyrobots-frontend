@@ -2,7 +2,8 @@ import { rest } from 'msw'
 import {
   BASE_URL,
   API_ENDPOINT_WINNER,
-  API_ENDPOINT_LIST_ROBOTS
+  API_ENDPOINT_LIST_ROBOTS,
+  API_ENDPOINT_RECOVER_PASSWORD
 } from '../components/ApiTypes'
 
 
@@ -44,6 +45,11 @@ export const handlers = [
         return res(ctx.status(200),
             ctx.json([{nickName: "Jugador1", Robot: '1'},{nickName: "Jugador2", Robot: '2'}]
             )
+        )
+    }),
+    rest.post(BASE_URL + API_ENDPOINT_RECOVER_PASSWORD, (req, res, ctx) => {
+      return res(ctx.status(200),
+        ctx.json({ success: true })
         )
     })
 ]
