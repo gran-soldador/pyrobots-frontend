@@ -1,35 +1,26 @@
 import React from "react";
 import './css/Home.css';
+import NavBar2 from "./NavBar2";
+
+import redRobotImage from '../media/rojo.svg';
+import blueRobotImage from '../media/azul.svg';
+import greenRobotImage from '../media/verde.svg';
 
 
 const PostLogin = () => {
   
   return (
-    <div>
-      <div className='Box-main-post'>
-        <h1 className='title'>Que desea realizar?</h1>
-          <a href='/crear-partida'>
-            <button className='btn btn-primary btn-lg'>Crear Partida</button>
-          </a>
-          &nbsp;
-          <a href='/listar-partidas'>
-            <button className='btn btn-primary btn-lg'>Listar Partida</button>
-          </a>
-          <br/> <br/>
-          &nbsp;
-          <a href='/subir-bot'>
-            <button className='btn btn-primary btn-lg'>Subir bot</button>
-          </a>
-          &nbsp;
-          <a href='/crear-simulacion'>
-            <button className='btn btn-primary btn-lg'>Crear Simulación</button>
-          </a>
-          &nbsp;
-          <a href='/listar-robots'>
-            <button className='btn btn-primary btn-lg'>Listar Robots</button>
-          </a>
+    <>
+    <NavBar2 />
+    <div className='Box-main'>
+        <h1 className='title'> <span id='titulo'>PY-Robots</span> </h1>
+        <div className="image-group">
+          <img src={blueRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
+          <img src={redRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
+          <img src={greenRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

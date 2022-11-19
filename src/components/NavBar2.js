@@ -196,7 +196,7 @@ const NavBar2 = () => {
                 <Modal.Title> {message ? 'Subir Nuevo Avatar:' : 'Ha ocurrido un error'} </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <span style={{ color: "red" }}> {errorMsg} </span>
+              {message ? <span> {errorMsg} </span> : <span style={{ color: "red" }}> {errorMsg} </span>}
               </Modal.Body>
               <Modal.Footer>
                 <Button
