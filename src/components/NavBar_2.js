@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Navbar, Nav, Button } from 'react-bootstrap';
+import { Container, Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { BiLogOut } from 'react-icons/bi';
 import { Sidebar } from 'primereact/sidebar';
-import { BASE_URL, API_ENDPOINT_USER_DATA } from './ApiTypes';
+import { BASE_URL, API_ENDPOINT_USER_DATA, API_ENDPOINT_CHANGE_AVATAR } from './ApiTypes';
 import axios from 'axios';
-import './css/NavBar_2.css';
-
+import './css/NavBar_2.css'
 
 const NavBar_2 = () => {
   const [visibleLeft, setVisibleLeft] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [newAvatar, setNewAvatar] = useState(null);
 
   //Actualizar lista
   useEffect(() => {
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
+
+  //modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+    setErrorShow(false);
+  }
+
+  //error handling
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [message, setMessage] = useState(false);
 
   //Leer datos de robots
   const handleGames = () => {
@@ -36,6 +48,39 @@ const NavBar_2 = () => {
       });
     }
   }
+
+  //new avatar
+
+  //post to edit implementation
+  async function submitAvatar(event) {
+    event.preventDefault()
+    let formData = new FormData();
+    const tokenDict = localStorage.getItem('user');
+    if (tokenDict !== null) {
+      const tokenValue = (JSON.parse(tokenDict)).accessToken;
+      formData.append('new_profile', newAvatar);
+      try {
+        const response = await axios.post(BASE_URL + API_ENDPOINT_CHANGE_AVATAR, formData, {
+          headers: { 'Authorization': `Bearer ${tokenValue}` }
+        });
+        console.log(response)
+        if (response.data.detail === 'Profile picture succesfully changed.') {
+          setErrorShow(true);
+          setMessage(true);
+          setErrorMsg('La imagen de perfil ha sido cambiada con éxito.');
+        }
+      } catch (e) {
+        console.log(e)
+        setErrorMsg('');
+        if (e.response.data.detail === 'File is not an image.') {
+          setErrorShow(true);
+          setMessage(false);
+          setErrorMsg('Solo se permiten archivos con extensión png, jpg, jpeg, tiff, bmp');
+        }
+      }
+    }
+  }
+
 
   const removeStorage = () => {
     localStorage.removeItem('user');
@@ -74,8 +119,8 @@ const NavBar_2 = () => {
                   {userData.mail}
                 </p>
                 <Button
-                  onClick={removeStorage}
-                  href='/'>
+                  onClick={() => { setShow(true)}}
+                >
                     Cambiar imagen de Perfil
                 </Button>
                 <br /> <br />
@@ -90,6 +135,75 @@ const NavBar_2 = () => {
                 </Button>
               </center>
           </Sidebar>
+           <Modal
+              className='modal-joinGame'
+              show={show}
+              onHide={handleClose}
+              backdrop="static"
+              keyboard={false}>
+                <Modal.Header closeButton>
+                  <Form.Text>
+                    <h1>Subir Nuevo Avatar</h1>
+                  </Form.Text>
+                </Modal.Header>
+                <Modal.Body>
+                {/* Form modal */}
+                <Form onSubmit={submitAvatar}>
+                  <Form.Group className='mb-3'>
+                    <Form.Label> Cambiar Avatar: </Form.Label>
+                    <Form.Control
+                        type='file'
+                        className='form-control'
+                        required
+                        name='avatar'
+                        onChange={ (e) => {setNewAvatar(e.target.files[0]) }}
+                        data-testid='test-file-py' />
+                  </Form.Group>
+                  <br/>
+                  <Form.Group className='mb-3'>
+                    <Button
+                      variant='success'
+                      type='submit'
+                      size='lg'
+                      data-testid='modal-unirme'
+                      onClick={handleClose}
+                      >
+                      Aceptar
+                    </Button>
+                    &nbsp;
+                    <Button
+                      variant='secondary'
+                      type='reset'
+                      size='lg'
+                      onClick={handleClose}>
+                      Cancelar
+                    </Button>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+            </Modal>
+            {/* erros modal */}
+            <Modal
+              className='modal-errorForm'
+              show={errorShow}
+              onHide={handleClose}
+              backdrop='static'
+              keyboard={false}>
+              <Modal.Header closeButton>
+                <Modal.Title> {message ? 'Subir nuevo código del Robot:' : 'Ha ocurrido un error'} </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {errorMsg}
+              </Modal.Body>
+              <Modal.Footer>
+                <Button
+                  variant='primary'
+                  onClick={handleClose}
+                  className='buttonModal'>
+                  Aceptar
+                </Button>
+              </Modal.Footer>
+            </Modal>
         </div>
       </div>
     </>
