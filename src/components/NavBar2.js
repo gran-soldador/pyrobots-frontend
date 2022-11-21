@@ -130,7 +130,8 @@ const NavBar2 = () => {
                 </Button>
                 <br /> <br />
                 <Button
-                  style={{marginTop: 250}}
+                  className="btn btn-danger"
+                  style={{marginTop: 70}}
                   onClick={removeStorage}
                   href='/'>
                     Cerrar sesión <BiLogOut/>

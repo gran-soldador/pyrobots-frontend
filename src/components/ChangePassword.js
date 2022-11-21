@@ -158,7 +158,7 @@ async function handleSubmit(event){
           </Form.Label>
           <Form.Control
             type="password"
-            placeholder="Ingrese una contraseña"
+            placeholder="Ingresa tu contraseña actual"
             minLength={8} 
             maxLength={32}
             required onChange={e => setPassword(e.target.value)} />
