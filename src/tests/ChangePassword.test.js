@@ -6,7 +6,7 @@ import ChangePassword from '../components/ChangePassword'
 //Verifico que se encuentren los campos predeterminados
 test('Estan los campos predeterminados?', () => {
     render(<ChangePassword/>);
-    const current_password = screen.getByPlaceholderText(/Ingrese una contraseña/i);
+    const current_password = screen.getByPlaceholderText(/Ingresa tu contraseña actual/i);
     const new_password = screen.getByPlaceholderText(/Ingrese la nueva contraseña/i);
     const conf_password = screen.getByPlaceholderText(/Confirmación de contraseña/i);
     const button_accept = screen.getAllByTestId('accept-button')[0];
@@ -21,7 +21,7 @@ test('Estan los campos predeterminados?', () => {
 
 test('Las entradas están vacias al inicio?', () => {
     render(<ChangePassword/>);
-    const current_password = screen.getByPlaceholderText(/Ingrese una contraseña/i);
+    const current_password = screen.getByPlaceholderText(/Ingresa tu contraseña actual/i);
     const new_password = screen.getByPlaceholderText(/Ingrese la nueva contraseña/i);
     const conf_password = screen.getByPlaceholderText(/Confirmación de contraseña/i);
 
@@ -34,7 +34,7 @@ test('Cambiar contraseña envia datos?', () => {
     render(<ChangePassword/>);
     const button_accept = screen.getAllByTestId('accept-button')[0];
 
-    const current_password = screen.getByPlaceholderText(/Ingrese una contraseña/i);
+    const current_password = screen.getByPlaceholderText(/Ingresa tu contraseña actual/i);
     const new_password = screen.getByPlaceholderText(/Ingrese la nueva contraseña/i);
     const conf_password = screen.getByPlaceholderText(/Confirmación de contraseña/i);
 
@@ -55,9 +55,9 @@ test('Cambiar contraseña envia datos?', () => {
 
 test('debe avisar error en formacion de password', async () => {
     render(<ChangePassword/>);
-    const current_password = screen.getByPlaceholderText(/Ingrese una contraseña/i);
+    const current_password = screen.getByPlaceholderText(/Ingresa tu contraseña actual/i);
     fireEvent.change(current_password, { target: { value: '12345678' } });
-    expect(screen.getByPlaceholderText(/Ingrese una contraseña/i)).toHaveValue('12345678');
+    expect(screen.getByPlaceholderText(/Ingresa tu contraseña actual/i)).toHaveValue('12345678');
 
     const button_accept = screen.getAllByTestId('accept-button')[0];
     fireEvent.click(button_accept)

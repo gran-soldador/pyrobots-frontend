@@ -87,7 +87,7 @@ const NavBar2 = () => {
 
   return (
     <>
-      <Navbar bg='dark' variant='dark'>
+      <Navbar bg='dark' variant='dark' style={{ 'minWidth': '800px'}}>
         <Container>
           <Navbar.Brand href='/home'>PyRobots</Navbar.Brand>
             <Nav className='me-auto'>
@@ -130,7 +130,8 @@ const NavBar2 = () => {
                 </Button>
                 <br /> <br />
                 <Button
-                  style={{marginTop: 250}}
+                  className="btn btn-danger"
+                  style={{marginTop: 70}}
                   onClick={removeStorage}
                   href='/'>
                     Cerrar sesión <BiLogOut/>
@@ -196,11 +197,12 @@ const NavBar2 = () => {
                 <Modal.Title> {message ? 'Subir Nuevo Avatar:' : 'Ha ocurrido un error'} </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <span style={{ color: "red" }}> {errorMsg} </span>
+              {message ? <span> {errorMsg} </span> : <span style={{ color: "red" }}> {errorMsg} </span>}
               </Modal.Body>
               <Modal.Footer>
                 <Button
                   variant='primary'
+                  href='/home'
                   onClick={handleClose}
                   className='buttonModal'>
                   Aceptar

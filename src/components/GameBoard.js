@@ -200,14 +200,12 @@ export function GameBoard() {
     function backStep(){
         if(index > 0 && gamePaused){
             setIndex(index-1);
-            drawCanvas();
         }
     }
     
     function nextStep(){
         if(index < rounds && gamePaused){
             setIndex(index+1)
-            drawCanvas();
         }
     }
 
@@ -218,12 +216,10 @@ export function GameBoard() {
 
 
     function render(){
-
         if(dataLoaded && !gamePaused){
             drawCanvas();
-            if(index < rounds){
+            if(index < rounds+1){
                 setIndex(index + 1);
-                // setRequestID(requestAnimationFrame(drawCanvas));
             }
             else{
                 const winnersTemp = [];
@@ -245,7 +241,34 @@ export function GameBoard() {
         }
     }
 
-
+    function buttonPlayPlause(){
+        if(gamePaused){
+            return(
+                <>
+                <Button className="btn-playgame" onClick={ resumeGame } disabled={!gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                    </svg>  
+                </Button>
+                {" "}
+                </>
+            )
+        }
+        else{
+            return(
+                <>
+                <Button className="btn-playgame" onClick={ pauseGame } disabled={gamePaused}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pause-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
+                    </svg>           
+                </Button> 
+                {" "}
+                </>
+            )
+        }
+    }
 
     // Ejecución:
     useEffect(function () {
@@ -268,10 +291,13 @@ export function GameBoard() {
     const fps = 24;
     useEffect(function () {
         
-        setTimeout(() => {
-            setRequestID(requestAnimationFrame(render));
-        }, 1000/(fps*speed))
-
+        if(dataLoaded){
+            drawCanvas();   
+            setTimeout(() => {
+                setRequestID(requestAnimationFrame(render));
+            }, 1000/(fps*speed))
+        }
+            
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index, speed]);
 
@@ -402,23 +428,9 @@ export function GameBoard() {
                     </svg>
                 </Button>
                 {" "}
-    
-                <Button className="btn-playgame" onClick={ resumeGame } disabled={!gamePaused}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-play-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                        <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
-                    </svg>  
-                </Button>
-                {" "}
-
-                <Button className="btn-playgame" onClick={ pauseGame } disabled={gamePaused}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pause-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                        <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
-                    </svg>           
-                </Button> 
-                {" "}
                 
+                { buttonPlayPlause() }
+                   
                 <Button className="btn-playgame" onClick={ nextStep } disabled={!gamePaused}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-right-fill" viewBox="0 0 16 16">
                         <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
@@ -430,7 +442,6 @@ export function GameBoard() {
                     <Dropdown.Toggle variant="primary" id="dropdown-basic">
                         {speed}x 
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu>
                         <Dropdown.Item onClick={ handleSpeed }> 0.25 </Dropdown.Item>
                         <Dropdown.Item onClick={ handleSpeed }> 0.50 </Dropdown.Item>
@@ -440,13 +451,10 @@ export function GameBoard() {
                         <Dropdown.Item onClick={ handleSpeed }> 2.00 </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-
+                
                 {correctRange()}
-            
             </div>
-
         </div>
-
         </>
     )
     
