@@ -201,6 +201,7 @@ const NavBar2 = () => {
               <Modal.Footer>
                 <Button
                   variant='primary'
+                  href='/home'
                   onClick={handleClose}
                   className='buttonModal'>
                   Aceptar
