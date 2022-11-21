@@ -101,7 +101,7 @@ const CreateSim = () => {
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('rounds', numrondas);
+        formData.append('rounds', parseInt(numrondas));
         robots.forEach(item => {
           formData.append('robot_ids', item);
           });

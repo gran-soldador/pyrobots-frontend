@@ -93,10 +93,10 @@ const CreatePartida = () => {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
         formData.append('name', namematch);
         formData.append('password', password);
-        formData.append('numgames', numgames);
-        formData.append('numrounds', numrounds);
-        formData.append('minplayers', minplayers);
-        formData.append('maxplayers', maxplayers);
+        formData.append('numgames', parseInt(numgames));
+        formData.append('numrounds', parseInt(numrounds));
+        formData.append('minplayers', parseInt(minplayers));
+        formData.append('maxplayers', parseInt(maxplayers));
         formData.append('robot_id', idrobot);
       
         try {

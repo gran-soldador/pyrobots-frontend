@@ -200,14 +200,12 @@ export function GameBoard() {
     function backStep(){
         if(index > 0 && gamePaused){
             setIndex(index-1);
-            drawCanvas();
         }
     }
     
     function nextStep(){
         if(index < rounds && gamePaused){
             setIndex(index+1)
-            drawCanvas();
         }
     }
 
@@ -220,9 +218,8 @@ export function GameBoard() {
     function render(){
         if(dataLoaded && !gamePaused){
             drawCanvas();
-            if(index < rounds){
+            if(index < rounds+1){
                 setIndex(index + 1);
-                // setRequestID(requestAnimationFrame(drawCanvas));
             }
             else{
                 const winnersTemp = [];
@@ -294,10 +291,13 @@ export function GameBoard() {
     const fps = 24;
     useEffect(function () {
         
-        setTimeout(() => {
-            setRequestID(requestAnimationFrame(render));
-        }, 1000/(fps*speed))
-
+        if(dataLoaded){
+            drawCanvas();   
+            setTimeout(() => {
+                setRequestID(requestAnimationFrame(render));
+            }, 1000/(fps*speed))
+        }
+            
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index, speed]);
 
