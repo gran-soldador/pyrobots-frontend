@@ -173,7 +173,11 @@ const CreatePartida = () => {
         </Modal.Footer>
       </Modal>
 
-      <Image src={logo}></Image>
+      <div className='image_match_group'>
+        <Image src={logo}></Image>
+        <Image src={logo}></Image>
+        <Image src={logo}></Image>
+      </div>
 
       <Form.Text>
         <h1>PyRobots</h1>

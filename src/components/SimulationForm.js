@@ -179,6 +179,9 @@ return (
         </Button>
       </Modal.Footer>
     </Modal>
+
+    <Image src={logo}></Image>
+    <Image src={logo}></Image>
     <Image src={logo}></Image>
 
     <Form.Text>
