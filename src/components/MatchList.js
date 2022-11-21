@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/ListPartidas.css';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import { Button } from 'react-bootstrap';
+import { API_ENDPOINT_LIST_GAMES, BASE_URL } from './ApiTypes';
 
 
 const ListPartidas = () => {
@@ -15,7 +16,7 @@ const ListPartidas = () => {
 
   //buscar en table
   const results = (!search && !isEmptyList)? listGame : listGame.filter((dato) =>
-  dato.namepartida.toLowerCase().includes(search.toLocaleLowerCase()))
+  dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
 
   const searcher = (e) => {
     setSearch(e.target.value)
@@ -23,7 +24,6 @@ const ListPartidas = () => {
 
   //Primera solicitud de datos
   useEffect(() => {
-    localStorage.setItem('id_lobby', -1);
     const firstCall = setTimeout(handleGames, 0);
     return () => clearTimeout(firstCall);
   }, [])
@@ -31,7 +31,7 @@ const ListPartidas = () => {
   //Solicitar datos API
   async function handleGames() {
     try {
-      const response = await fetch('http://127.0.0.1:8000/lista-partidas', {
+      const response = await fetch(BASE_URL + API_ENDPOINT_LIST_GAMES, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const ListPartidas = () => {
   // const [id, setId] = useState(0);
 
   function handleSubmit(partida) {
-    localStorage.setItem("id_lobby", partida.partida_id);
+    localStorage.setItem("id_lobby", partida.match_id);
     localStorage.setItem('mix_players', partida.minplayers);
     localStorage.setItem('max_players', partida.maxplayers); 
   }
@@ -64,14 +64,14 @@ const ListPartidas = () => {
       <tbody className='partidas-list'>
         {results.reverse().map((partida, id) => (
             <tr key={ id } className="Rows-List">
-              <td> { partida.partida_id } </td>
-              <td> { partida.namepartida } </td>
+              <td> { partida.match_id } </td>
+              <td> { partida.name } </td>
               <td> { partida.status } </td>
               <td> { partida.minplayers} a { partida.maxplayers } </td>
               <td> { partida.numgames } </td>
-              <td> { partida.numrondas } </td>
+              <td> { partida.numrounds } </td>
               <td> { partida.numcurrentplayers } </td>
-              <td> { partida.creador } </td>
+              <td> { partida.creator } </td>
               {
                 (!partida.password) ?
                   <td>
@@ -85,7 +85,7 @@ const ListPartidas = () => {
                   </td>
                 :
                 <td>
-                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-danger" disabled={partida.status === 'finalizada'}> 
+                    <Button onClick={() => { handleSubmit(partida) }} className="btn btn-primary" disabled={partida.status === 'finalizada'}> 
                           <a href='/lobby'>
                           Unirse 🔒
                         </a>
@@ -113,7 +113,7 @@ const ListPartidas = () => {
       <NavBar />
       <div className='partidas-header'>
         <h1 className='partida-title'> Lista de partidas</h1>
-        <p className='-count'>
+        <p>
           <Button onClick={handleGames}>Actualizar</Button>
         </p>
       </div>

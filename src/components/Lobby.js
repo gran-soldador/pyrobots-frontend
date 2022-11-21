@@ -2,6 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import './css/Lobby.css';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
+import {
+  API_ENDPOINT_LEAVE_GAME, API_ENDPOINT_JOIN_GAME,
+  API_ENDPOINT_LIST_ROBOTS, API_ENDPOINT_START_GAME,
+  BASE_URL, BASE_URL_LOBBY
+} from "./ApiTypes";
 
 
 const Lobby = () => {
@@ -43,16 +48,15 @@ const Lobby = () => {
   async function handleSubmitAbandonar(event) {
 
     event.preventDefault()
-    const API = 'http://127.0.0.1:8000/abandonar-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      const partida_id = localStorage.getItem('id_lobby')
-      formData.append('partida_id', partida_id);
+      const match_id = localStorage.getItem('id_lobby')
+      formData.append('match_id', match_id);
       try {
-        await axios.post(API, formData, {
+        await axios.post(BASE_URL + API_ENDPOINT_LEAVE_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
         setIsJoined(false);
@@ -78,17 +82,16 @@ const Lobby = () => {
   //Enviar datos para iniciar partida
   async function handleSubmitIniciar(event) {
     event.preventDefault()
-    const API = 'http://127.0.0.1:8000/iniciar-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      const partida_id = localStorage.getItem('id_lobby')
-      formData.append('partida_id', partida_id);
+      const match_id = localStorage.getItem('id_lobby')
+      formData.append('match_id', match_id);
       
       try {
-        await axios.post(API, formData, {
+        await axios.post(BASE_URL + API_ENDPOINT_START_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         });
       } catch (e) {
@@ -113,24 +116,22 @@ const Lobby = () => {
     }
   }
 
-  
   //Enviar datos para unirme a partida
   async function handleSubmitUnirse(event) {
     event.preventDefault()
     setShow(false);
-    const API = 'http://127.0.0.1:8000/unir-partida';
     let formData = new FormData();
 
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      const partida_id = localStorage.getItem('id_lobby')
-      formData.append('partida_id', partida_id);
-      if (listPlayers.contraseña) {
+      const match_id = localStorage.getItem('id_lobby')
+      formData.append('match_id', match_id);
+      if (listPlayers.password) {
         formData.append('password', password);
       }
-      formData.append('id_robot', idrobot);
-        await axios.post(API, formData, {
+      formData.append('robot_id', idrobot);
+        await axios.post(BASE_URL + API_ENDPOINT_JOIN_GAME, formData, {
           headers: { 'Authorization': `Bearer ${tokenValue}` }
         })
         .then((res) => {
@@ -173,23 +174,23 @@ const Lobby = () => {
   
   //Conección con websocket
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:8000/ws/' + localStorage.getItem('id_lobby'))
+    ws.current = new WebSocket(BASE_URL_LOBBY + localStorage.getItem('id_lobby'))
     ws.current.onmessage = (event) => {
       const jsonData = JSON.parse(event.data)
       setListPlayers(jsonData);
-      setIsFull(jsonData.robot.length >= localStorage.getItem('max_players') 
-                || jsonData.robot.length <= localStorage.getItem('min_players'));
+      setIsFull(jsonData.robots.length >= localStorage.getItem('max_players') 
+                || jsonData.robots.length <= localStorage.getItem('min_players'));
 
       setGameState(jsonData.event)
       setIsready(true);
 
-      if(jsonData.creador === localStorage.getItem("username")){
+      if(jsonData.creator === localStorage.getItem("username")){
         setIsHost(true);
         setIsJoined(true);
       }
       
-      for (let i = 0; i < jsonData.robot.length; i++) {
-        if(jsonData.robot[i].usuario === localStorage.getItem("username")){
+      for (let i = 0; i < jsonData.robots.length; i++) {
+        if(jsonData.robots[i].username === localStorage.getItem("username")){
           setIsJoined(true); 
         }
       }
@@ -201,7 +202,7 @@ const Lobby = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
@@ -215,7 +216,6 @@ const Lobby = () => {
   
   //Leer datos de robots
   useEffect(function () {
-    console.log(gameState)
     if(gameState === 'finish'){
       SetGameIsFinished(true);
     }
@@ -228,11 +228,11 @@ const Lobby = () => {
   function listLobby(){
     let renderElements = [];
     if(isReady) {
-      for (let index = 0; index < listPlayers.robot.length; index++) {
+      for (let index = 0; index < listPlayers.robots.length; index++) {
         renderElements.push(
           <tr key={index}>
-            <td> {listPlayers.robot[index].usuario} </td>  
-            <td> {listPlayers.robot[index].nombre} </td>
+            <td> {listPlayers.robots[index].username} </td>
+            <td> {listPlayers.robots[index].name} </td>
           </tr>
       )
     }
@@ -381,7 +381,7 @@ const Lobby = () => {
                 required
                 minLength={1}
                 maxLength={10}
-                disabled={listPlayers.contraseña ? 0 : 1}
+                disabled={listPlayers.password ? 0 : 1}
                 onChange={event => setPassword(event.target.value)} />
             </Form.Group>
 
@@ -396,8 +396,8 @@ const Lobby = () => {
                 data-testid='robot-input'
                 onChange={event => { setIdRobot(event.target.value) }}>
                 {
-                  datosRobot.map((robot) => (
-                    <option value={robot.id} key={robot.id}>{robot.nombre}</option>
+                  datosRobot.map((robots) => (
+                    <option value={robots.id} key={robots.id}>{robots.name}</option>
                     )
                   )
                 }

@@ -2,10 +2,10 @@ import React from "react";
 import { Container, Navbar, Nav } from 'react-bootstrap';
 
 
-const NavBar_1 = () => {
+const NavBar1 = () => {
   return (
     <>
-      <Navbar bg='dark' variant='dark'>
+      <Navbar bg='dark' variant='dark' style={{ 'minWidth': '800px'}}>
         <Container>
           <Navbar.Brand href='/'>PyRobots</Navbar.Brand>
             <Nav className='me-auto'>
@@ -18,4 +18,4 @@ const NavBar_1 = () => {
   );
 }
 
-export default NavBar_1;
+export default NavBar1;

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import './css/Verify.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from "axios";
+import { API_ENDPOINT_VERIFY, BASE_URL } from "./ApiTypes";
 
 const Verify = () => {
   const [showModal, setShowModal] = useState(false);
   const [showError, setShowError] = useState(false);
 
   function verify_user(token) {
-    axios.get(`http://127.0.0.1:8000/verify/${token}`)
+    axios.get(BASE_URL + API_ENDPOINT_VERIFY + `${token}`)
       .then((res) => {
         console.log(res);
         setShowModal(true);

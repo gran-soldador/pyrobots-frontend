@@ -20,6 +20,10 @@ img-create-partida {
   padding: 20px;
 }
 
+.image_match_group{
+  text-align: center;
+}
+
 input {
   display: flex;
   align-items: center;

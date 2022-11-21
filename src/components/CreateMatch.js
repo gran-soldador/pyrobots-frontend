@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from 'axios';
 import './css/CreatePartida.css';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
+import { API_ENDPOINT_CREATE_GAME, API_ENDPOINT_LIST_ROBOTS, BASE_URL } from './ApiTypes';
 
 
 const CreatePartida = () => {
   //Datos partida
-  const [namepartida, setNamePartidas] = useState('');
+  const [namematch, setNameMatch] = useState('');
   const [password, setPassword] = useState('');
   const [numgames, setNumGames] = useState('');
-  const [numrondas, setNumRondas] = useState('');
+  const [numrounds, setNumRounds] = useState('');
   const [minplayers, setMinPlayers] = useState('');
   const [maxplayers, setMaxPlayers] = useState('');
 
@@ -24,7 +25,7 @@ const CreatePartida = () => {
   const [nameErr, setNameErr] = useState("");
 
   // Referencias a los inputField.
-  const namepartidaRef = useRef();
+  const nameMatchRef = useRef();
   const passwordRef = useRef();
   const numgamesRef = useRef();
   const numrondasRef = useRef();
@@ -48,7 +49,7 @@ const CreatePartida = () => {
   // setear todos los campos
   const handleCloseModal = () => {
     setSuccessUpload(false);
-    namepartidaRef.current.value = '';
+    nameMatchRef.current.value = '';
     passwordRef.current.value = '';
     numgamesRef.current.value = '';
     numrondasRef.current.value = '';
@@ -66,7 +67,7 @@ const CreatePartida = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
@@ -84,19 +85,19 @@ const CreatePartida = () => {
     event.preventDefault()
     if (handleValidation()) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8000/crear-partida';
+      const API = BASE_URL + API_ENDPOINT_CREATE_GAME;
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('namepartida', namepartida);
+        formData.append('name', namematch);
         formData.append('password', password);
-        formData.append('numgames', numgames);
-        formData.append('numrondas', numrondas);
-        formData.append('minplayers', minplayers);
-        formData.append('maxplayers', maxplayers);
-        formData.append('idrobot', idrobot);
+        formData.append('numgames', parseInt(numgames));
+        formData.append('numrounds', parseInt(numrounds));
+        formData.append('minplayers', parseInt(minplayers));
+        formData.append('maxplayers', parseInt(maxplayers));
+        formData.append('robot_id', idrobot);
       
         try {
           const response = await axios.post(API, formData, {
@@ -137,7 +138,7 @@ const CreatePartida = () => {
             <Modal.Title>Tu partida se creo correctamente! </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <span style={{ color: 'red' }}>{namepartida}</span> se añadió a la lista de partidas.
+            <span>{namematch}</span> se añadió a la lista de partidas.
           </Modal.Body>
           <Modal.Footer>
             <a href='/home'>
@@ -172,7 +173,11 @@ const CreatePartida = () => {
         </Modal.Footer>
       </Modal>
 
-      <Image src={logo}></Image>
+      <div className='image_match_group'>
+        <Image src={logo}></Image>
+        <Image src={logo}></Image>
+        <Image src={logo}></Image>
+      </div>
 
       <Form.Text>
         <h1>PyRobots</h1>
@@ -190,10 +195,10 @@ const CreatePartida = () => {
           type='text'
           placeholder='Ingrese el nombre de la partida'
           required
-          ref={namepartidaRef}
+          ref={nameMatchRef}
           minLength={4}
           maxLength={16}
-          onChange={event => setNamePartidas(event.target.value)} />
+          onChange={event => setNameMatch(event.target.value)} />
           <span style={{ color: "red" }}>{nameErr}</span>
       </Form.Group>
 
@@ -245,7 +250,7 @@ const CreatePartida = () => {
           ref={numrondasRef}
           min={1}
           max={10000}
-          onChange={event => setNumRondas(event.target.value)} />
+          onChange={event => setNumRounds(event.target.value)} />
       </Form.Group>
 
       <Form.Group className='form-group'>
@@ -274,7 +279,7 @@ const CreatePartida = () => {
           onChange={event => { setIdRobot(event.target.value) }}>
           {
             datosRobot.map((robot) => (
-              <option value={robot.id} key={robot.id}>{robot.nombre}</option>
+              <option value={robot.id} key={robot.id}>{robot.name}</option>
               )
               )
             }
@@ -285,7 +290,7 @@ const CreatePartida = () => {
         <Button
           variant='success'
           type='submit'
-          disabled={!namepartida || !numgames || !numrondas || !minplayers || !maxplayers || !idrobot}
+          disabled={!namematch || !numgames || !numrounds || !minplayers || !maxplayers || !idrobot}
           size='lg'>
           Crear
         </Button>

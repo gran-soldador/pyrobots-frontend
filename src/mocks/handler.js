@@ -1,19 +1,25 @@
 import { rest } from 'msw'
+import {
+  BASE_URL,
+  API_ENDPOINT_WINNER,
+  API_ENDPOINT_USER_DATA,
+  API_ENDPOINT_LIST_ROBOTS
+} from '../components/ApiTypes'
 
 
 export const handlers = [
-    rest.get('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'), (req, res, ctx) => {
+    rest.get(BASE_URL + API_ENDPOINT_WINNER + localStorage.getItem('id_lobby'), (req, res, ctx) => {
         return res(ctx.status(200),
             ctx.json([
                 {
-                  "usuario": "Kevin2",
+                  "user": "Kevin2",
                   "robot": "Viserys",
                   "id": 2
                 }
             ])
         )
     }),
-    rest.get('http://localhost:8000/lista-robots', (req, res, ctx) => {
+    rest.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, (req, res, ctx) => {
         return res(ctx.status(200),
             ctx.json([
                 {
@@ -40,5 +46,16 @@ export const handlers = [
             ctx.json([{nickName: "Jugador1", Robot: '1'},{nickName: "Jugador2", Robot: '2'}]
             )
         )
+    }),
+    rest.get(BASE_URL + API_ENDPOINT_USER_DATA, (req, res, ctx) => {
+      return res(ctx.status(200),
+        ctx.json([
+          {
+            "username": "Kevin",
+            "mail": "kevingston47@gmail.com",
+            "avatar": "http://localhost:9000/avatars/KevinUserAvatar.jpg"
+          }
+        ])
+      )
     })
 ]

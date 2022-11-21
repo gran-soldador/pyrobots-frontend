@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from './NavBar_1';
+import NavBar from './NavBar1';
 import './css/MainPage.css';
 
 import redRobotImage from '../media/rojo.svg';
@@ -17,6 +17,7 @@ const MainPage = () => {
           <img src={redRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
           <img src={greenRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
         </div>
+        <br/>
       </div>
     </>
   );

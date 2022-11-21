@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Image, Button, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import logo from './logo.png';
+import logo from '../media/azul.svg';
 import axios from 'axios';
-import NavBar from './NavBar_2';
+import NavBar from './NavBar2';
 import './css/SimulationForm.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import { API_ENDPOINT_LIST_ROBOTS, API_ENDPOINT_SIMULATION, BASE_URL } from './ApiTypes';
 
 
 const CreateSim = () => {
@@ -19,6 +20,8 @@ const CreateSim = () => {
   const [errorString, setErrorString] = useState('');
   const hideErrorForm = () => setInvalidForm(false);
   const [invalidAmountR, setInvalidAmountR] = useState(false);
+
+  const roundForm = useRef();
  
   const [isLoading, setLoading] = useState(true);
 
@@ -26,11 +29,15 @@ const CreateSim = () => {
   const [successUpload, setSuccessUpload] = useState(false);
 
   const handleCloseModal = () => {
+    roundForm.current.value = "";
     setSuccessUpload(false);
   }
 
   //Datos de API robot
-  const [idrobots, setIdRobots] = useState([]);
+  const [idRobot1, setIdRobot1] = useState('');
+  const [idRobot2, setIdRobot2] = useState('');
+  const [idRobot3, setIdRobot3] = useState('');
+  const [idRobot4, setIdRobot4] = useState('');
   const [datosRobot, setDatosRobot] = useState([]);
 
   //Leer datos de robots
@@ -38,7 +45,7 @@ const CreateSim = () => {
     const tokenDict = localStorage.getItem('user');
     if (tokenDict !== null) {
       const tokenValue = (JSON.parse(tokenDict)).accessToken;
-      axios.get('http://127.0.0.1:8000/lista-robots', {
+      axios.get(BASE_URL + API_ENDPOINT_LIST_ROBOTS, {
         headers: { 'Authorization': `Bearer ${tokenValue}` }
       })
       .then((res) => {
@@ -52,11 +59,14 @@ const CreateSim = () => {
   }, []);
 
   const resetForm = () => {
-    setIdRobots([]);
+    setIdRobot1('');
+    setIdRobot2('');
+    setIdRobot3('');
+    setIdRobot4('');
     setInvalidAmountR('')
   }
 
-  const handleValidation = () => {
+  function handleValidation(idrobots) {
     setErrorString('');
     let valid = true;
     if (idrobots.length < 2 || idrobots.length > 4) {
@@ -71,23 +81,35 @@ const CreateSim = () => {
   //Enviar datos a la API
   async function handleSubmit(event) {
     event.preventDefault()
-    if (handleValidation()) {
+    const robots = [];
+    if (idRobot1 !== ''){
+      robots.push(idRobot1);
+    }
+    if (idRobot2 !== ''){
+      robots.push(idRobot2);
+    }
+    if (idRobot3 !== ''){
+      robots.push(idRobot3);
+    }
+    if (idRobot4 !== ''){
+      robots.push(idRobot4);
+    }
+    if (handleValidation(robots)) {
       console.log('Enviando datos al servidor');
-      const API = 'http://127.0.0.1:8000/create_simulation';
       let formData = new FormData();
 
       const tokenDict = localStorage.getItem('user');
       if (tokenDict !== null) {
         const tokenValue = (JSON.parse(tokenDict)).accessToken;
-        formData.append('rounds', numrondas);
-        idrobots.forEach(item => {
+        formData.append('rounds', parseInt(numrondas));
+        robots.forEach(item => {
           formData.append('robot_ids', item);
           });
         console.log(formData);
         setSuccessUpload(true);
       
         try {
-          const response = await axios.post(API, formData, {
+          const response = await axios.post(BASE_URL + API_ENDPOINT_SIMULATION, formData, {
             headers: { 'Authorization': `Bearer ${tokenValue}` }
           });
           console.log(response);
@@ -104,14 +126,6 @@ const CreateSim = () => {
       setErrorString('Por favor revise los datos del formulario.');
       setInvalidForm(true);
     }
-  }
-
-  const handleSelect = event => {
-    const robots = [];
-    for (let i=0; i<event.target.value.length; i++) {
-        robots.push(event.target.value[i]);
-    }
-    setIdRobots(robots);
   }
 
 return (
@@ -134,15 +148,14 @@ return (
           Cuando la simulación esté lista podrá hacer click abajo.
         </Modal.Body>
         <Modal.Footer>
-          <a href='/ver-tablero'>
-            <Button 
-              variant="primary"
-              disabled={isLoading}
-              onClick={handleCloseModal}
-              className='buttonModal'>
-                Ver simulación
-            </Button>
-          </a>
+          <Button 
+            variant="primary"
+            disabled={isLoading}
+            onClick={handleCloseModal}
+            href='/ver-tablero'
+            className='buttonModal'>
+              Ver simulación
+          </Button>
         </Modal.Footer>
     </Modal>
     <Modal
@@ -166,6 +179,9 @@ return (
         </Button>
       </Modal.Footer>
     </Modal>
+
+    <Image src={logo}></Image>
+    <Image src={logo}></Image>
     <Image src={logo}></Image>
 
     <Form.Text>
@@ -182,29 +198,75 @@ return (
       </Form.Label>
       <Form.Control
         type='number'
+        ref={roundForm}
         placeholder='Ingrese la cantidad de rondas'
         required
         min={1}
         max={10000}
+        value={numrondas}
         onChange={event => setNumRondas(event.target.value)} />
     </Form.Group>
 
     <Form.Group className='form-group'>
-      <Form.Label id="multiple-robots-label">
+      <Form.Label id="select-robot-label">
         Seleccione sus robots:
       </Form.Label>
       <br/>
       <FormControl sx={{ m: 1, width: 300 }}>
       <Select
-        multiple
-        labelId="multiple-robots-label"
-        value={idrobots}
-        onChange={handleSelect}>
+        labelId="select-robot-label"
+        value={idRobot1}
+        onChange={ev => setIdRobot1(ev.target.value)}>
           {datosRobot.map((robot) => (
             <MenuItem
               key={robot.id}
               value={robot.id}>
-              {robot.nombre}
+              {robot.name}
+            </MenuItem>
+          ))}
+      </Select>
+      </FormControl>
+      <br/>
+      <FormControl sx={{ m: 1, width: 300 }}>
+      <Select
+        labelId="select-robot-label"
+        value={idRobot2}
+        onChange={ev => setIdRobot2(ev.target.value)}>
+          {datosRobot.map((robot) => (
+            <MenuItem
+              key={robot.id}
+              value={robot.id}>
+              {robot.name}
+            </MenuItem>
+          ))}
+      </Select>
+      </FormControl>
+      <br/>
+      <FormControl sx={{ m: 1, width: 300 }}>
+      <Select
+        labelId="select-robot-label"
+        value={idRobot3}
+        onChange={ev => setIdRobot3(ev.target.value)}>
+          {datosRobot.map((robot) => (
+            <MenuItem
+              key={robot.id}
+              value={robot.id}>
+              {robot.name}
+            </MenuItem>
+          ))}
+      </Select>
+      </FormControl>
+      <br/>
+      <FormControl sx={{ m: 1, width: 300 }}>
+      <Select
+        labelId="select-robot-label"
+        value={idRobot4}
+        onChange={ev => setIdRobot4(ev.target.value)}>
+          {datosRobot.map((robot) => (
+            <MenuItem
+              key={robot.id}
+              value={robot.id}>
+              {robot.name}
             </MenuItem>
           ))}
       </Select>

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINT_WINNER, BASE_URL } from './ApiTypes';
 import './css/Winner.css';
+import { Button } from 'react-bootstrap';
+
 
 const MainPage = () => {
   const [result, setResult] = useState([]);
@@ -15,7 +18,7 @@ const MainPage = () => {
   //Solicitar datos API
   async function handleGames() {
     try {
-      const response = await fetch('http://localhost:8000/match-result/' + localStorage.getItem('id_lobby'), {
+      const response = await fetch(BASE_URL + API_ENDPOINT_WINNER + localStorage.getItem('id_lobby'), {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -34,18 +37,21 @@ const MainPage = () => {
     }
   }
 
-  console.log('estoydandolosdatos', result);
-
   return (
     <div className='winner-pyrobot'>
       <p id='winner'>
         Ganador
-      {!isEmptyList && result.map((user, id) => (
+      {!isEmptyList && result.map((u, id) => (
         <span className='center' key={id}>
-          {user.usuario}-{user.robot}
+          {u.user}-{u.robot}
           </span>
           ))}
         &mdash; PyRobots &mdash;
+        <br/>
+        <br />
+        <a href='/home'>
+          <Button> Home </Button>
+        </a>
       </p>
     </div>
   );

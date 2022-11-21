@@ -9,8 +9,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 import './css/UploadBotForm.css';
-import logo from './logo.png';
-import NavBar from './NavBar_2';
+import logo from '../media/azul.svg';
+import NavBar from './NavBar2';
+import { API_ENDPOINT_UPLOAD_BOT, BASE_URL } from './ApiTypes';
 
 
 export function UploadBotForm() {
@@ -114,18 +115,14 @@ export function UploadBotForm() {
             const tokenDict = localStorage.getItem('user');
             const tokenValue = (JSON.parse(tokenDict)).accessToken;
 
-            formData.append('robotName', nameRobot);
+            formData.append('name', nameRobot);
 
             if(avatarRobot){
-                formData.append('robotAvatar', avatarRobot);
+                formData.append('avatar', avatarRobot);
             }
 
-            formData.append('robotCode', codeRobot);
-
-            const API = '/user/creacion_de_robot/'
-            const URL = "http://127.0.0.1:8000" + API
-      
-            axios.post(URL, formData, {
+            formData.append('code', codeRobot);
+            axios.post(BASE_URL + API_ENDPOINT_UPLOAD_BOT, formData, {
                 headers: {"Authorization" : `Bearer ${tokenValue}`}
                 })
             .then((res) => {
@@ -179,7 +176,7 @@ export function UploadBotForm() {
                     <Modal.Title>Tu robot se subió correctamente! 🔥 </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <span style={{ color: "red" }}>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
+                        <span>{nameRobot}</span> se añadió correctamente a tu bibliotecta de robots.
                     </Modal.Body>
                     <Modal.Footer>
                     <a href='/home'>
