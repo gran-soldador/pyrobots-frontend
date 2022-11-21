@@ -17,6 +17,7 @@ const MainPage = () => {
           <img src={redRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
           <img src={greenRobotImage} alt="PyRobot - Inicio" width="100" height="100"/> 
         </div>
+        <br/>
       </div>
     </>
   );

@@ -15,6 +15,13 @@
     box-shadow: inset -25px -25px 49px #afafaf,
     inset 25px 25px 49px #ffffff;
     display: block;
+    height: 100%;
+
+}
+
+.Box-main{
+    min-width: 800px;
+    height: 100%;
 }
 
 .title {
