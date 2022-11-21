@@ -31,6 +31,8 @@ describe('Tests componente NavBar_2', () => {
         expect(linkElement2).toBeInTheDocument();
         const linkElement3 = screen.getByText(/Cerrar sesión/i);
         expect(linkElement3).toBeInTheDocument();
+        const linkElement4 = screen.getByText(/Mis robots/i);
+        expect(linkElement4).toBeInTheDocument();
     });
     
     test('Modal cambiar avatar', async () => {

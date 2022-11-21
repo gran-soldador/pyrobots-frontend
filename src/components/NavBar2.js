@@ -87,7 +87,7 @@ const NavBar2 = () => {
 
   return (
     <>
-      <Navbar bg='dark' variant='dark' style={{ 'min-width': '800px'}}>
+      <Navbar bg='dark' variant='dark' style={{ 'minWidth': '800px'}}>
         <Container>
           <Navbar.Brand href='/home'>PyRobots</Navbar.Brand>
             <Nav className='me-auto'>
